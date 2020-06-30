@@ -130,19 +130,115 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 118));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 157));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
+  components: {
+    TabBar: TabBar,
+    CourseItem: CourseItem },
+
   data: function data() {
-    return {};
+    return {
+      top: 24,
+      currentIndex: 0 };
 
+  },
+  onLoad: function onLoad() {
+    this.top = uni.getMenuButtonBoundingClientRect().top;
+  },
+  methods: {
+    swiperChange: function swiperChange(e) {
+      this.currentIndex = e.detail.current;
+    },
+    goSearch: function goSearch() {
+      uni.navigateTo({
+        url: "/pages/searchCourses/searchCourses" });
 
-  } };exports.default = _default;
+    },
+    goCourseList: function goCourseList() {
+      uni.navigateTo({
+        url: "/pages/courseList/courseList" });
+
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

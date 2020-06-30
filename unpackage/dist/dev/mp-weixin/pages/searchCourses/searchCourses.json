@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "搜索课程",
+  "usingComponents": {
+    "course-item": "/components/CourseItem"
+  }
+}

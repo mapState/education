@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "tab-bar": "/components/TabBar",
+    "course-item": "/components/CourseItem"
+  }
 }

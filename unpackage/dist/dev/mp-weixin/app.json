@@ -1,51 +1,52 @@
 {
-    "pages": [
-        "pages/index/index",
-        "pages/position/position",
-        "pages/search/search",
-        "pages/eventsList/eventsList",
-        "pages/activityDetails/activityDetails",
-        "pages/comment/comment",
-        "pages/togetherInfo/togetherInfo",
-        "pages/headInfo/headInfo",
-        "pages/joinDetail/joinDetail",
-        "pages/successful/successful",
-        "pages/course/course"
-    ],
-    "subPackages": [
-        {
-            "root": "pagesA",
-            "pages": [
-                "list/list"
-            ]
-        },
-        {
-            "root": "pagesB",
-            "pages": [
-                "detail/detail"
-            ]
-        }
-    ],
-    "window": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "",
-        "navigationBarBackgroundColor": "#FDD30F",
-        "backgroundColor": "#FDD30F"
+  "pages": [
+    "pages/index/index",
+    "pages/position/position",
+    "pages/search/search",
+    "pages/eventsList/eventsList",
+    "pages/activityDetails/activityDetails",
+    "pages/comment/comment",
+    "pages/togetherInfo/togetherInfo",
+    "pages/headInfo/headInfo",
+    "pages/joinDetail/joinDetail",
+    "pages/successful/successful",
+    "pages/course/course",
+    "pages/searchCourses/searchCourses",
+    "pages/courseList/courseList"
+  ],
+  "subPackages": [
+    {
+      "root": "pagesA",
+      "pages": [
+        "list/list"
+      ]
     },
-    "preloadRule": {
-        "pagesA/list/list": {
-            "network": "all",
-            "packages": [
-                "__APP__"
-            ]
-        },
-        "pagesB/detail/detail": {
-            "network": "all",
-            "packages": [
-                "pagesA"
-            ]
-        }
+    {
+      "root": "pagesB",
+      "pages": [
+        "detail/detail"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "",
+    "navigationBarBackgroundColor": "#FDD30F",
+    "backgroundColor": "#FDD30F"
+  },
+  "preloadRule": {
+    "pagesA/list/list": {
+      "network": "all",
+      "packages": [
+        "__APP__"
+      ]
     },
-    "usingComponents": {},
-    "sitemapLocation": "sitemap54.json"
+    "pagesB/detail/detail": {
+      "network": "all",
+      "packages": [
+        "pagesA"
+      ]
+    }
+  },
+  "usingComponents": {}
 }

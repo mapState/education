@@ -50,12 +50,23 @@
 			"style": {
 				"navigationBarTitleText": "报名成功"
 			}
+		}, {
+			"path": "pages/course/course",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/searchCourses/searchCourses",
+			"style": {
+				"navigationBarTitleText": "搜索课程"
+			}
+		}, {
+			"path": "pages/courseList/courseList",
+			"style": {
+				"navigationBarTitleText": "课程列表"
+			}
 		}
-	    ,{
-            "path" : "pages/course/course",
-            "style" : {}
-        }
-    ],
+	],
 	"subPackages": [{
 		"root": "pagesA",
 		"pages": [{
@@ -96,6 +107,10 @@
 			{
 				"name": "position",
 				"path": "pages/position/position"
+			},
+			{
+				"name": "course",
+				"path": "pages/course/course"
 			}
 		]
 	},

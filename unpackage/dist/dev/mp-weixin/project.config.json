@@ -34,8 +34,6 @@
 	"libVersion": "",
 	"appid": "wx2d49400e53aae68d",
 	"projectname": "testwx",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -56,6 +54,11 @@
 					"name": "position",
 					"id": 0,
 					"pathName": "pages/position/position"
+				},
+				{
+					"name": "course",
+					"id": 1,
+					"pathName": "pages/course/course"
 				}
 			]
 		}

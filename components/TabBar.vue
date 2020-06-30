@@ -1,12 +1,12 @@
 <template>
 	<view class="main">
 		<view class="tabBar">
-			<view class="tab">
-				<image src="/static/tabbar/home.png" mode="aspectFill" class="homea" v-if="tabIndex==1"></image>
-				<image src="/static/tabbar/homea.png" mode="aspectFill" class="homea" v-else></image>
+			<view class="tab" @click="goHome">
+				<image src="/static/tabbar/homea.png" mode="aspectFill" class="homea" v-if="tabIndex==1"></image>
+				<image src="/static/tabbar/home.png" mode="aspectFill" class="homea" v-else></image>
 				<text>首页</text>
 			</view>
-			<view class="tab">
+			<view class="tab" @click="goCourse">
 				<image src="/static/tabbar/coursed.png" mode="aspectFill" class="course" v-if="tabIndex==2"></image>
 				<image src="/static/tabbar/course.png" mode="aspectFill" class="course"  v-else></image>
 				<text>课程</text>
@@ -41,6 +41,18 @@
 			tabIndex:{
 				type:Number,
 				default:1
+			}
+		},
+		methods:{
+			goCourse(){
+				uni.navigateTo({
+					url:"/pages/course/course"
+				})
+			},
+			goHome(){
+				uni.navigateTo({
+					url:"/pages/index/index"
+				})
 			}
 		}
 	}
