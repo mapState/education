@@ -1,0 +1,83 @@
+.search{
+	position: relative;
+	width:100%;
+	padding-bottom: 23rpx;
+	background:rgba(253,211,15,1);
+	display: flex;
+	justify-content: center;
+	.input{
+		width:690rpx;
+		height:54rpx;
+		background:rgba(255,255,255,.5);
+		border-radius:6rpx;
+		padding-left:40rpx;
+		box-sizing: border-box;
+	}
+	.plClass{
+		text-align: center;
+		font-size:28rpx;
+		font-family:PingFang SC;
+		font-weight:400;
+		color:rgba(51,51,51,1);
+	}
+	.ssIcon{
+		width:30rpx;
+		height:28rpx;
+		position: absolute;
+		top:12rpx;
+		left:272rpx;
+		transition: all .1.5s linear;
+	}
+	.focusClass{
+		left:32rpx;
+	}
+}
+.title{
+	width:690rpx;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 38rpx;
+	.t1{
+		font-size:34rpx;
+		font-family:PingFang SC;
+		font-weight:bold;
+		color:rgba(0,0,0,1);
+	}
+	.del{
+		display: flex;
+		align-items: center;
+		.delIcon{
+			width:24rpx;
+			height: 24rpx;
+			margin-right: 8rpx;
+		}
+		text{
+			font-size:26rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(102,102,102,1);
+		}
+	}
+}
+.history{
+	width:690rpx;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-top:40rpx;
+	.item{
+		padding:19rpx 33rpx;
+		font-size:28rpx;
+		font-family:PingFang SC;
+		font-weight:500;
+		color:rgba(0,0,0,1);
+		margin-right: 20rpx;
+		margin-bottom: 30rpx;
+		background:rgba(242,242,242,1);
+		border-radius:4rpx;
+	}
+}
+.result{
+	width:690rpx;
+}

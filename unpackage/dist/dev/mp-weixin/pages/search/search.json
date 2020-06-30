@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "搜索活动",
+  "usingComponents": {
+    "activity": "/components/Activity"
+  }
+}

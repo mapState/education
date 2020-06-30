@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "activity": "/components/Activity",
+    "tab-bar": "/components/TabBar"
+  }
+}
