@@ -60,12 +60,18 @@
 .tabBar .addBox .add {
   width: 89rpx;
   height: 87rpx;
+  -webkit-transition: all .1s linear;
+  transition: all .1s linear;
 }
 .tabBar .addBox text {
   font-size: 24rpx;
   font-family: PingFang SC;
   font-weight: 400;
   color: #101010;
+}
+.tabBar .spin .add {
+  -webkit-transform: rotate(135deg);
+          transform: rotate(135deg);
 }
 .tabBar .tab {
   display: -webkit-box;
@@ -100,6 +106,54 @@
 }
 .tabBar .tab text {
   font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #101010;
+}
+.mask {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.popup {
+  border-bottom: 1px solid #ddd;
+  position: fixed;
+  left: 0;
+  bottom: 98rpx;
+  width: 100%;
+  height: 301rpx;
+  background: white;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+}
+.popup .pitem {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.popup .pitem image {
+  width: 100rpx;
+  height: 100rpx;
+  margin-bottom: 28rpx;
+}
+.popup .pitem text {
+  font-size: 30rpx;
   font-family: PingFang SC;
   font-weight: 400;
   color: #101010;

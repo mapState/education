@@ -116,7 +116,7 @@
 					<view class="list">
 						<scroll-view class="scroll-view_H" scroll-x="true">
 							<view class="item" v-for="item in 5" :key="item">
-								<image src="../../static/1.jpg" mode="aspectFit"></image>
+								<image src="../../static/1.jpg" mode="aspectFill"></image>
 								<text>我要做个乖宝宝</text>
 							</view>
 						</scroll-view>
@@ -272,6 +272,7 @@
 		methods: {
 			toView(val){
 				this.toIndex=val
+				this.currentLetter=val
 			},
 			scrollHandle(e) {
 				let scrollTop = e.detail.scrollTop

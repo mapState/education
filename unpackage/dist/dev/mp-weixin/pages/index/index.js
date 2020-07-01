@@ -135,7 +135,10 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 111));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 118));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 175));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 182));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
 
 
 
@@ -222,12 +225,14 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       top: 30,
+      height: 32,
       currentIndex: 0,
       titleIndex: 0 };
 
   },
   onLoad: function onLoad() {
     this.top = uni.getMenuButtonBoundingClientRect().top;
+    this.height = uni.getMenuButtonBoundingClientRect().height;
     console.log(this.top);
   },
   methods: {

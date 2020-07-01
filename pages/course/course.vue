@@ -1,6 +1,6 @@
 <template>
 	<view class="main">
-		<view class="header" :style="{paddingTop:top+'px'}">
+		<view class="header" :style="{paddingTop:top+'px',height:height+'px'}">
 			<view class="input" @click="goSearch">
 				<image src="../../static/icon/ss.png" mode="aspectFit" class="icon"></image>
 				<text>搜索课程</text>
@@ -86,11 +86,14 @@
 		data() {
 			return {
 				top: 24,
-				currentIndex: 0
+				currentIndex: 0,
+				height:32
 			};
 		},
 		onLoad() {
 			this.top = uni.getMenuButtonBoundingClientRect().top
+			this.height=uni.getMenuButtonBoundingClientRect().height
+			console.log(this.height)
 		},
 		methods: {
 			swiperChange(e) {

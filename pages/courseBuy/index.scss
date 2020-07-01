@@ -1,0 +1,151 @@
+
+.detailTitle{
+	position: relative;
+	width:100%;
+	display: flex;
+	align-items: center;
+	padding:0 30rpx;
+	box-sizing: border-box;
+	border-bottom: 1px solid #ddd;
+	text{
+		display: block;
+		width:8rpx;
+		height:34rpx;
+		background:rgba(253,211,15,1);
+		border-radius:4rpx;
+	}
+	view{
+		font-size:32rpx;
+		padding-top:30rpx;
+		padding-bottom: 25rpx;
+		font-family:PingFang SC;
+		font-weight:bold;
+		color:rgba(0,0,0,1);
+		margin-left:21rpx;
+	}
+	.other{
+		position: absolute;
+		font-size:30rpx;
+		font-family:PingFang SC;
+		font-weight:400;
+		color:rgba(255,0,0,1);
+		top:50%;
+		transform: translateY(-50%);
+		right: 30rpx;
+	}
+}
+.noBoder{
+	border: none;
+}
+.courseList{
+	width:690rpx;
+}
+.block{
+	display: block;
+	width:100%;
+	height: 20rpx;
+	background-color: #F2F2F2;
+}
+.giftList{
+	width:100%;
+	.title{
+		width:690rpx;
+		padding-left:30rpx;
+		padding-right: 30rpx;
+		justify-content: space-between;
+		align-items: center;
+		padding-top: 43rpx;
+		padding-bottom: 48rpx;
+		&:nth-child(1){
+			font-size:30rpx;
+			font-family:PingFang SC;
+			font-weight:bold;
+			color:rgba(0,0,0,1);
+		}
+		&:nth-child(1){
+			font-size:30rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(255,0,0,1);
+		}
+	}
+	.list{
+		width:100%;
+		overflow: hidden;
+		padding-left:30rpx;
+		box-sizing: border-box;
+		.scroll-view_H{
+			width:100%;
+			white-space:nowrap;
+			display:flex;
+			.item{
+				display: inline-block;
+				flex-direction: column;
+				margin-right:42rpx ;
+				padding-top: 40rpx;
+				image{
+					width:134rpx;
+					height:162rpx;
+					border-radius:2rpx;
+					margin-bottom: 20rpx;
+				}
+				text{
+					display: block;
+					width:162rpx;
+					font-size:26rpx;
+					font-family:PingFang SC;
+					font-weight:400;
+					color:rgba(0,0,0,1);
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+			}
+		}
+	}
+}
+.tip{
+	width:100%;
+	height: 400rpx;
+	background-color:#F2F2F2;
+	padding:20rpx 59rpx;
+	box-sizing: border-box;
+	font-size:24rpx;
+	font-family:PingFang SC;
+	font-weight:400;
+	color:rgba(102,102,102,1);
+}
+.fixedBox{
+	background-color: #fff;
+	position: fixed;
+	bottom: 0;
+	left:0;
+	width:100%;
+	height: 118rpx;
+	display: flex;
+	padding:0 30rpx;
+	box-sizing: border-box;
+	align-items: center;
+	justify-content: space-between;
+	.left{
+		font-size:30rpx;
+		font-family:PingFang SC;
+		font-weight:400;
+		color:rgba(0,0,0,1);
+		text{
+			color: #FF0000;
+		}
+	}
+	.btn{
+		width:160rpx;
+		height:72rpx;
+		background:rgba(238,83,47,1);
+		border-radius:36rpx;
+		font-size:32rpx;
+		font-family:PingFang SC;
+		font-weight:500;
+		color:rgba(255,255,255,1);
+		text-align: center;
+		line-height: 72rpx;
+	}
+}

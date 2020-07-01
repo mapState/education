@@ -11,20 +11,38 @@
 				<image src="/static/tabbar/course.png" mode="aspectFill" class="course"  v-else></image>
 				<text>课程</text>
 			</view>
-			<view class="addBox">
+			<view class="addBox" :class="{'spin':spin}" @click="changeSpin">
 				<image src="/static/tabbar/add.png" mode="aspectFill" class="add"></image>
 				<text>发布</text>
 			</view>
 			<view class="tab">
 				<text style="opacity: 0;">嘿嘿</text>
 			</view>
-			<view class="tab">
-				<image src="/static/tabbar/msg.png" mode="aspectFill" class="msg"></image>
-				<text>消息</text>
+			<view class="tab" @click="goCircle">
+				<image src="/static/tabbar/msged.png" mode="aspectFill" class="msg" v-if="tabIndex==3"></image>
+				<image src="/static/tabbar/msg.png" mode="aspectFill" class="msg" v-else></image>
+				<text>圈子</text>
 			</view>
 			<view class="tab">
 				<image src="/static/tabbar/me.png" mode="aspectFill" class="me"></image>
 				<text>我的</text>
+			</view>
+		</view>
+		<view class="mask" v-if="spin" @click="spin=false">
+			
+		</view>
+		<view class="popup" v-if="spin">
+			<view class="pitem" @click="goAddPost">
+				<image src="../static/icon/fb1.png" mode="aspectFit"></image>
+				<text>发布帖子</text>
+			</view>
+			<view class="pitem" @click="goAddActivity">
+				<image src="../static/icon/fb2.png" mode="aspectFit"></image>
+				<text>发布活动</text>
+			</view>
+			<view class="pitem" @click="goExperience">
+				<image src="../static/icon/fb3.png" mode="aspectFit"></image>
+				<text>成长经历</text>
 			</view>
 		</view>
 	</view>
@@ -34,7 +52,8 @@
 	export default {
 		data() {
 			return {
-				
+				spin:false,
+				showMask:false
 			};
 		},
 		props:{
@@ -52,6 +71,33 @@
 			goHome(){
 				uni.navigateTo({
 					url:"/pages/index/index"
+				})
+			},
+			changeSpin(){
+				this.spin=!this.spin
+			},
+			goAddPost(){
+				this.spin=false
+				uni.navigateTo({
+					url:"/pages/addPost/addPost"
+				})
+			},
+			goExperience(){
+				this.spin=false
+				uni.navigateTo({
+					url:"/pages/experience/experience"
+				})
+			},
+			goAddActivity(){
+				this.spin=false
+				uni.navigateTo({
+					url:"/pages/addActivity/addActivity"
+				})
+			},
+			goCircle(){
+				this.spin=false
+				uni.navigateTo({
+					url:"/pages/circle/circle"
 				})
 			}
 		}
@@ -80,12 +126,18 @@
 		.add{
 			width:89rpx;
 			height:87rpx;
+			transition: all .1s linear;
 		}
 		text{
 			font-size:24rpx;
 			font-family:PingFang SC;
 			font-weight:400;
 			color:rgba(16,16,16,1);
+		}
+	}
+	.spin{
+		.add{
+			transform: rotate(135deg);
 		}
 	}
 	.tab{
@@ -112,6 +164,42 @@
 		}
 		text{
 			font-size:24rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(16,16,16,1);
+		}
+	}
+}
+.mask{
+	position: fixed;
+	width:100%;
+	height: 100%;
+	left:0;
+	top:0;
+	background-color: rgba(0,0,0,.6);
+}
+.popup{
+	border-bottom: 1px solid #ddd;
+	position: fixed;
+	left: 0;
+	bottom:98rpx;
+	width:100%;
+	height:301rpx;
+	background:rgba(255,255,255,1);
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	.pitem{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		image{
+			width:100rpx;
+			height: 100rpx;
+			margin-bottom: 28rpx;
+		}
+		text{
+			font-size:30rpx;
 			font-family:PingFang SC;
 			font-weight:400;
 			color:rgba(16,16,16,1);

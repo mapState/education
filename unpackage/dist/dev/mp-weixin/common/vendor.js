@@ -1696,7 +1696,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 130:
+/***/ 194:
 /*!************************************************************************!*\
   !*** C:/Users/Administrator/Desktop/edu/components/uni-popup/popup.js ***!
   \************************************************************************/
@@ -1704,7 +1704,7 @@ function normalizeComponent (
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 131));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 195));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 // 定义 type 类型:弹出类型：top/bottom/center
 var config = {
   // 顶部弹出
@@ -1731,7 +1731,7 @@ var config = {
 
 /***/ }),
 
-/***/ 131:
+/***/ 195:
 /*!**************************************************************************!*\
   !*** C:/Users/Administrator/Desktop/edu/components/uni-popup/message.js ***!
   \**************************************************************************/

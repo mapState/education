@@ -70,13 +70,14 @@
           align-items: center;
 }
 .item .right .tags .tag {
-  padding: 6rpx 11rpx;
+  padding: 5rpx 11rpx;
   font-size: 24rpx;
   font-family: PingFang SC;
   font-weight: 400;
   color: #666666;
   border: 1px solid #dddddd;
-  border-radius: 17rpx;
+  border-radius: 18rpx;
+  margin-right: 20rpx;
 }
 .item .right .price {
   position: relative;

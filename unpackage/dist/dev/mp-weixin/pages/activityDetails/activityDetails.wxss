@@ -681,6 +681,7 @@ page {
   display: flex;
 }
 .giftList .list .scroll-view_H .item {
+  padding-top: 40rpx;
   display: inline-block;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;

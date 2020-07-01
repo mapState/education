@@ -65,6 +65,46 @@
 			"style": {
 				"navigationBarTitleText": "课程列表"
 			}
+		}, {
+			"path": "pages/courseDetails/courseDetails",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/courseBuy/courseBuy",
+			"style": {
+				"navigationBarTitleText": "课程订购"
+			}
+		}, {
+			"path": "pages/courseBuySuccess/courseBuySuccess",
+			"style": {
+				"navigationBarTitleText": "订购成功"
+			}
+		}, {
+			"path": "pages/addPost/addPost",
+			"style": {
+				"navigationBarTitleText": "发布帖子"
+			}
+		}, {
+			"path": "pages/experience/experience",
+			"style": {
+				"navigationBarTitleText": "发布成长经历"
+			}
+		}, {
+			"path": "pages/addActivity/addActivity",
+			"style": {
+				"navigationBarTitleText": "发布活动"
+			}
+		}, {
+			"path": "pages/circle/circle",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/circleDetail/circleDetail",
+			"style": {
+				"navigationBarTitleText": "帖子详情"
+			}
 		}
 	],
 	"subPackages": [{
@@ -111,6 +151,10 @@
 			{
 				"name": "course",
 				"path": "pages/course/course"
+			},
+			{
+				"name": "courseDetails",
+				"path": "pages/courseDetails/courseDetails"
 			}
 		]
 	},

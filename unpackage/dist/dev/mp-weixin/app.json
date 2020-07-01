@@ -12,7 +12,15 @@
     "pages/successful/successful",
     "pages/course/course",
     "pages/searchCourses/searchCourses",
-    "pages/courseList/courseList"
+    "pages/courseList/courseList",
+    "pages/courseDetails/courseDetails",
+    "pages/courseBuy/courseBuy",
+    "pages/courseBuySuccess/courseBuySuccess",
+    "pages/addPost/addPost",
+    "pages/experience/experience",
+    "pages/addActivity/addActivity",
+    "pages/circle/circle",
+    "pages/circleDetail/circleDetail"
   ],
   "subPackages": [
     {

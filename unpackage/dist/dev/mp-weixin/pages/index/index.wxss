@@ -33,13 +33,11 @@
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
           flex-direction: column;
-  height: 364rpx;
   background-color: #FDD30F;
   box-sizing: border-box;
 }
 .header .position {
   width: 100%;
-  height: 32px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -68,6 +66,7 @@
   -webkit-align-items: center;
           align-items: center;
   margin-top: 12rpx;
+  padding-bottom: 182rpx;
 }
 .header .search .sslIcon {
   width: 51rpx;
@@ -111,8 +110,10 @@
   height: 20rpx;
   background: #f2f2f2;
 }
-.content {
-  width: 100%;
+.swiper-box {
+  position: relative;
+  width: 690rpx;
+  height: 153rpx;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -123,26 +124,25 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  position: relative;
-  bottom: 147rpx;
 }
-.content .swiperBox {
-  position: relative;
+.swiper-box .swiperBox {
+  position: absolute;
+  left: 0;
+  bottom: 0;
   width: 690rpx;
   height: 300rpx;
-  margin-bottom: 48rpx;
 }
-.content .swiperBox .swiper {
-  width: 690rpx;
-  height: 300rpx;
-  border-radius: 6rpx;
-}
-.content .swiperBox .swiper .itemImg {
+.swiper-box .swiperBox .swiper {
   width: 690rpx;
   height: 300rpx;
   border-radius: 6rpx;
 }
-.content .swiperBox .dots {
+.swiper-box .swiperBox .swiper .itemImg {
+  width: 690rpx;
+  height: 300rpx;
+  border-radius: 6rpx;
+}
+.swiper-box .swiperBox .dots {
   position: absolute;
   width: 100%;
   display: -webkit-box;
@@ -156,20 +156,20 @@
           align-items: center;
   bottom: 18rpx;
 }
-.content .swiperBox .dots .dot {
+.swiper-box .swiperBox .dots .dot {
   width: 8rpx;
   height: 8rpx;
   background: white;
   border-radius: 50%;
   margin-right: 14rpx;
 }
-.content .swiperBox .dots .dotActive {
+.swiper-box .swiperBox .dots .dotActive {
   width: 30rpx;
   height: 8rpx;
   background: #fdd30f;
   border-radius: 4rpx;
 }
-.content .category {
+.category {
   width: 690rpx;
   display: -webkit-box;
   display: -webkit-flex;
@@ -178,8 +178,9 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+  margin-top: 48rpx;
 }
-.content .category .cate {
+.category .cate {
   width: 25%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -192,36 +193,36 @@
   -webkit-align-items: center;
           align-items: center;
 }
-.content .category .cate text {
+.category .cate text {
   font-size: 28rpx;
   font-family: PingFang SC;
   font-weight: 500;
   color: black;
 }
-.content .category .cate image {
+.category .cate image {
   margin-bottom: 26rpx;
 }
-.content .category .cate .icon1 {
+.category .cate .icon1 {
   width: 70rpx;
   height: 59rpx;
 }
-.content .category .cate .icon2 {
+.category .cate .icon2 {
   width: 54rpx;
   height: 62rpx;
 }
-.content .category .cate .icon3 {
+.category .cate .icon3 {
   width: 57rpx;
   height: 57rpx;
 }
-.content .category .cate .icon4 {
+.category .cate .icon4 {
   width: 59rpx;
   height: 59rpx;
 }
-.content .category .cate .icon5 {
+.category .cate .icon5 {
   width: 58rpx;
   height: 58rpx;
 }
-.content .titles {
+.titles {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -231,24 +232,24 @@
           align-items: center;
   margin-top: 39rpx;
 }
-.content .titles text {
+.titles text {
   font-size: 32rpx;
   font-family: PingFang SC;
   font-weight: 400;
   color: #666666;
 }
-.content .titles .hot {
+.titles .hot {
   margin-left: 30rpx;
   margin-right: 49rpx;
 }
-.content .titles .titleActive {
+.titles .titleActive {
   position: relative;
   font-size: 34rpx;
   font-family: PingFang SC;
   font-weight: 800;
   color: black;
 }
-.content .titles .titleActive::after {
+.titles .titleActive::after {
   position: absolute;
   display: block;
   content: '';
@@ -261,7 +262,7 @@
   background: #fdd30f;
   border-radius: 3rpx;
 }
-.content .list {
+.list {
   width: 690rpx;
   border-bottom: 1px solid #F3F3F3;
 }

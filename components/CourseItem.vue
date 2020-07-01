@@ -1,5 +1,5 @@
 <template>
-	<view class="item">
+	<view class="item" @click="goDetail">
 		<image src="https://hbimg.huabanimg.com/a0ca655c84991202c83bfb8110ee4480873d5899299ba-6voOiU_fw658/format/webp" mode="aspectFill" class="img"></image>
 		<view class="right">
 			<text class="t1">0-3岁小孩习惯培养课程大礼包，从小培养计划</text>
@@ -27,6 +27,13 @@
 			return {
 				
 			};
+		},
+		methods:{
+			goDetail(){
+				uni.navigateTo({
+					url:"/pages/courseDetails/courseDetails"
+				})
+			}
 		}
 	}
 </script>
@@ -59,13 +66,14 @@
 				display: flex;
 				align-items: center;
 				.tag{
-					padding:6rpx 11rpx;
+					padding:5rpx 11rpx;
 					font-size:24rpx;
 					font-family:PingFang SC;
 					font-weight:400;
 					color:rgba(102,102,102,1);
 					border:1px solid rgba(221,221,221,1);
-					border-radius:17rpx;
+					border-radius:18rpx;
+					margin-right: 20rpx;
 				}
 			}
 			.price{

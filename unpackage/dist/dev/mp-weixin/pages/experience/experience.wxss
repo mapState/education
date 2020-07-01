@@ -1,0 +1,192 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.textarea {
+  width: 100%;
+  background-color: #fff;
+  width: 690rpx;
+  padding: 40rpx 30rpx;
+}
+.textarea textarea {
+  height: 260rpx;
+}
+.textarea .plClass {
+  font-size: 30rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #999999;
+}
+.addBtn {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding-bottom: 40rpx;
+  border-bottom: 1px solid #ddd;
+}
+.addBtn .item {
+  width: 160rpx;
+  height: 170rpx;
+  background: #f1f1f1;
+  border-radius: 4rpx;
+  margin-left: 30rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.addBtn .item .addImg {
+  width: 52rpx;
+  height: 52rpx;
+}
+.addBtn .item .addVideo {
+  width: 54rpx;
+  height: 47rpx;
+}
+.row {
+  position: relative;
+  width: 100%;
+  height: 99rpx;
+  border-bottom: 1px solid #ddd;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.row .rightIcon {
+  position: absolute;
+  width: 17rpx;
+  height: 30rpx;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  right: 30rpx;
+}
+.row .lock {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  right: 30rpx;
+}
+.row text {
+  font-size: 30rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: black;
+}
+.row .icon {
+  width: 90rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.row .icon .dw {
+  width: 35rpx;
+  height: 40rpx;
+  margin-left: 30rpx;
+}
+.row .icon .fl {
+  width: 34rpx;
+  height: 34rpx;
+  margin-left: 30rpx;
+}
+.fixenBtn {
+  position: fixed;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  bottom: 158rpx;
+  width: 610rpx;
+  height: 88rpx;
+  background: #fdd30f;
+  border-radius: 44rpx;
+  text-align: center;
+  line-height: 88rpx;
+  font-size: 32rpx;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: black;
+}
+.catePost {
+  width: 100%;
+  height: 414rpx;
+  background-color: #fff;
+}
+.catePost .title {
+  font-size: 34rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: black;
+  padding-left: 30rpx;
+  padding-top: 38rpx;
+  padding-bottom: 12rpx;
+}
+.catePost .cateList {
+  width: 100%;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
+}
+.catePost .cateList .item {
+  width: 216rpx;
+  height: 70rpx;
+  border: 1px solid #dddddd;
+  border-radius: 4rpx;
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: black;
+  text-align: center;
+  line-height: 70rpx;
+  margin: 28rpx 10rpx;
+  box-sizing: border-box;
+}
+.catePost .cateList .itemActive {
+  background: #fdd30f;
+}
+

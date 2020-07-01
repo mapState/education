@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "发布成长经历",
+  "usingComponents": {
+    "uni-popup": "/components/uni-popup/uni-popup"
+  }
+}
