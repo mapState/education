@@ -23,8 +23,9 @@
 				<image src="/static/tabbar/msg.png" mode="aspectFill" class="msg" v-else></image>
 				<text>圈子</text>
 			</view>
-			<view class="tab">
-				<image src="/static/tabbar/me.png" mode="aspectFill" class="me"></image>
+			<view class="tab" @click="goMine">
+				<image src="/static/tabbar/mea.png" mode="aspectFill" class="me" v-if="tabIndex==4"></image>
+				<image src="/static/tabbar/me.png" mode="aspectFill" class="me" v-else></image>
 				<text>我的</text>
 			</view>
 		</view>
@@ -99,6 +100,12 @@
 				uni.navigateTo({
 					url:"/pages/circle/circle"
 				})
+			},
+			goMine(){
+				this.spin=false
+				uni.navigateTo({
+					url:"/pages/mine/mine"
+				})
 			}
 		}
 	}
@@ -115,6 +122,7 @@
 	bottom:0;
 	z-index: 99;
 	background-color: #fff;
+	border-top: 1px solid #ddd;
 	.addBox{
 		top:-32rpx;
 		left:50%;

@@ -105,14 +105,46 @@
 			"style": {
 				"navigationBarTitleText": "帖子详情"
 			}
+		}, {
+			"path": "pages/mine/mine",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/integral/integral",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/commission/commission",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/withdraw/withdraw",
+			"style": {
+				"navigationBarTitleText": "我要提现"
+			}
+		}, {
+			"path": "pages/withdraw/Introduction/Introduction",
+			"style": {
+				"navigationBarTitleText": "提现介绍"
+			}
 		}
 	],
 	"subPackages": [{
 		"root": "pagesA",
 		"pages": [{
-			"path": "list/list",
-			"style": {}
-		}]
+				"path": "list/list",
+				"style": {}
+			},
+			{
+				"path": "mytTeam/mytTeam",
+				"style": {
+					"navigationStyle": "custom"
+				}
+			}
+		]
 	}, {
 		"root": "pagesB",
 		"pages": [{
@@ -155,6 +187,10 @@
 			{
 				"name": "courseDetails",
 				"path": "pages/courseDetails/courseDetails"
+			},
+			{
+				"name": "circleDetail",
+				"path": "pages/circleDetail/circleDetail"
 			}
 		]
 	},

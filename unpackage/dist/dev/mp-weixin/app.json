@@ -20,13 +20,19 @@
     "pages/experience/experience",
     "pages/addActivity/addActivity",
     "pages/circle/circle",
-    "pages/circleDetail/circleDetail"
+    "pages/circleDetail/circleDetail",
+    "pages/mine/mine",
+    "pages/integral/integral",
+    "pages/commission/commission",
+    "pages/withdraw/withdraw",
+    "pages/withdraw/Introduction/Introduction"
   ],
   "subPackages": [
     {
       "root": "pagesA",
       "pages": [
-        "list/list"
+        "list/list",
+        "mytTeam/mytTeam"
       ]
     },
     {

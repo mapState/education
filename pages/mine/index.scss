@@ -1,0 +1,347 @@
+page{
+	background-color: #F2F2F2;
+	padding-bottom: 140rpx;
+}
+.header{
+	width:750rpx;
+	padding-bottom: 88rpx;
+	background:rgba(253,211,15,1);
+	.title{
+		width:100%;
+		height: 32px;
+		line-height: 32px;
+		padding-left:30rpx;
+		box-sizing: border-box;
+	}
+}
+.info{
+	position: relative;
+	width:690rpx;
+	height:260rpx;
+	background:rgba(255,255,255,1);
+	border-radius:6rpx;
+	margin-bottom: 19rpx;
+	.content{
+		position: absolute;
+		left:0;
+		bottom:0;
+		width:690rpx;
+		height:330rpx;
+		box-sizing: border-box;
+		background:rgba(255,255,255,1);
+		border-radius:6rpx;
+		display: flex;
+		flex-direction: column;
+		.noLogin{
+			width:100%;
+			box-sizing: border-box;
+			padding:0 30rpx;
+			padding-top: 39rpx;
+			height: 198rpx;
+			display: flex;
+			align-items: center;
+			text{
+				font-size:30rpx;
+				font-family:PingFang SC;
+				font-weight:bold;
+				color:rgba(0,0,0,1);
+			}
+			.imgBox{
+				width:90rpx;
+				height:90rpx;
+				background:rgba(228,228,228,1);
+				border-radius:50%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-right: 19rpx;
+				image{
+					width:43rpx;
+					height: 45rpx;
+				}
+			}
+		}
+		.top{
+			width:100%;
+			box-sizing: border-box;
+			padding:0 30rpx;
+			padding-top: 39rpx;
+			height: 198rpx;
+			display: flex;
+			.avatar{
+				width:90rpx;
+				height:90rpx;
+				border-radius:50%;
+				margin-right: 19rpx;
+			}
+			.right{
+				flex:1;
+				.row{
+					width:100%;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					.name{
+						font-size:30rpx;
+						font-family:PingFang SC;
+						font-weight:bold;
+						color:rgba(0,0,0,1);
+					}
+					.up{
+						font-size:30rpx;
+						font-family:PingFang SC;
+						font-weight:400;
+						color:rgba(37,123,230,1);
+					}
+				}
+				.line{
+					margin-top: 22rpx;
+					position: relative;
+					width:100%;
+					height:6rpx;
+					background:rgba(253,211,15,.34);
+					border-radius:3rpx;
+					text{
+						position: absolute;
+						left:0;
+						top:0;
+						width:60%;
+						height:6rpx;
+						background:rgba(253,211,15,1);
+						border-radius:3rpx;
+					}
+				}
+				.detail{
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					margin-top: 24rpx;
+					margin-bottom: 40rpx;
+					.item{
+						display: flex;
+						align-items: center;
+						font-size:22rpx;
+						font-family:PingFang SC;
+						font-weight:400;
+						color:rgba(0,0,0,1);
+						.ykIcon{
+							width:21rpx;
+							height: 23rpx;
+						}
+						.vipIcon{
+							width:24rpx;
+							height:17rpx;
+						}
+						.text{
+							font-size:22rpx;
+							font-family:PingFang SC;
+							font-weight:400;
+							color:rgba(0,0,0,1);
+							margin-left:12rpx;
+						}
+						.jyNum{
+							margin-left:19rpx;
+							font-size:22rpx;
+							font-family:PingFang SC;
+							font-weight:400;
+							color:rgba(136,93,2,1);
+						}
+					}
+				}
+			}
+		}
+		.bottom{
+			flex:1;
+			width:100%;
+			box-sizing: border-box;
+			border-top: 1px solid #ddd;
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			.item{
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				.count{
+					font-size:32rpx;
+					font-family:PingFang SC;
+					font-weight:bold;
+					color:rgba(0,0,0,1);
+					margin-bottom: 16rpx;
+				}
+				.desc{
+					font-size:26rpx;
+					font-family:PingFang SC;
+					font-weight:400;
+					color:rgba(51,51,51,1);
+				}
+			}
+		}
+	}
+}
+.ad{
+	position: relative;
+	width:690rpx;
+	height:125rpx;
+	background:linear-gradient(-90deg,rgba(42,42,44,1),rgba(82,83,88,1));
+	border-radius:6rpx;
+	display: flex;
+	align-items: center;
+	margin-bottom: 20rpx;
+	.icon{
+		width:56rpx;
+		height: 56rpx;
+		margin-left:20rpx;
+	}
+	.detail{
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		margin-left:18rpx;
+		.t1{
+			font-size:28rpx;
+			font-family:PingFang SC;
+			font-weight:bold;
+			color:rgba(255,220,122,1);
+		}
+		.t2{
+			font-size:22rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(255,220,122,1);
+		}
+	}
+	.btn{
+		width:117rpx;
+		height:44rpx;
+		background:rgba(255,220,122,1);
+		border-radius:22rpx;
+		font-size:24rpx;
+		font-family:PingFang SC;
+		font-weight:400;
+		color:rgba(0,0,0,1);
+		text-align: center;
+		line-height: 44rpx;
+		position: absolute;
+		right:30rpx;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+}
+.titleBox{
+	width:630rpx;
+	padding:0 30rpx;
+	height: 96rpx;
+	line-height: 96rpx;
+	border-bottom: 1px solid #ddd;
+	font-size:32rpx;
+	font-family:PingFang SC;
+	font-weight:bold;
+	color:rgba(0,0,0,1);
+	background-color: #fff;
+}
+.moduleList{
+	background-color: #fff;
+	width:690rpx;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	padding:40rpx 0;
+	& .item:nth-child(1) image{
+		position: relative;
+		width:48rpx;
+		height: 40rpx;
+	}
+	& .item:nth-child(2) image{
+		width:39rpx;
+		height: 46rpx;
+	}
+	& .item:nth-child(3) image{
+		width:46rpx;
+		height: 44rpx;
+	}
+	& .item:nth-child(4) image{
+		width:39rpx;
+		height: 44rpx;
+	}
+	& .item:nth-child(5) image{
+		width:42rpx;
+		height: 44rpx;
+	}
+	& .item:nth-child(6) image{
+		width:45rpx;
+		height: 44rpx;
+	}
+	& .item:nth-child(7) image{
+		width:54rpx;
+		height: 51rpx;
+	}
+	& .item:nth-child(8) image{
+		width:45rpx;
+		height: 39rpx;
+	}
+	& .item:nth-child(9) image{
+		width:41rpx;
+		height: 45rpx;
+	}
+	& .item:nth-child(10) image{
+		width:46rpx;
+		height: 42rpx;
+	}
+	& .item:nth-child(11) image{
+		width:45rpx;
+		height: 45rpx;
+	}
+	& .item:nth-child(12) image{
+		width:42rpx;
+		height: 42rpx;
+	}
+	.item{
+		position: relative;
+		width:25%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 59rpx;
+		.iconbox{
+			position: relative;
+			.hb{
+				position: absolute;
+				// width:40rpx;
+				// height:22rpx;
+				padding:2rpx 4rpx;
+				background:linear-gradient(90deg,rgba(255,0,0,1),rgba(251,100,40,1));
+				border-radius:4rpx;
+				font-size:18rpx;
+				font-family:PingFang SC;
+				font-weight:400;
+				color:rgba(255,255,255,1);
+				top:-30rpx;
+				right:-40rpx;
+			}
+			.msgNum{
+				position: absolute;
+				width:25rpx;
+				height:25rpx;
+				background:rgba(255,0,0,1);
+				border-radius:50%;
+				top:-30rpx;
+				right:-12rpx;
+				font-size:20rpx;
+				font-family:PingFang SC;
+				font-weight:400;
+				color:rgba(255,255,255,1);
+				text-align: center;
+				line-height: 25rpx;
+				z-index: 9;
+			}
+		}
+		text{
+			margin-top: 18rpx;
+		}
+		
+	}
+}

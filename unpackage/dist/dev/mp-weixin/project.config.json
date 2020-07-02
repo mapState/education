@@ -27,7 +27,7 @@
 			"outputPath": ""
 		},
 		"useIsolateContext": true,
-		"useCompilerModule": true,
+		"useCompilerModule": false,
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
@@ -79,9 +79,43 @@
 					"query": ""
 				},
 				{
+					"id": 3,
+					"name": "circleDetail",
+					"pathName": "pages/circleDetail/circleDetail",
+					"query": ""
+				},
+				{
 					"id": -1,
-					"name": "pages/circle/circle",
-					"pathName": "pages/circle/circle",
+					"name": "pages/integral/integral",
+					"pathName": "pages/integral/integral",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/commission/commission",
+					"pathName": "pages/commission/commission",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/withdraw/withdraw",
+					"pathName": "pages/withdraw/withdraw",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/withdraw/Introduction/Introduction",
+					"pathName": "pages/withdraw/Introduction/Introduction",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/mytTeam/mytTeam",
+					"pathName": "pagesA/mytTeam/mytTeam",
 					"scene": null
 				}
 			]
