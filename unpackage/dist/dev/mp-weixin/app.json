@@ -31,8 +31,13 @@
     {
       "root": "pagesA",
       "pages": [
-        "list/list",
-        "mytTeam/mytTeam"
+        "myCollect/myCollect",
+        "mytTeam/mytTeam",
+        "memberSchool/memberSchool",
+        "multimediaCourse/multimediaCourse",
+        "test/test",
+        "news/news",
+        "myCourse/myCourse"
       ]
     },
     {
@@ -49,7 +54,7 @@
     "backgroundColor": "#FDD30F"
   },
   "preloadRule": {
-    "pagesA/list/list": {
+    "pagesA/myCollect/myCollect": {
       "network": "all",
       "packages": [
         "__APP__"

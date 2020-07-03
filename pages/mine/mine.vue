@@ -47,7 +47,7 @@
 						<text class="count">124</text>
 						<text class="desc">会员积分</text>
 					</view>
-					<view class="item">
+					<view class="item" @click="goCollect">
 						<text class="count">1653</text>
 						<text class="desc">我的收藏</text>
 					</view>
@@ -112,12 +112,27 @@
 			},
 			goPage(index){
 				switch(index){
+					case 0:
+					uni.navigateTo({
+						url:"/pagesA/news/news"
+					})
+					break;
+					case 1:
+					uni.navigateTo({
+						url:"/pagesA/myCourse/myCourse"
+					})
+					break;
 					case 6:
 					uni.navigateTo({
 						url:"/pagesA/mytTeam/mytTeam"
 					})
 					break;
 				}
+			},
+			goCollect(){
+				uni.navigateTo({
+					url:"/pagesA/myCollect/myCollect"
+				})
 			}
 		}
 	}

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "会员学院",
+  "usingComponents": {
+    "uni-popup": "/components/uni-popup/uni-popup"
+  }
+}

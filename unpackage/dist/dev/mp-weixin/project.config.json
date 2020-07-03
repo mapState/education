@@ -5,37 +5,13 @@
 	},
 	"setting": {
 		"urlCheck": false,
-		"es6": true,
-		"enhance": false,
-		"postcss": true,
-		"preloadBackgroundData": false,
 		"minified": true,
-		"newFeature": false,
-		"coverView": true,
-		"nodeModules": false,
-		"autoAudits": false,
-		"showShadowRootInWxmlPanel": true,
-		"scopeDataCheck": false,
-		"uglifyFileName": false,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"compileHotReLoad": false,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		},
-		"useIsolateContext": true,
-		"useCompilerModule": false,
-		"userConfirmedUseCompilerModuleSwitch": false
+		"es6": true
 	},
 	"compileType": "miniprogram",
 	"libVersion": "",
 	"appid": "wx2d49400e53aae68d",
 	"projectname": "testwx",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -86,36 +62,23 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/integral/integral",
-					"pathName": "pages/integral/integral",
+					"name": "pagesA/test/test",
+					"pathName": "pagesA/test/test",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 5,
+					"name": "pagesA/news/news",
+					"pathName": "pagesA/news/news",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "pages/commission/commission",
-					"pathName": "pages/commission/commission",
+					"name": "pagesA/myCourse/myCourse",
+					"pathName": "pagesA/myCourse/myCourse",
 					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/withdraw/withdraw",
-					"pathName": "pages/withdraw/withdraw",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/withdraw/Introduction/Introduction",
-					"pathName": "pages/withdraw/Introduction/Introduction",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/mytTeam/mytTeam",
-					"pathName": "pagesA/mytTeam/mytTeam",
 					"scene": null
 				}
 			]

@@ -135,7 +135,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 214));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 280));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -249,11 +249,26 @@ __webpack_require__.r(__webpack_exports__);
     },
     goPage: function goPage(index) {
       switch (index) {
+        case 0:
+          uni.navigateTo({
+            url: "/pagesA/news/news" });
+
+          break;
+        case 1:
+          uni.navigateTo({
+            url: "/pagesA/myCourse/myCourse" });
+
+          break;
         case 6:
           uni.navigateTo({
             url: "/pagesA/mytTeam/mytTeam" });
 
           break;}
+
+    },
+    goCollect: function goCollect() {
+      uni.navigateTo({
+        url: "/pagesA/myCollect/myCollect" });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

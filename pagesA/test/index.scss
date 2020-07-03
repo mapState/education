@@ -1,0 +1,312 @@
+page{
+	width:100%;
+	height: 100%;
+}
+.main{
+	width:100%;
+	height: 100%;
+	background-image: url(../static/img/testbg.png);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	.t1{
+		font-size:44rpx;
+		font-family:PingFang SC;
+		font-weight:bold;
+		color:rgba(255,255,255,1);
+		margin-top: 56rpx;
+	}
+	.t2{
+		font-size:28rpx;
+		font-family:PingFang SC;
+		font-weight:400;
+		color:rgba(255,255,255,1);
+		margin-top: 24rpx;
+		margin-bottom: 40rpx;
+	}
+	.testBox{
+		position: relative;
+		width:691rpx;
+		height:882rpx;
+		.hidden1{
+			z-index: 6;
+			position: absolute;
+			width:660rpx;
+			height:882rpx;
+			top:20rpx;
+			left:50%;
+			transform: translateX(-50%);
+			background:rgba(255,255,255,1);
+			box-shadow:0px 1px 35rpx 0px rgba(0, 0, 0, 0.1);
+			border-radius:15rpx;
+		}
+		.hidden2{
+			z-index: 4;
+			position: absolute;
+			width:612rpx;
+			height:882rpx;
+			top:40rpx;
+			left:50%;
+			transform: translateX(-50%);
+			background:rgba(255,255,255,1);
+			box-shadow:0px 1px 35rpx 0px rgba(0, 0, 0, 0.1);
+			border-radius:15rpx;
+		}
+		.contentTest{
+			z-index: 14;
+			position: absolute;
+			width:691rpx;
+			height:882rpx;
+			left:0;
+			top: 0;
+			background:rgba(255,255,255,1);
+			box-shadow:0px 1px 35rpx 0px rgba(0, 0, 0, 0.1);
+			border-radius:15rpx;
+			.type{
+				position:absolute;
+				right:0;
+				top:0;
+				width:62rpx;
+				height:34rpx;
+				background:rgba(255,221,217,1);
+				border-radius:0px 10rpx 0px 10rpx;
+				text-align: center;
+				line-height: 34rpx;
+				font-size:24rpx;
+				font-family:PingFang SC;
+				font-weight:400;
+				color:rgba(255,0,0,1);
+			}
+			.content{
+				position: relative;
+				margin:62rpx auto;
+				width:609rpx;
+				height:780rpx;
+				background-image: url(../static/img/testimg.png);
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				.count{
+					position: relative;
+					bottom:10rpx;
+					left:10rpx;
+					font-size:24rpx;
+					font-family:PingFang SC;
+					font-weight:400;
+					color:rgba(147,134,117,1);
+				}
+				.title{
+					width:514rpx;
+					font-size:30rpx;
+					font-family:PingFang SC;
+					font-weight:bold;
+					color:rgba(93,76,56,1);
+					margin-bottom: 36rpx;
+					margin-top: 50rpx;
+				}
+				.options{
+					width:514rpx;
+					height: 470rpx;
+					.item{
+						width:514rpx;
+						height:70rpx;
+						line-height: 70rpx;
+						background:rgba(252,243,232,1);
+						border-radius:10rpx;
+						margin-bottom: 20rpx;
+						padding:0 30rpx;
+						box-sizing: border-box;
+						font-size:28rpx;
+						font-family:PingFang SC;
+						font-weight:400;
+						color:rgba(102,80,52,1);
+					}
+					.active{
+						background:rgba(246,209,163,1);
+					}
+				}
+				.btns{
+					margin-top: 22rpx;
+					width:514rpx;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+				}
+				.prev{
+					width:224rpx;
+					height: 88rpx;
+					background-image: url(../static/icon/blue.png);
+					background-size: 100% 100%;
+					background-repeat: no-repeat;
+					font-size:32rpx;
+					font-family:PingFang SC;
+					font-weight:500;
+					color:rgba(255,255,255,1);
+					text-align: center;
+					line-height: 88rpx;
+				}
+				.next{
+					width:224rpx;
+					height: 88rpx;
+					background-image: url(../static/icon/yellow.png);
+					background-size: 100% 100%;
+					background-repeat: no-repeat;
+					font-size:32rpx;
+					font-family:PingFang SC;
+					font-weight:500;
+					color:rgba(255,255,255,1);
+					text-align: center;
+					line-height: 88rpx;
+				}
+				.cjdImg{
+					width:320rpx;
+					height: 80rpx;
+					margin-top:75rpx;
+				}
+				.fraction{
+					font-size:30rpx;
+					font-family:PingFang SC;
+					font-weight:400;
+					color:rgba(220,42,23,1);
+					text{
+						font-size:157rpx;
+						font-family:PingFang SC;
+						font-weight:bold;
+						color:rgba(220,42,23,1);
+					}
+				}
+				.correctNum{
+					font-size:30rpx;
+					font-family:PingFang SC;
+					font-weight:400;
+					color:rgba(220,42,23,1);
+				}
+				.time{
+					margin-top:18rpx;
+					margin-bottom: 60rpx;
+				}
+				.testResult{
+					font-size:30rpx;
+					font-family:PingFang SC;
+					font-weight:400;
+					color:rgba(220,42,23,1);
+					margin-bottom: 65rpx;
+				}
+			}
+		}
+	}
+}
+.popBox{
+	position: relative;
+	width:571rpx;
+	background-color: #fff;
+	.closeIcon{
+		width:48rpx;
+		height: 48rpx;
+		position: absolute;
+		right:24rpx;
+		top:-76rpx;
+	}
+	&::after{
+		content: '';
+		position: absolute;
+		width:2rpx;
+		height:28rpx;
+		background:rgba(255,255,255,1);
+		right:48rpx;
+		top:-28rpx;
+	}
+	.title{
+		width:571rpx;
+		height:149rpx;
+		background-color: #fff;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		.tt1{
+			font-size:34rpx;
+			font-family:PingFang SC;
+			font-weight:bold;
+			color:rgba(0,0,0,1);
+			margin-bottom: 22rpx;
+		}
+		.tt2{
+			font-size:24rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(102,102,102,1);
+		}
+	}
+	.bookImg{
+		width:571rpx;
+		height:542rpx;
+		display: block;
+	}
+	.btns{
+		width:571rpx;
+		height:96rpx;
+		background:rgba(253,211,15,1);
+		display: flex;
+		.save{
+			width:50%;
+			height: 100%;
+			background:rgba(253,211,15,1);
+			font-size:32rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(0,0,0,1);
+			text-align: center;
+			line-height: 96rpx;
+		}
+		.contact{
+			width:50%;
+			height: 100%;
+			background:rgba(238,83,47,1);
+			font-size:32rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(255,255,255,1);
+			text-align: center;
+			line-height: 96rpx;
+		}
+	}
+}
+
+.popCodeBox{
+	position: relative;
+	width:572rpx;
+	height:676rpx;
+	background-color: #fff;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.title{
+		font-size:34rpx;
+		font-family:PingFang SC;
+		font-weight:bold;
+		color:rgba(1,0,0,1);
+		margin:45rpx 0;
+	}
+	.codeImg{
+		width:462rpx;
+		height:473rpx;
+	}
+	.closeIcon{
+		width:48rpx;
+		height: 48rpx;
+		position: absolute;
+		right:24rpx;
+		top:-76rpx;
+	}
+	&::after{
+		content: '';
+		position: absolute;
+		width:2rpx;
+		height:28rpx;
+		background:rgba(255,255,255,1);
+		right:48rpx;
+		top:-28rpx;
+	}
+}
