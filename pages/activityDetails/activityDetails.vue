@@ -169,13 +169,32 @@
 						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc"></image>
 						<text>收藏</text>
 					</view>
-					<view class="btns">
+					<view class="btns" v-if="type==0">
 						<view class="buy">
 							单独购买
 						</view>
 						<view class="group" @click="showGroupPop">
 							拼团购买
 
+						</view>
+					</view>
+					<view class="btns" v-if="type==4">
+						<view class="buy">
+							下载附件
+						</view>
+						<view class="group" >
+							我要评论
+						</view>
+					</view>
+					<view class="bmBtn" v-if="type==1">
+						<view class="btn1">
+							申请退款
+						</view>
+						<view class="btn2">
+							下载附件
+						</view>
+						<view class="btn3" @click="$refs.showMyGroup.open()">
+							我的团(3/4)
 						</view>
 					</view>
 				</view>
@@ -236,6 +255,26 @@
 				</view>
 			</view>
 		</uni-popup>
+		<uni-popup ref="showMyGroup" type="bottom">
+			<view class="grouplist">
+				<view class="title">
+					拼团列表
+				</view>
+				<view class="list">
+					<view class="item" v-for="item in 3" :key="item">
+						<image src="../../static/1.jpg" mode="aspectFill"></image>
+						<text>仙女</text>
+					</view>
+					<view class="wz">
+						<image src="../../pagesA/static/icon/wz.png" mode="aspectFill"></image>
+						<text>空位</text>
+					</view>
+					<view class="btn">
+						邀请
+					</view>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -254,11 +293,13 @@
 				showAd: true,
 				toIndex: '',
 				letterDetails: [],
-				currentLetter:"Details"
+				currentLetter:"Details",
+				type:0,//1 报名中
 			};
 		},
-		onLoad() {
+		onLoad(params) {
 			this.top = uni.getMenuButtonBoundingClientRect().top
+			this.type=params.type
 		},
 		onShareAppMessage(res) {
 			if (res.from === 'button') { // 来自页面内分享按钮

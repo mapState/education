@@ -1,0 +1,37 @@
+.tabs{
+	width:100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	height:90rpx;
+	border-bottom: 1px solid #ddd;
+	.tab{
+		text-align: center;
+		line-height: 90rpx;
+		font-size:32rpx;
+		font-family:PingFang SC;
+		font-weight:400;
+		color:rgba(102,102,102,1);
+	}
+	.active{
+		position: relative;
+		font-size:34rpx;
+		font-family:PingFang SC;
+		font-weight:800;
+		color:rgba(0,0,0,1);
+		&::after{
+			content: '';
+			position: absolute;
+			bottom:10rpx;
+			left:50%;
+			transform: translateX(-50%);
+			width:70rpx;
+			height:6rpx;
+			background:rgba(253,211,15,1);
+			border-radius:3rpx;
+		}
+	}
+}
+.list{
+	width:690rpx;
+}

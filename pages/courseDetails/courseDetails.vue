@@ -100,23 +100,11 @@
 						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc"></image>
 						<text>收藏</text>
 					</view>
-					<view class="btns" @click="goBuy">
+					<view class="pjBtn" @click="goEval" v-if="type==1">
+						我要评价
+					</view>
+					<view class="btns" @click="goBuy" v-else>
 						我要订购
-					</view>
-				</view>
-				<view class="ad" v-if="showAd">
-					<image src="/static/icon/close.png" mode="aspectFit" class="closeIcon" @click="showAd=false"></image>
-					<view class="line">
-
-					</view>
-					<view class="imgBox">
-						<image src="/static/img/hb.png" mode="aspectFit" class="bgImg"></image>
-						<view class="conten">
-							<text class="t1">分享返</text>
-							<view class="t2">￥<text>6</text></view>
-							<text class="t3">下单即返佣金</text>
-							<text class="t4">立即分享</text>
-						</view>
 					</view>
 				</view>
 			</view>
@@ -161,6 +149,21 @@
 				</view>
 			</view>
 		</uni-popup>
+		<view class="ad" v-if="showAd">
+			<image src="/static/icon/close.png" mode="aspectFit" class="closeIcon" @click="showAd=false"></image>
+			<view class="line">
+		
+			</view>
+			<view class="imgBox">
+				<image src="/static/img/hb.png" mode="aspectFit" class="bgImg"></image>
+				<view class="conten">
+					<text class="t1">分享返</text>
+					<view class="t2">￥<text>6</text></view>
+					<text class="t3">下单即返佣金</text>
+					<text class="t4">立即分享</text>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -181,11 +184,15 @@
 				showAd: true,
 				toIndex: '',
 				letterDetails: [],
-				currentLetter:"Details"
+				currentLetter:"Details",
+				type:0
 			};
 		},
-		onLoad() {
+		onLoad(params) {
 			this.top = uni.getMenuButtonBoundingClientRect().top
+			if(params.type){
+				this.type=params.type
+			}
 		},
 		onShareAppMessage(res) {
 			if (res.from === 'button') { // 来自页面内分享按钮
@@ -197,6 +204,11 @@
 			}
 		},
 		methods: {
+			goEval(){
+				uni.navigateTo({
+					url:"/pagesA/courseEvaluation/courseEvaluation"
+				})
+			},
 			goBuy(){
 				uni.navigateTo({
 					url:"/pages/courseBuy/courseBuy"

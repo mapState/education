@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 287))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 327))
   }
 }
 var render = function() {
@@ -105,10 +105,14 @@ var render = function() {
     _vm.e0 = _vm.$refs.sharePop.open
 
     _vm.e1 = function($event) {
+      return _vm.$refs.showMyGroup.open()
+    }
+
+    _vm.e2 = function($event) {
       _vm.showAd = false
     }
 
-    _vm.e2 = _vm.$refs.popup1.close
+    _vm.e3 = _vm.$refs.popup1.close
   }
 }
 var recyclableRender = false
@@ -143,7 +147,46 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 287));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 273));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 327));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 313));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -399,11 +442,13 @@ __webpack_require__.r(__webpack_exports__);
       showAd: true,
       toIndex: '',
       letterDetails: [],
-      currentLetter: "Details" };
-
+      currentLetter: "Details",
+      type: 0 //1 报名中
+    };
   },
-  onLoad: function onLoad() {
+  onLoad: function onLoad(params) {
     this.top = uni.getMenuButtonBoundingClientRect().top;
+    this.type = params.type;
   },
   onShareAppMessage: function onShareAppMessage(res) {
     if (res.from === 'button') {// 来自页面内分享按钮

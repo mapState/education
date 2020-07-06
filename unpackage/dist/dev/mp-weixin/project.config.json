@@ -61,24 +61,10 @@
 					"query": ""
 				},
 				{
-					"id": -1,
-					"name": "pagesA/test/test",
-					"pathName": "pagesA/test/test",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": 5,
-					"name": "pagesA/news/news",
-					"pathName": "pagesA/news/news",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/myCourse/myCourse",
-					"pathName": "pagesA/myCourse/myCourse",
-					"query": "",
+					"id": 4,
+					"name": "pages/activityDetails/activityDetails",
+					"pathName": "pages/activityDetails/activityDetails",
+					"query": "type=1",
 					"scene": null
 				}
 			]

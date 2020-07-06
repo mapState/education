@@ -122,6 +122,11 @@
 						url:"/pagesA/myCourse/myCourse"
 					})
 					break;
+					case 2:
+					uni.navigateTo({
+						url:"/pagesA/mySignUp/mySignUp"
+					})
+					break;
 					case 6:
 					uni.navigateTo({
 						url:"/pagesA/mytTeam/mytTeam"

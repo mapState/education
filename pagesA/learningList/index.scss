@@ -1,0 +1,256 @@
+page{
+	padding-bottom: 120rpx;
+}
+.nav{
+	position: fixed;
+	left:0;
+	display: flex;
+	align-items: center;
+	height: 32px;
+}
+.backIcon{
+	width:22rpx;
+	height:38rpx;
+	padding:0 30rpx;
+}
+.topImg{
+	width:750rpx;
+	height:520rpx;
+	margin-bottom: 18rpx;
+}
+.headerTitle{
+	width:100%;
+	padding:0 30rpx;
+	box-sizing: border-box;
+	margin-bottom:35rpx;
+	.title{
+		width:100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.text{
+			display: block;
+			width:435rpx;
+			font-size:30rpx;
+			font-family:PingFang SC;
+			font-weight:bold;
+			color:rgba(0,0,0,1);
+			overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+		}
+		.share{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			.shareIcon{
+				width:34rpx;
+				height:34rpx;
+				margin-bottom: 14rpx;
+			}
+			text{
+				font-size:24rpx;
+				font-family:PingFang SC;
+				font-weight:400;
+				color:rgba(238,83,47,1);
+			}
+		}
+	}
+	.tags{
+		width:100%;
+		display: flex;
+		align-items: center;
+		margin-bottom: 40rpx;
+		.tag{
+			padding:5rpx 13rpx;
+			border:1px solid rgba(221,221,221,1);
+			border-radius:17rpx;
+			font-size:24rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(102,102,102,1);
+			margin-right: 20rpx;
+		}
+	}
+	.date{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.left{
+			display: flex;
+			align-items: center;
+			text{
+				display: block;
+				width:6rpx;
+				height:30rpx;
+				background:rgba(253,211,15,1);
+				border-radius:3rpx;
+				margin-right: 13rpx;
+			}
+			view{
+				font-size:30rpx;
+				font-family:PingFang SC;
+				font-weight:bold;
+				color:rgba(0,0,0,1);
+			}
+			
+		}
+		.time{
+			font-size:30rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(255,0,0,1);
+		}
+	}
+}
+.block{
+	width:750rpx;
+	height:20rpx;
+	background:rgba(242,242,242,1);
+}
+.bookListTitle{
+	width:720rpx;
+	margin-left: 30rpx;
+	font-size:34rpx;
+	font-family:PingFang SC;
+	font-weight:bold;
+	color:rgba(0,0,0,1);
+	margin-top: 40rpx;
+	margin-bottom: 30rpx;
+}
+.bookList{
+	width:100%;
+	padding:0 7rpx;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	.item{
+		margin:0 25rpx;
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 50rpx;
+		image{
+			width:134rpx;
+			height:162rpx;
+			border-radius:2rpx;
+		}
+		text{
+			display: block;
+			text-align: center;
+			width:134rpx;
+			margin-top: 30rpx;
+			font-size:28rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(0,0,0,1);
+		}
+	}
+}
+
+.ad{
+	position: fixed;
+	left:30rpx;
+	bottom:126rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.closeIcon{
+		width:43rpx;
+		height: 43rpx;
+	}
+	.line{
+		width:1px;
+		height: 38rpx;
+		background-color:#A0A0A0 ;
+	}
+	.imgBox{
+		position: relative;
+		width:180rpx;
+		height: 208rpx;
+		.bgImg{
+			width:180rpx;
+			height: 208rpx;
+		}
+		.conten{
+			position: absolute;
+			top:0;
+			left:0;
+			width:100%;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			.t1{
+				font-size:20rpx;
+				font-family:PingFang SC;
+				font-weight:400;
+				color:rgba(255,0,0,1);
+				margin-top: 23rpx;
+			}
+			.t2{
+				display: flex;
+				align-items: center;
+				font-size:20rpx;
+				font-family:PingFang SC;
+				font-weight:bold;
+				color:rgba(255,0,0,1);
+				margin-top: 13rpx;
+				text{
+					font-size: 32rpx;
+				}
+			}
+			.t3{
+				font-size:18rpx;
+				font-family:PingFang SC;
+				font-weight:400;
+				color:rgba(153,153,153,1);
+				margin-top: 13rpx;
+			}
+			.t4{
+				font-size:22rpx;
+				font-family:PingFang SC;
+				font-weight:bold;
+				color:rgba(255,255,255,1);
+				margin-top: 30rpx;
+			}
+		}
+	}
+}
+.fixedBottom{
+	position: fixed;
+	left:0;
+	bottom: 0;
+	width:750rpx;
+	height:112rpx;
+	background:rgba(255,255,255,1);
+	display: flex;
+	align-items: center;
+	border-top: 1px solid #ddd;
+	.pjBtn{
+		width:174rpx;
+		height:80rpx;
+		border:1px solid rgba(221,221,221,1);
+		border-radius:40rpx;
+		line-height: 80rpx;
+		text-align: center;
+		font-size:32rpx;
+		font-family:PingFang SC;
+		font-weight:500;
+		color:rgba(0,0,0,1);
+		margin-left: 30rpx;
+		margin-right: 53rpx;
+	}
+	.buyBtn{
+		width:463rpx;
+		height:80rpx;
+		background:rgba(253,211,15,1);
+		border-radius:40rpx;
+		line-height: 80rpx;
+		text-align: center;
+		font-size:32rpx;
+		font-family:PingFang SC;
+		font-weight:500;
+		color:rgba(0,0,0,1);
+	}
+}

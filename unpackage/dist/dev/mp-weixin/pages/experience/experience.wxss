@@ -48,7 +48,6 @@
   -webkit-align-items: center;
           align-items: center;
   padding-bottom: 40rpx;
-  border-bottom: 1px solid #ddd;
 }
 .addBtn .item {
   width: 160rpx;

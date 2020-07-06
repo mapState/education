@@ -177,6 +177,29 @@
 				"style": {
 					"navigationBarTitleText": "我的课程"
 				}
+			},
+			{
+				"path": "learningList/learningList",
+				"style": {
+					"navigationStyle": "custom"
+				}
+			},
+			{
+				"path": "studyDetails/studyDetails",
+				"style": {
+					"navigationBarTitleText": "学习详情"
+				}
+			},
+			{
+				"path": "courseEvaluation/courseEvaluation",
+				"style": {
+					"navigationBarTitleText": "我要评价"
+				}
+			}, {
+				"path": "mySignUp/mySignUp",
+				"style": {
+					"navigationBarTitleText": "我的报名"
+				}
 			}
 		]
 	}, {

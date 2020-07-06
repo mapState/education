@@ -1,0 +1,280 @@
+page{
+	background:rgba(51,51,51,1);
+}
+.tabs{
+	width:100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	height:98rpx;
+	border-bottom: 1px solid #474747;
+	.tab{
+		text-align: center;
+		line-height: 98rpx;
+		font-size:32rpx;
+		font-family:PingFang SC;
+		font-weight:400;
+		color:#CCCCCC;
+	}
+	.active{
+		position: relative;
+		font-size:34rpx;
+		font-family:PingFang SC;
+		font-weight:800;
+		color:#FFFFFF;
+		&::after{
+			content: '';
+			position: absolute;
+			bottom:12rpx;
+			left:50%;
+			transform: translateX(-50%);
+			width:70rpx;
+			height:6rpx;
+			background:rgba(253,211,15,1);
+			border-radius:3rpx;
+		}
+	}
+}
+.section1{
+	width:100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.title{
+		width:690rpx;
+		font-size:28rpx;
+		font-family:PingFang SC;
+		font-weight:bold;
+		color:rgba(255,255,255,1);
+		margin-top: 55rpx;
+		margin-bottom: 32rpx;
+	}
+	.nav{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width:690rpx;
+		margin-bottom: 86rpx;
+		text{
+			font-size:24rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(221,221,221,1);
+		}
+	}
+	.swiper{
+		width:750rpx;
+		height:620rpx;
+		margin-bottom: 80rpx;
+		.itemImg{
+			width:100%;
+			height: 100%;
+		}
+	}
+	.dots{
+		font-size:28rpx;
+		font-family:PingFang SC;
+		font-weight:bold;
+		color:rgba(153,153,153,1);
+	}
+}
+.recommend{
+	width:100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.title{
+		margin-top: 38rpx;
+		margin-bottom: 30rpx;
+		width:690rpx;
+		font-size:34rpx;
+		font-family:PingFang SC;
+		font-weight:bold;
+		color:rgba(255,255,255,1);
+	}
+	.header{
+		width:100%;
+		display: flex;
+		align-items: center;
+		padding-top: 48rpx;
+		padding-bottom: 40rpx;
+		.img{
+			margin-left: 30rpx;
+			width:212rpx;
+			height:212rpx;
+			border-radius:10px;
+			margin-right: 48rpx;
+		}
+		.desc{
+			height:212rpx;
+			display: flex;
+			flex-direction: column;
+			.t1{
+				font-size:30rpx;
+				font-family:PingFang SC;
+				font-weight:bold;
+				color:rgba(255,255,255,1);
+				margin-top: 14rpx;
+				margin-bottom: 20rpx;
+			}
+			.t2{
+				font-size:26rpx;
+				font-family:PingFang SC;
+				font-weight:400;
+				color:rgba(204,204,204,1);
+				margin-bottom: 50rpx;
+			}
+			.btns{
+				display: flex;
+				align-items: center;
+				.prev{
+					width:118rpx;
+					height:50rpx;
+					background:rgba(238,83,47,1);
+					border-radius:25rpx;
+					font-size:26rpx;
+					font-family:PingFang SC;
+					font-weight:400;
+					color:rgba(255,255,255,1);
+					text-align: center;
+					line-height: 50rpx;
+					margin-right: 50rpx;
+				}
+				.next{
+					width:118rpx;
+					height:50rpx;
+					background:rgba(34,106,182,1);
+					border-radius:25rpx;
+					font-size:26rpx;
+					font-family:PingFang SC;
+					font-weight:400;
+					color:rgba(255,255,255,1);
+					text-align: center;
+					line-height: 50rpx;
+				}
+			}
+		}
+	}
+	.list{
+		width:690rpx;
+		.item{
+			border-color: #2F2F2F;
+			.t1{
+				color:rgba(255,255,255,1);
+			}
+			.tags{
+				.tag{
+					border-color:#666666 !important;
+				}
+			}
+		}
+	}
+}
+.blackBlock{
+	width:750rpx;
+	height:20rpx;
+	background:rgba(47,47,47,1);
+}
+.section2{
+	width:100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.music-box{
+		width:466rpx;
+		height: 466rpx;
+		position: relative;
+		margin-top: 100rpx;
+		.bfIcon{
+			position: absolute;
+			top:50%;
+			left:50%;
+			transform: translate(-50%,-50%);
+			width:21rpx;
+			height: 29rpx;
+		}
+		.circleImg{
+			display: block;
+			width:466rpx;
+			height: 466rpx;
+			// -webkit-transform: rotate(360deg);
+			// animation: turn 8s linear infinite;
+			//animation-play-state:paused;
+		}
+		.roImg{
+			position: absolute;
+			left:0;
+			top:0;
+			bottom:0;
+			right: 0;
+			margin:auto;
+			width:310rpx;
+			height: 310rpx;
+			-webkit-transform: rotate(360deg);
+			animation: turn 8s linear infinite;
+			animation-play-state:paused;
+		}
+		.running{
+		  animation-play-state:running;
+		}
+		@keyframes turn{
+			0%{-webkit-transform:rotate(0deg);}
+			25%{-webkit-transform:rotate(90deg);}
+			50%{-webkit-transform:rotate(180deg);}
+			75%{-webkit-transform:rotate(270deg);}
+			100%{-webkit-transform:rotate(360deg);}
+		}
+	}
+	.audio-wrapper{
+		width:690rpx;
+		display: flex;
+		align-items: center;
+		.audio-slider{
+			flex:1;
+		}
+		.audio-number{
+			font-size:28rpx;
+			font-family:PingFang SC;
+			font-weight:500;
+			color:rgba(153,153,153,1);
+		}
+	}
+	.courseTitle{
+		font-size:28rpx;
+		font-family:PingFang SC;
+		font-weight:bold;
+		color:rgba(255,255,255,1);
+		margin-top: 88rpx;
+	}
+}
+
+.section3{
+	width:100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.title{
+		width:100%;
+		margin-top: 36rpx;
+		margin-bottom: 44rpx;
+		padding-left:30rpx;
+		font-size:28rpx;
+		font-family:PingFang SC;
+		font-weight:400;
+		color:rgba(255,255,255,1);
+	}
+	.detail{
+		width:690rpx;
+		font-size:26rpx;
+		font-family:PingFang SC;
+		font-weight:500;
+		color:rgba(153,153,153,1);
+	}
+}
+.downIcon{
+	position: fixed;
+	bottom:44rpx;
+	right: 32rpx;
+	width:110rpx;
+	height: 110rpx;
+}

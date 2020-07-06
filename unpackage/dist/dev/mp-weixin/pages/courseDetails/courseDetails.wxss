@@ -527,6 +527,20 @@ page {
   text-align: center;
   line-height: 80rpx;
 }
+.pjBtn {
+  margin-left: 35rpx;
+  width: 463rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
+  font-size: 32rpx;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #010101;
+  text-align: center;
+  line-height: 80rpx;
+  background: white;
+  border: 1px solid #d7d7d7;
+}
 .popGroup {
   width: 750rpx;
   height: 201rpx;

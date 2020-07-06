@@ -442,6 +442,7 @@ page {
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+  z-index: 999;
 }
 .tabbar::after {
   content: '';
@@ -483,6 +484,50 @@ page {
 .tabbar .item .sc {
   width: 48rpx;
   height: 43rpx;
+}
+.tabbar .bmBtn {
+  margin-left: 35rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.tabbar .bmBtn .btn1 {
+  width: 160rpx;
+  height: 80rpx;
+  background: #dddddd;
+  border-radius: 40rpx 0px 0px 40rpx;
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: black;
+  text-align: center;
+  line-height: 80rpx;
+}
+.tabbar .bmBtn .btn2 {
+  width: 160rpx;
+  height: 80rpx;
+  background: #fdd30f;
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: black;
+  text-align: center;
+  line-height: 80rpx;
+}
+.tabbar .bmBtn .btn3 {
+  width: 160rpx;
+  height: 80rpx;
+  background: #ee532f;
+  border-radius: 0px 40rpx 40rpx 0px;
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: white;
+  text-align: center;
+  line-height: 80rpx;
 }
 .tabbar .btns {
   margin-left: 35rpx;
@@ -846,5 +891,98 @@ page {
 .detailBox image {
   width: 750rpx;
   height: 378rpx;
+}
+.grouplist {
+  width: 100%;
+  height: 397rpx;
+  background-color: #fff;
+}
+.grouplist .title {
+  width: 100%;
+  height: 104rpx;
+  line-height: 104rpx;
+  padding-left: 30rpx;
+  font-size: 34rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: black;
+  border-bottom: 1px solid #ddd;
+}
+.grouplist .list {
+  position: relative;
+  width: 100%;
+  height: 180rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ddd;
+}
+.grouplist .list .btn {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  right: 30rpx;
+  width: 110rpx;
+  height: 46rpx;
+  background: #fdd30f;
+  border-radius: 23rpx;
+  text-align: center;
+  line-height: 46rpx;
+}
+.grouplist .list .item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-right: 30rpx;
+}
+.grouplist .list .item image {
+  width: 60rpx;
+  height: 60rpx;
+  margin-bottom: 12rpx;
+  border-radius: 50%;
+}
+.grouplist .list .item text {
+  font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: black;
+}
+.grouplist .list .wz {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.grouplist .list .wz image {
+  width: 60rpx;
+  height: 60rpx;
+  margin-bottom: 12rpx;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+}
+.grouplist .list .wz text {
+  font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #666666;
 }
 

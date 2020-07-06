@@ -25,6 +25,7 @@
 /* 透明度 */
 /* 文章场景相关 */
 .nav {
+  z-index: 99;
   position: fixed;
   left: 30rpx;
   display: -webkit-box;

@@ -37,7 +37,11 @@
         "multimediaCourse/multimediaCourse",
         "test/test",
         "news/news",
-        "myCourse/myCourse"
+        "myCourse/myCourse",
+        "learningList/learningList",
+        "studyDetails/studyDetails",
+        "courseEvaluation/courseEvaluation",
+        "mySignUp/mySignUp"
       ]
     },
     {
