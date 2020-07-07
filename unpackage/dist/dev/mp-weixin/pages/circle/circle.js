@@ -130,7 +130,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 320));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var circleItem = function circleItem() {__webpack_require__.e(/*! require.ensure | components/circleItem */ "components/circleItem").then((function () {return resolve(__webpack_require__(/*! @/components/circleItem.vue */ 350));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 328));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var circleItem = function circleItem() {__webpack_require__.e(/*! require.ensure | components/circleItem */ "components/circleItem").then((function () {return resolve(__webpack_require__(/*! @/components/circleItem.vue */ 358));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 

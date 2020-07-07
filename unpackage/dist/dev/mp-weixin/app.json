@@ -41,7 +41,12 @@
         "learningList/learningList",
         "studyDetails/studyDetails",
         "courseEvaluation/courseEvaluation",
-        "mySignUp/mySignUp"
+        "mySignUp/mySignUp",
+        "myGrowth/myGrowth",
+        "myPost/myPost",
+        "addActivity/addActivity",
+        "myActivity/myActivity",
+        "classEquity/classEquity"
       ]
     },
     {

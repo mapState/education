@@ -5,7 +5,9 @@
 			<text>我的佣金</text>
 		</view>
 		<view class="header">
-			<text class="t1">当前佣金</text>
+			<view class="t1">当前佣金
+				<text class="team">我的团队></text>
+			</view>
 			<text class="t2">￥50.00</text>
 			<text class="line"></text>
 			<view class="category">

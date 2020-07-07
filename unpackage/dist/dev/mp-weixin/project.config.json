@@ -5,13 +5,37 @@
 	},
 	"setting": {
 		"urlCheck": false,
+		"es6": true,
+		"enhance": false,
+		"postcss": true,
+		"preloadBackgroundData": false,
 		"minified": true,
-		"es6": true
+		"newFeature": false,
+		"coverView": true,
+		"nodeModules": false,
+		"autoAudits": false,
+		"showShadowRootInWxmlPanel": true,
+		"scopeDataCheck": false,
+		"uglifyFileName": false,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"compileHotReLoad": false,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		},
+		"useIsolateContext": true,
+		"useCompilerModule": true,
+		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
 	"libVersion": "",
 	"appid": "wx2d49400e53aae68d",
 	"projectname": "testwx",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -61,10 +85,44 @@
 					"query": ""
 				},
 				{
-					"id": 4,
-					"name": "pages/activityDetails/activityDetails",
-					"pathName": "pages/activityDetails/activityDetails",
-					"query": "type=1",
+					"id": -1,
+					"name": "pagesA/myGrowth/myGrowth",
+					"pathName": "pagesA/myGrowth/myGrowth",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/myPost/myPost",
+					"pathName": "pagesA/myPost/myPost",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/myActivity/myActivity",
+					"pathName": "pagesA/myActivity/myActivity",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/learningList/learningList",
+					"pathName": "pagesA/learningList/learningList",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/classEquity/classEquity",
+					"pathName": "pagesA/classEquity/classEquity",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/commission/commission",
+					"pathName": "pages/commission/commission",
 					"scene": null
 				}
 			]

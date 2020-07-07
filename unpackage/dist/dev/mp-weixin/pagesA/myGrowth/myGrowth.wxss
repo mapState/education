@@ -1,0 +1,282 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+page {
+  padding-bottom: 120rpx;
+}
+.experience {
+  width: 690rpx;
+  margin-top: 52rpx;
+  border-left: 1px solid #ddd;
+}
+.experience .item {
+  position: relative;
+  width: 100%;
+  padding: 0 28rpx;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  padding-bottom: 50rpx;
+}
+.experience .item .timeIcon {
+  position: absolute;
+  width: 22rpx;
+  height: 22rpx;
+  left: -12rpx;
+  padding-top: 6rpx;
+  background-color: #fff;
+}
+.experience .item .time {
+  font-size: 26rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  margin-bottom: 20rpx;
+}
+.experience .item .topic {
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #027db4;
+  margin-bottom: 34rpx;
+}
+.experience .item .detail {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.experience .item .detail .deImg {
+  width: 130rpx;
+  height: 130rpx;
+  border-radius: 5rpx;
+}
+.experience .item .detail .right {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  height: 130rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.experience .item .detail .right text {
+  margin-left: 20rpx;
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #090909;
+  padding-top: 7rpx;
+}
+.experience .item .detail .right .tags {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.experience .item .detail .right .tags .tag {
+  margin-left: 20rpx;
+  padding: 5rpx 21rpx;
+  border: 1px solid #dddddd;
+  border-radius: 17rpx;
+  font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #666666;
+}
+.experience .item .desc {
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: black;
+  margin-bottom: 32rpx;
+}
+.experience .item .imgs {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-bottom: 23rpx;
+}
+.experience .item .imgs image {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 4rpx;
+  margin-right: 14rpx;
+}
+.experience .item .imgs image:nth-child(3) {
+  margin-right: 0;
+}
+.experience .item .operating {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.experience .item .operating .tags {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.experience .item .operating .tags .tag {
+  padding: 5rpx 21rpx;
+  border: 1px solid #dddddd;
+  border-radius: 17rpx;
+  font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #666666;
+}
+.experience .item .operating .operat {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.experience .item .operating .operat .op:nth-child(1) {
+  margin-right: 50rpx;
+}
+.experience .item .operating .operat .op:nth-child(1) image {
+  width: 20rpx;
+  height: 19rpx;
+  margin-right: 12rpx;
+}
+.experience .item .operating .operat .op:nth-child(1) text {
+  font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #999999;
+}
+.experience .item .operating .operat .op:nth-child(2) image {
+  width: 19rpx;
+  height: 20rpx;
+  margin-right: 12rpx;
+}
+.experience .item .operating .operat .op:nth-child(2) text {
+  font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #999999;
+}
+.experience .item .operating .operat .op {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.experience .item .dw {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-top: 20rpx;
+}
+.experience .item .dw image {
+  width: 22rpx;
+  height: 26rpx;
+  margin-right: 10rpx;
+}
+.experience .item .dw text {
+  font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #015478;
+}
+.tabbar {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 750rpx;
+  height: 122rpx;
+  background: white;
+  border: 1px solid #dddddd;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+}
+.tabbar .btn1 {
+  width: 320rpx;
+  height: 80rpx;
+  background: #f59a23;
+  border-radius: 40rpx;
+  text-align: center;
+  line-height: 80rpx;
+  font-size: 32rpx;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: white;
+}
+.tabbar .btn2 {
+  width: 320rpx;
+  height: 80rpx;
+  background: #ee532f;
+  border-radius: 40rpx;
+  text-align: center;
+  line-height: 80rpx;
+  font-size: 32rpx;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: white;
+}
+

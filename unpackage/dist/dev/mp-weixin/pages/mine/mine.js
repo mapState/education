@@ -135,7 +135,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 320));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 328));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -262,6 +262,21 @@ __webpack_require__.r(__webpack_exports__);
         case 2:
           uni.navigateTo({
             url: "/pagesA/mySignUp/mySignUp" });
+
+          break;
+        case 3:
+          uni.navigateTo({
+            url: "/pagesA/myGrowth/myGrowth" });
+
+          break;
+        case 4:
+          uni.navigateTo({
+            url: "/pagesA/myPost/myPost" });
+
+          break;
+        case 5:
+          uni.navigateTo({
+            url: "/pagesA/myActivity/myActivity" });
 
           break;
         case 6:

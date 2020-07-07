@@ -88,11 +88,22 @@
   line-height: 82rpx;
 }
 .header .t1 {
+  width: 100%;
+  text-align: center;
+  position: relative;
   font-size: 24rpx;
   font-family: PingFang SC;
   font-weight: 400;
   color: white;
   margin-bottom: 32rpx;
+  padding: 10rpx 0;
+}
+.header .t1 .team {
+  position: absolute;
+  right: 30rpx;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
 }
 .header .t2 {
   font-size: 56rpx;

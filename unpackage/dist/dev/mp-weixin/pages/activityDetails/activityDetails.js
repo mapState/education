@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 327))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 335))
   }
 }
 var render = function() {
@@ -147,7 +147,21 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 327));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 313));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 335));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 321));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -443,8 +457,9 @@ __webpack_require__.r(__webpack_exports__);
       toIndex: '',
       letterDetails: [],
       currentLetter: "Details",
-      type: 0 //1 报名中
-    };
+      type: 0, //1 报名中
+      showFixed: true };
+
   },
   onLoad: function onLoad(params) {
     this.top = uni.getMenuButtonBoundingClientRect().top;
@@ -460,6 +475,11 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
+    goCommet: function goCommet() {
+      uni.navigateTo({
+        url: "/pagesA/courseEvaluation/courseEvaluation" });
+
+    },
     toView: function toView(val) {
       this.toIndex = val;
       this.currentLetter = val;
@@ -471,7 +491,6 @@ __webpack_require__.r(__webpack_exports__);
       var view = uni.createSelectorQuery().in(this).selectAll(".module");
       view.boundingClientRect(function (d) {
         var top = d[0].top;
-        console.log(d);
         d.forEach(function (item) {
           item.top = item.top - top;
           item.bottom = item.bottom - top;
@@ -482,8 +501,9 @@ __webpack_require__.r(__webpack_exports__);
 
         });
         _this.letterDetails.some(function (item) {
-          if (scrollTop - 700 >= item.top && scrollTop - 700 <= item.bottom) {
+          if (scrollTop >= item.top && scrollTop <= item.bottom - 20) {
             _this.currentLetter = item.id;
+            console.log(_this.currentLetter);
             //当前固定用的是粘性定位，如果不用粘性定位，在这里设置
             return true;
           }

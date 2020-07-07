@@ -127,6 +127,21 @@
 						url:"/pagesA/mySignUp/mySignUp"
 					})
 					break;
+					case 3:
+					uni.navigateTo({
+						url:"/pagesA/myGrowth/myGrowth"
+					})
+					break;
+					case 4:
+					uni.navigateTo({
+						url:"/pagesA/myPost/myPost"
+					})
+					break;
+					case 5:
+					uni.navigateTo({
+						url:"/pagesA/myActivity/myActivity"
+					})
+					break;
 					case 6:
 					uni.navigateTo({
 						url:"/pagesA/mytTeam/mytTeam"

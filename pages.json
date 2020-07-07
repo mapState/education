@@ -200,6 +200,33 @@
 				"style": {
 					"navigationBarTitleText": "我的报名"
 				}
+			},
+			{
+				"path": "myGrowth/myGrowth",
+				"style": {
+					"navigationBarTitleText": "我的成长"
+				}
+			}, {
+				"path": "myPost/myPost",
+				"style": {
+					"navigationBarTitleText": "我的发布"
+				}
+			},
+			{
+				"path": "addActivity/addActivity",
+				"style": {
+					"navigationBarTitleText": "我的发布"
+				}
+			}, {
+				"path": "myActivity/myActivity",
+				"style": {
+					"navigationBarTitleText": "我的动态"
+				}
+			}, {
+				"path": "classEquity/classEquity",
+				"style": {
+					"navigationStyle": "custom"
+				}
 			}
 		]
 	}, {
