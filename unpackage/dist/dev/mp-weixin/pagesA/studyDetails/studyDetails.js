@@ -212,7 +212,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
-var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 344));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 424));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 {
   components: {

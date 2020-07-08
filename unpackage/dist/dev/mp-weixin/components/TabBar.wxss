@@ -111,7 +111,7 @@
   font-weight: 400;
   color: #101010;
 }
-.mask {
+.maskp {
   position: fixed;
   width: 100%;
   height: 100%;

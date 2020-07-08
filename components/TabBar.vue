@@ -29,7 +29,7 @@
 				<text>我的</text>
 			</view>
 		</view>
-		<view class="mask" v-if="spin" @click="spin=false">
+		<view class="maskp" v-if="spin" @click="spin=false">
 			
 		</view>
 		<view class="popup" v-if="spin">
@@ -178,7 +178,7 @@
 		}
 	}
 }
-.mask{
+.maskp{
 	position: fixed;
 	width:100%;
 	height: 100%;

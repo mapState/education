@@ -46,7 +46,13 @@
         "myPost/myPost",
         "addActivity/addActivity",
         "myActivity/myActivity",
-        "classEquity/classEquity"
+        "classEquity/classEquity",
+        "makeMoney/makeMoney",
+        "other/other",
+        "aboutUs/aboutUs",
+        "childInfo/childInfo",
+        "privacyAgreement/privacyAgreement",
+        "issue/issue"
       ]
     },
     {

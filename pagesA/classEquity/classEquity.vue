@@ -2,7 +2,7 @@
 	<view class="main">
 		<view class="nav" :style="{paddingTop:top+'px'}">
 			<image src="../../static/icon/left.png" mode="aspectFill" @click="goBack"></image>
-			<view>等级权益</view>
+			等级权益
 		</view>
 		<view class="header">
 			<swiper class="swiper" previous-margin="90rpx" @change="swiperChange">
@@ -10,6 +10,7 @@
 					<view class="itemBox" :class="{'active':index==swiperIndex}">
 						<image :src="item.bgImg" mode="aspectFill" class="bgImg"></image>
 						<view class="conten">
+							<image src="../static/icon/lock.png" mode="aspectFit" class="lockIcon"></image>
 							<view class="name">{{item.name}}</view>
 							<view class="desc">
 								{{item.desc}}
@@ -35,9 +36,12 @@
 		<view class="experience">
 			<view class="top">
 				<text>当前等级</text>
-				<view class="up">
+				<view class="up" @click="$refs.popup.open()">
 					我要升级
 				</view>
+				<!-- <view class="up">
+					未考试
+				</view> -->
 			</view>
 			<view class="progress-box">
 				<progress percent="50" show-info stroke-width="3" activeColor="#FDD30F" backgroundColor="#FEF0AD" :show-info="false"/>
@@ -114,11 +118,32 @@
 				经验支付
 			</view>
 		</view>
+		<uni-popup ref="popup" type="center">
+			<view class="tip">
+				<image src="../../static/img/notEnough.png" mode="aspectFill" class="tipImg"></image>
+				<text class="upTip">升级成功</text>
+				<view class="desc">
+					<text>当前已升级成功“阅读推广师”，通过对应考试才能享受等级权益。</text>
+				</view>
+				<view class="operating">
+					<view class="item" @click="$refs.popup.close()">
+						取消
+					</view>
+					<view class="item up">
+						去考试
+					</view>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
+	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	export default {
+		components: {
+			uniPopup
+		},
 		data() {
 			return {
 				top: 24,
@@ -138,6 +163,18 @@
 				}, {
 					bgImg: '../static/img/grade3.png',
 					name: '总营长',
+					desc: '该等级介绍了在活动报名期间，可以根据等级获取权益',
+					num1: 10,
+					num2: 10
+				},{
+					bgImg: '../static/img/grade4.png',
+					name: '阅读推广师',
+					desc: '该等级介绍了在活动报名期间，可以根据等级获取权益',
+					num1: 10,
+					num2: 10
+				},{
+					bgImg: '../static/img/grade5.png',
+					name: '合伙人',
 					desc: '该等级介绍了在活动报名期间，可以根据等级获取权益',
 					num1: 10,
 					num2: 10

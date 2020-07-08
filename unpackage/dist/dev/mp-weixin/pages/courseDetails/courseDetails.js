@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 335))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 415))
   }
 }
 var render = function() {
@@ -142,7 +142,13 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 335));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 321));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var CommentItem = function CommentItem() {__webpack_require__.e(/*! require.ensure | components/CommentItem */ "components/CommentItem").then((function () {return resolve(__webpack_require__(/*! @/components/CommentItem.vue */ 351));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 415));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 401));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var CommentItem = function CommentItem() {__webpack_require__.e(/*! require.ensure | components/CommentItem */ "components/CommentItem").then((function () {return resolve(__webpack_require__(/*! @/components/CommentItem.vue */ 431));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
 
 
 
@@ -379,7 +385,7 @@ __webpack_require__.r(__webpack_exports__);
 
         });
         _this.letterDetails.some(function (item) {
-          if (scrollTop - 700 >= item.top && scrollTop - 700 <= item.bottom) {
+          if (scrollTop >= item.top && scrollTop <= item.bottom) {
             _this.currentLetter = item.id;
             //当前固定用的是粘性定位，如果不用粘性定位，在这里设置
             return true;

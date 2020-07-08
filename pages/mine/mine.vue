@@ -147,6 +147,26 @@
 						url:"/pagesA/mytTeam/mytTeam"
 					})
 					break;
+					case 7:
+					uni.navigateTo({
+						url:"/pagesA/classEquity/classEquity"
+					})
+					break;
+					case 8:
+					uni.navigateTo({
+						url:"/pagesA/makeMoney/makeMoney"
+					})
+					break;
+					case 10:
+					uni.navigateTo({
+						url:"/pagesA/issue/issue"
+					})
+					break;
+					case 11:
+					uni.navigateTo({
+						url:"/pagesA/other/other"
+					})
+					break;
 				}
 			},
 			goCollect(){

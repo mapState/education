@@ -61,9 +61,16 @@ page{
 		height: 100%;
 	}
 }
+.ss{
+	.ssImge{
+		width:750rpx;
+		height: 520rpx;
+	}
+}
 .titleBox{
 	width:690rpx;
-	padding-bottom:29rpx ;
+	padding-bottom:29rpx;
+	margin-top:30rpx;
 	.title{
 		width:100%;
 		margin-bottom: 20rpx;

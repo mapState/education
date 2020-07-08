@@ -1,4 +1,57 @@
-
+.mask{
+	position: fixed;
+	width:100%;
+	height: 100%;
+	background-color: rgba(0,0,0,.6);
+	left:0;
+	top:0;
+	z-index: 1000;
+}
+.addTip{
+	position: fixed;
+	display: flex;
+	align-items: center;
+	right: 10px;
+	width:413rpx;
+	height:73rpx;
+	background:rgba(255,255,255,1);
+	border-radius:32rpx;
+	z-index: 1001;
+	&::after{
+		content: '';
+		position: absolute;
+		top:-12rpx;
+		left:68%;
+		width: 0;
+		height: 0;
+		border-left: 6rpx solid transparent;
+		border-right: 6rpx solid transparent;
+		border-bottom: 12rpx solid #fff;
+	}
+	.box{
+		position: relative;
+		font-size:28rpx;
+		font-family:PingFang SC;
+		font-weight:400;
+		color:rgba(0,0,0,1);
+		margin-left: 20rpx;
+		margin-right: 36rpx;
+		&::after{
+			content: '';
+			position: absolute;
+			width:1px;
+			height:28rpx;
+			background:rgba(215,215,215,1);
+			top:50%;
+			transform: translateY(-50%);
+			right: -16rpx;
+		}
+	}
+	.icon{
+		width:22rpx;
+		height: 22rpx;
+	}
+}
 .header {
 		width:100%;
 		display: flex;

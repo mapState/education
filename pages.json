@@ -227,6 +227,37 @@
 				"style": {
 					"navigationStyle": "custom"
 				}
+			}, {
+				"path": "makeMoney/makeMoney",
+				"style": {
+					"navigationBarTitleText": "推广赚钱"
+				}
+			}, {
+				"path": "other/other",
+				"style": {
+					"navigationBarTitleText": "其他"
+				}
+			}, {
+				"path": "aboutUs/aboutUs",
+				"style": {
+					"navigationBarTitleText": "关于我们"
+				}
+			},
+			{
+				"path": "childInfo/childInfo",
+				"style": {
+					"navigationBarTitleText": "孩子信息"
+				}
+			}, {
+				"path": "privacyAgreement/privacyAgreement",
+				"style": {
+					"navigationBarTitleText": "隐私协议"
+				}
+			}, {
+				"path": "issue/issue",
+				"style": {
+					"navigationBarTitleText": "常见问题"
+				}
 			}
 		]
 	}, {

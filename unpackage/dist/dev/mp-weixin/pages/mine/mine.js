@@ -135,7 +135,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 328));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 408));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -282,6 +282,26 @@ __webpack_require__.r(__webpack_exports__);
         case 6:
           uni.navigateTo({
             url: "/pagesA/mytTeam/mytTeam" });
+
+          break;
+        case 7:
+          uni.navigateTo({
+            url: "/pagesA/classEquity/classEquity" });
+
+          break;
+        case 8:
+          uni.navigateTo({
+            url: "/pagesA/makeMoney/makeMoney" });
+
+          break;
+        case 10:
+          uni.navigateTo({
+            url: "/pagesA/issue/issue" });
+
+          break;
+        case 11:
+          uni.navigateTo({
+            url: "/pagesA/other/other" });
 
           break;}
 

@@ -1,5 +1,14 @@
 <template>
 	<view class="main">
+		<view class="mask" v-if="showAddTip" @click="closeTip">
+			
+		</view>
+		<view class="addTip" :style="{top:(top+height+6)+'px'}" v-if="showAddTip">
+			<view class="box">
+				点击上方添加我的小程序
+			</view>
+			<image src="/static/icon/ctip.png" mode="aspectFit" class="icon" @click="closeTip"></image>
+		</view>
 		<view class="header" :style="{paddingTop:top+'px'}">
 			<view class="position" @click="goPosition" :style="{height:height+'px'}">
 				<image src="/static/icon/dw.png" mode="aspectFit" class="dwIcon"></image>
@@ -89,16 +98,21 @@
 			return {
 				top: 30,
 				height: 32,
+				right:0,
 				currentIndex: 0,
-				titleIndex: 0
+				titleIndex: 0,
+				showAddTip:true
 			}
 		},
 		onLoad() {
-			this.top = uni.getMenuButtonBoundingClientRect().top
-			this.height = uni.getMenuButtonBoundingClientRect().height
-			console.log(this.top)
+			let info=uni.getMenuButtonBoundingClientRect()
+			this.top = info.top
+			this.height = info.height
 		},
 		methods: {
+			closeTip(){
+				this.showAddTip=false
+			},
 			swiperChange(e) {
 				this.currentIndex = e.detail.current
 			},

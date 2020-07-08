@@ -1,131 +1,54 @@
 {
-	"description": "项目配置文件。",
-	"packOptions": {
-		"ignore": []
-	},
-	"setting": {
-		"urlCheck": false,
-		"es6": true,
-		"enhance": false,
-		"postcss": true,
-		"preloadBackgroundData": false,
-		"minified": true,
-		"newFeature": false,
-		"coverView": true,
-		"nodeModules": false,
-		"autoAudits": false,
-		"showShadowRootInWxmlPanel": true,
-		"scopeDataCheck": false,
-		"uglifyFileName": false,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"compileHotReLoad": false,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		},
-		"useIsolateContext": true,
-		"useCompilerModule": true,
-		"userConfirmedUseCompilerModuleSwitch": false
-	},
-	"compileType": "miniprogram",
-	"libVersion": "",
-	"appid": "wx2d49400e53aae68d",
-	"projectname": "testwx",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"current": -1,
-			"list": []
-		},
-		"gamePlugin": {
-			"current": -1,
-			"list": []
-		},
-		"miniprogram": {
-			"current": 1,
-			"list": [
-				{
-					"id": 0,
-					"name": "position",
-					"pathName": "pages/position/position",
-					"query": ""
-				},
-				{
-					"id": 1,
-					"name": "course",
-					"pathName": "pages/course/course",
-					"query": ""
-				},
-				{
-					"id": 2,
-					"name": "courseDetails",
-					"pathName": "pages/courseDetails/courseDetails",
-					"query": ""
-				},
-				{
-					"id": 3,
-					"name": "circleDetail",
-					"pathName": "pages/circleDetail/circleDetail",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "pagesA/myGrowth/myGrowth",
-					"pathName": "pagesA/myGrowth/myGrowth",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/myPost/myPost",
-					"pathName": "pagesA/myPost/myPost",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/myActivity/myActivity",
-					"pathName": "pagesA/myActivity/myActivity",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/learningList/learningList",
-					"pathName": "pagesA/learningList/learningList",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/classEquity/classEquity",
-					"pathName": "pagesA/classEquity/classEquity",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/commission/commission",
-					"pathName": "pages/commission/commission",
-					"scene": null
-				}
-			]
-		}
-	}
+  "description": "项目配置文件。",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "minified": true,
+    "es6": true
+  },
+  "compileType": "miniprogram",
+  "libVersion": "",
+  "appid": "wx2d49400e53aae68d",
+  "projectname": "testwx",
+  "condition": {
+    "search": {
+      "current": -1,
+      "list": []
+    },
+    "conversation": {
+      "current": -1,
+      "list": []
+    },
+    "game": {
+      "current": -1,
+      "list": []
+    },
+    "miniprogram": {
+      "current": 1,
+      "list": [
+        {
+          "name": "position",
+          "id": 0,
+          "pathName": "pages/position/position"
+        },
+        {
+          "name": "course",
+          "id": 1,
+          "pathName": "pages/course/course"
+        },
+        {
+          "name": "courseDetails",
+          "id": 2,
+          "pathName": "pages/courseDetails/courseDetails"
+        },
+        {
+          "name": "circleDetail",
+          "id": 3,
+          "pathName": "pages/circleDetail/circleDetail"
+        }
+      ]
+    }
+  }
 }

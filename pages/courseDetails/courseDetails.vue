@@ -1,21 +1,25 @@
 <template>
 	<view class="main">
+		<view class="nav" :style="{top:top+'px'}" @click="goBack">
+			<image src="../../static/icon/bk.png" mode="aspectFill"></image>
+		</view>
+		<view class="header " :style="{paddingTop:top+'px'}" v-if="scrollTop>=200">
+			<text class="hd" :class="{'active':currentLetter=='Details'}" @click="toView('Details')">详情介绍</text>
+			<text class="" :class="{'active':currentLetter=='Evaluation'}" @click="toView('Evaluation')">用户评价</text>
+		</view>
 		<scroll-view class="scroll-view" scroll-y scroll-with-animation="true" :scroll-into-view="toIndex" @scroll="scrollHandle">
 			<view class="main">
-				<view class="nav" :style="{top:top+'px'}" @click="goBack">
-					<image src="../../static/icon/bk.png" mode="aspectFill"></image>
+				<view class="ss">
+					<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593333346662&di=d4cceef20cedcd44a9c1105a107a1803&imgtype=0&src=http%3A%2F%2Ft8.baidu.com%2Fit%2Fu%3D1484500186%2C1503043093%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D853"
+					 mode="aspectFill" class="ssImge"></image>
 				</view>
-				<view class="header " :style="{paddingTop:top+'px'}" v-if="scrollTop>=660">
-					<text class="hd" :class="{'active':currentLetter=='Details'}" @click="toView('Details')">详情介绍</text>
-					<text class="" :class="{'active':currentLetter=='Evaluation'}" @click="toView('Evaluation')">用户评价</text>
-				</view>
-				<swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" :indicator-dots="true"
+				<!-- <swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" :indicator-dots="true"
 				 indicator-color="#fff" indicator-active-color="#FDD30F">
 					<swiper-item v-for="item in 3" :key="item">
 						<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593333346662&di=d4cceef20cedcd44a9c1105a107a1803&imgtype=0&src=http%3A%2F%2Ft8.baidu.com%2Fit%2Fu%3D1484500186%2C1503043093%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D853"
 						 mode="aspectFill" class="itemImg"></image>
 					</swiper-item>
-				</swiper>
+				</swiper> -->
 				<view class="titleBox">
 					<view class="title">
 						<text>0-3岁小孩习惯培养课程大礼包...</text>
@@ -63,8 +67,8 @@
 				</view>
 				<text class="block">1</text>
 				<view class="tabs" :style="{top:top+'px'}">
-					<text class="active">详情介绍</text>
-					<text @click="toView('Evaluation')">用户评价</text>
+					<text :class="{'active':currentLetter=='Details'}" @click="toView('Details')">详情介绍</text>
+					<text :class="{'active':currentLetter=='Evaluation'}" @click="toView('Evaluation')">用户评价</text>
 				</view>
 				<view class="detailBox module" id="Details">
 					<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593333346662&di=d4cceef20cedcd44a9c1105a107a1803&imgtype=0&src=http%3A%2F%2Ft8.baidu.com%2Fit%2Fu%3D1484500186%2C1503043093%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D853"
@@ -82,14 +86,16 @@
 						全包。一般来说全包的价格从每平米建筑面积500元至1000元，再贵的也有，这要看你怎么设计，怎么用料。大公司就这样好，他为了保证自己的信誉不受损害，一定会认真地对待每个客户。所以在用料和做工上你完全可以放心。你所做的就是准备好付银子和验收。
 					</view>
 				</view> -->
-				<view class="detailTitle module" id="Evaluation">
-					<text></text>
-					<view class="">
-						用户评价
+				<view class="module" id="Evaluation">
+					<view class="detailTitle">
+						<text></text>
+						<view class="">
+							用户评价
+						</view>
 					</view>
-				</view>
-				<view class="pjList">
-					<comment-item v-for="item in 3" :key="item"></comment-item>
+					<view class="pjList">
+						<comment-item v-for="item in 3" :key="item"></comment-item>
+					</view>
 				</view>
 				<view class="tabbar">
 					<view class="item kfa">
@@ -235,7 +241,7 @@
 						});
 					});
 					this.letterDetails.some(item => {
-						if ((scrollTop-700)>= item.top && (scrollTop-700) <= item.bottom) {
+						if (scrollTop>= item.top && scrollTop <= item.bottom) {
 							this.currentLetter = item.id;
 							//当前固定用的是粘性定位，如果不用粘性定位，在这里设置
 							return true;

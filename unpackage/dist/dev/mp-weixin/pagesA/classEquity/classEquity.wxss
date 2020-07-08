@@ -40,18 +40,16 @@ page {
           align-items: center;
   z-index: 99;
   width: 100%;
+  font-size: 34rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: white;
 }
 .nav image {
   width: 25rpx;
   height: 44rpx;
   margin-right: 14rpx;
   margin-left: 30rpx;
-}
-.nav view {
-  font-size: 34rpx;
-  font-family: PingFang SC;
-  font-weight: bold;
-  color: white;
 }
 .header {
   width: 750rpx;
@@ -62,6 +60,13 @@ page {
   width: 720rpx;
   height: 280rpx;
   margin: 150rpx 0;
+}
+.header .swiper .swiperitem .conten .lockIcon {
+  position: absolute;
+  top: 43rpx;
+  right: 42rpx;
+  width: 32rpx;
+  height: 35rpx;
 }
 .header .swiper .swiperitem .conten .name {
   padding-left: 23rpx;
@@ -131,7 +136,7 @@ page {
 .header .swiper .swiperitem:nth-child(2) .conten .desc {
   color: #FFFFFF;
 }
-.header .swiper .swiperitem:nth-child(2) .conten .income .item .line {
+.header .swiper .swiperitem:nth-child(2) .conten .income .line {
   background: #727a97;
 }
 .header .swiper .swiperitem:nth-child(2) .conten .income .item .t1 {
@@ -146,7 +151,7 @@ page {
 .header .swiper .swiperitem:nth-child(3) .conten .desc {
   color: #9B5932;
 }
-.header .swiper .swiperitem:nth-child(3) .conten .income .item .line {
+.header .swiper .swiperitem:nth-child(3) .conten .income .line {
   background: #eaa233;
 }
 .header .swiper .swiperitem:nth-child(3) .conten .income .item .t1 {
@@ -154,6 +159,36 @@ page {
 }
 .header .swiper .swiperitem:nth-child(3) .conten .income .item .t2 {
   color: #9B5932;
+}
+.header .swiper .swiperitem:nth-child(4) .conten .name {
+  color: #310800;
+}
+.header .swiper .swiperitem:nth-child(4) .conten .desc {
+  color: #4D2720;
+}
+.header .swiper .swiperitem:nth-child(4) .conten .income .line {
+  background: #EDAD78;
+}
+.header .swiper .swiperitem:nth-child(4) .conten .income .item .t1 {
+  color: #310800;
+}
+.header .swiper .swiperitem:nth-child(4) .conten .income .item .t2 {
+  color: #4D2720;
+}
+.header .swiper .swiperitem:nth-child(5) .conten .name {
+  color: #B94024;
+}
+.header .swiper .swiperitem:nth-child(5) .conten .desc {
+  color: #C0492E;
+}
+.header .swiper .swiperitem:nth-child(5) .conten .income .line {
+  background: #E47B59 !important;
+}
+.header .swiper .swiperitem:nth-child(5) .conten .income .item .t1 {
+  color: #B94024;
+}
+.header .swiper .swiperitem:nth-child(5) .conten .income .item .t2 {
+  color: #C0492E;
 }
 .header .swiper .swiperitem {
   width: 720rpx;
@@ -506,5 +541,74 @@ page {
   font-family: PingFang SC;
   font-weight: 500;
   color: white;
+}
+.tip {
+  position: relative;
+  width: 610rpx;
+}
+.tip .tipImg {
+  width: 100%;
+  height: 218rpx;
+  display: block;
+}
+.tip .upTip {
+  position: absolute;
+  top: 145rpx;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  font-size: 34rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: white;
+}
+.tip .desc {
+  width: 100%;
+  background-color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  padding: 43rpx 0 75rpx 0;
+}
+.tip .desc text {
+  display: block;
+  width: 508rpx;
+  font-size: 30rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: black;
+}
+.tip .operating {
+  width: 100%;
+  height: 87rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  border-top: 1px solid #ddd;
+  background-color: #fff;
+}
+.tip .operating .item {
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 87rpx;
+  font-size: 30rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: black;
+}
+.tip .operating .up {
+  border-left: 1px solid #ddd;
+  color: #fdbc0f;
 }
 

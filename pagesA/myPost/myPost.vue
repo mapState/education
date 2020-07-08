@@ -74,7 +74,7 @@
 				</view>
 			</view>
 			<block v-for="(item,index) in 4" :key="index">
-				<Activity :type="index"></Activity>
+				<Activity :type="index" @click.native="goDetail"></Activity>
 			</block>
 		</view>
 	</view>
@@ -101,6 +101,11 @@
 				uni.navigateTo({
 					url:"/pagesA/addActivity/addActivity?type="+type
 				})
+			},
+			goDetail(){
+				// uni.navigateTo({
+				// 	url:"/pages/addActivity/addActivity"
+				// })
 			}
 		}
 	}
