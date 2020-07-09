@@ -266,10 +266,11 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  -webkit-justify-content: space-around;
-          justify-content: space-around;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
   border: 1px solid #dddddd;
-  border-radius: 17rpx;
+  border-radius: 20rpx;
 }
 .titleBox .more text {
   font-size: 24rpx;
@@ -278,8 +279,9 @@
   color: #666666;
 }
 .titleBox .more image {
-  width: 9rpx;
-  height: 17rpx;
+  width: 10rpx;
+  height: 18rpx;
+  margin-left: 10rpx;
 }
 .list {
   width: 690rpx;

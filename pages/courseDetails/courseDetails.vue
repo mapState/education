@@ -241,7 +241,7 @@
 						});
 					});
 					this.letterDetails.some(item => {
-						if (scrollTop>= item.top && scrollTop <= item.bottom) {
+						if ((scrollTop-180)>= item.top && (scrollTop-180) <= item.bottom-20) {
 							this.currentLetter = item.id;
 							//当前固定用的是粘性定位，如果不用粘性定位，在这里设置
 							return true;

@@ -32,11 +32,11 @@
 			</view>
 			<view class="right">
 				<view class="item likeBox">
-					<image src="/static/icon/heart.png" mode="aspectFill" class="like"></image>
+					<image src="/static/icon/heart.png" mode="aspectFit" class="like"></image>
 					<text>11</text>
 				</view>
 				<view class="item">
-					<image src="/static/icon/c-msg.png" mode="aspectFill" class="like"></image>
+					<image src="/static/icon/c-msg.png" mode="aspectFit" class="like"></image>
 					<text>121</text>
 				</view>
 			</view>
@@ -79,7 +79,7 @@
 	padding:40rpx 30rpx;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	//align-items: center;
 	border-bottom: 1px solid #ddd;
 	.info{
 		width:100%;
@@ -97,10 +97,10 @@
 				margin-right: 8rpx;
 			}
 			.desc{
-				height: 60rpx;
+				height: 62rpx; 
 				display: flex;
 				flex-direction: column;
-				justify-content:space-around;
+				justify-content:space-between;
 				.time{
 					font-size:20rpx;
 					font-family:PingFang SC;
@@ -110,6 +110,7 @@
 				.row{
 					display: flex;
 					align-items: center;
+					
 					.name{
 						font-size:28rpx;
 						font-family:PingFang SC;
@@ -148,32 +149,38 @@
 		}
 	}
 	.detail{
-		width:604rpx;
+		width:624rpx;
 		font-size:28rpx;
 		font-family:PingFang SC;
 		font-weight:400;
 		color:rgba(0,0,0,1);
 		margin-bottom: 30rpx;
+		margin-left: 68rpx;
 	}
 	.imgs{
-		width:632rpx;
+		width:624rpx;
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
+		margin-left: 68rpx;
 		image{
 			display: block;
 			width:198rpx;
 			height:220rpx;
 			border-radius:4rpx;
-			margin-left:12rpx;
+			margin-right:12rpx;
+		}
+		&>image:nth-child(3n){
+			margin-right: 0;
 		}
 	}
 	.operating{
 		margin: 22rpx 0;
-		width:604rpx;
+		width:622rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		margin-left: 68rpx;
 		.left{
 			display: flex;
 			align-items: center;
@@ -194,12 +201,14 @@
 		.right{
 			display: flex;
 			align-items: center;
+			height: 34rpx;
 			.likeBox{
 				margin-right: 52rpx;
 			}
 			.item{
 				display: flex;
 				align-items: center;
+				height: 34rpx;
 				.like{
 					width:20rpx;
 					height: 19rpx;
@@ -213,14 +222,17 @@
 					font-family:PingFang SC;
 					font-weight:400;
 					color:rgba(153,153,153,1);
+					margin-left: 12rpx;
+					line-height: 34rpx;
 				}
 			}
 		}
 	}
 	.pos{
-		width:604rpx;
+		width:624rpx;
 		display: flex;
 		align-items: center;
+		margin-left: 68rpx;
 		.dwIcon{
 			width:22rpx;
 			height: 26rpx;

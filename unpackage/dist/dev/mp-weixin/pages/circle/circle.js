@@ -177,15 +177,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
 {
   components: {
     TabBar: TabBar,
@@ -194,7 +185,9 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       top: 24,
-      currentIndex: 0 };
+      currentIndex: 0,
+      tabList1: ['热门', '精选', '最新', '官方'],
+      tabIndex1: 0 };
 
   },
   onLoad: function onLoad() {
@@ -203,6 +196,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     swiperChange: function swiperChange(e) {
       this.currentIndex = e.detail.current;
+    },
+    changeTabIndex1: function changeTabIndex1(index) {
+      this.tabIndex1 = index;
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

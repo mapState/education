@@ -1,3 +1,6 @@
+page{
+	padding-bottom: 100rpx;
+}
 .mask{
 	position: fixed;
 	width:100%;
@@ -133,6 +136,7 @@
 			bottom:0;
 			width:690rpx;
 			height:300rpx;
+			border-radius:6rpx;
 			.swiper{
 				width:690rpx;
 				height:300rpx;

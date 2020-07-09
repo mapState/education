@@ -14,21 +14,21 @@
 				<image src="/static/icon/dw.png" mode="aspectFit" class="dwIcon"></image>
 				<text>杭州市江干区</text>
 			</view>
-			<view class="search" @click="goSearch">
+			<view class="search">
 				<image src="/static/icon/ssl.png" mode="aspectFill" class="sslIcon"></image>
-				<view class="searchMain">
+				<view class="searchMain" @click="goSearch">
 					<image src="/static/icon/ss.png" mode="aspectFill" class="ssIcon"></image>
 					<text>搜索活动</text>
 				</view>
-				<image src="/static/icon/message.png" mode="aspectFill" class="messageIcon"></image>
+				<image src="/static/icon/message.png" mode="aspectFill" class="messageIcon" @click="goMessage"></image>
 			</view>
 		</view>
 		<!-- 		<view class="content"> -->
 		<view class="swiper-box">
 			<view class="swiperBox">
 				<swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" @change="swiperChange">
-					<swiper-item v-for="item in 3" :key="item">
-						<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593333346662&di=d4cceef20cedcd44a9c1105a107a1803&imgtype=0&src=http%3A%2F%2Ft8.baidu.com%2Fit%2Fu%3D1484500186%2C1503043093%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D853"
+					<swiper-item v-for="item in swiperList" :key="item">
+						<image :src="item"
 						 mode="aspectFill" class="itemImg"></image>
 					</swiper-item>
 				</swiper>
@@ -67,9 +67,9 @@
 			<view class="hot" :class="{'titleActive':titleIndex==0}" @click="changeTitle(0)">热门活动</view>
 			<view :class="{'titleActive':titleIndex==1}" @click="changeTitle(1)">最新活动</view>
 		</view>
-		<view class="list" @click="goDetail">
+		<view class="list">
 			<block v-for="(item,index) in 4" :key="index">
-				<Activity :type="index"></Activity>
+				<Activity :type="index" @click.native="goDetail(index+1)"></Activity>
 			</block>
 		</view>
 		<!-- 		</view> -->
@@ -101,7 +101,11 @@
 				right:0,
 				currentIndex: 0,
 				titleIndex: 0,
-				showAddTip:true
+				showAddTip:false,
+				swiperList:['https://hbimg.huabanimg.com/fafd309bf78db3cc72d851453501cfc74eb45ef150c23-xr5gos_fw658/format/webp',
+					'https://hbimg.huabanimg.com/5532df46d645484f3009553eef71931fbfb056d86bc71-qB3y3k_fw658/format/webp',
+					'https://hbimg.huabanimg.com/3a3b1760646c6ef34213e43874422267d7bd86102cbf6-nKqPxr_fw658/format/webp'
+				]
 			}
 		},
 		onLoad() {
@@ -137,10 +141,14 @@
 					url: "/pages/eventsList/eventsList"
 				})
 			},
-			goDetail() {
-				console.log(1)
+			goDetail(status) {
 				uni.navigateTo({
-					url: "/pages/activityDetails/activityDetails"
+					url: "/pages/activityDetails/activityDetails?status="+status
+				})
+			},
+			goMessage(){
+				uni.navigateTo({
+					url:"/pagesA/news/news"
 				})
 			}
 		}

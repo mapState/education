@@ -268,20 +268,25 @@
 		}]
 	}],
 	"preloadRule": {
+		"pages/index/index": {
+			"network": "all",
+			"packages": ["pagesA"]
+		},
 		"pagesA/myCollect/myCollect": {
 			"network": "all",
 			"packages": ["__APP__"]
-		},
-		"pagesB/detail/detail": {
-			"network": "all",
-			"packages": ["pagesA"]
 		}
+		// "pagesB/detail/detail": {
+		// 	"network": "all",
+		// 	"packages": ["pagesA"]
+		// }
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
 		"navigationBarBackgroundColor": "#FDD30F",
-		"backgroundColor": "#FDD30F"
+		"backgroundColor": "#FDD30F",
+		"pageOrientation":"auto"
 	},
 	"condition": { //模式配置，仅开发期间生效
 		"current": 1, //当前激活的模式（list 的索引项）

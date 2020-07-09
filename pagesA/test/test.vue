@@ -86,7 +86,7 @@
 			return {
 				selIndex:-1,
 				index:1,
-				isAnswer:false
+				isAnswer:true
 			};
 		},
 		methods:{

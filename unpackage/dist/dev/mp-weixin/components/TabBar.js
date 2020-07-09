@@ -186,12 +186,12 @@ var _default =
 
   methods: {
     goCourse: function goCourse() {
-      uni.navigateTo({
+      uni.redirectTo({
         url: "/pages/course/course" });
 
     },
     goHome: function goHome() {
-      uni.navigateTo({
+      uni.redirectTo({
         url: "/pages/index/index" });
 
     },
@@ -218,13 +218,13 @@ var _default =
     },
     goCircle: function goCircle() {
       this.spin = false;
-      uni.navigateTo({
+      uni.redirectTo({
         url: "/pages/circle/circle" });
 
     },
     goMine: function goMine() {
       this.spin = false;
-      uni.navigateTo({
+      uni.redirectTo({
         url: "/pages/mine/mine" });
 
     } } };exports.default = _default;

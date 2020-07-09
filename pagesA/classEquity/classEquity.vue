@@ -5,7 +5,7 @@
 			等级权益
 		</view>
 		<view class="header">
-			<swiper class="swiper" previous-margin="90rpx" @change="swiperChange">
+			<swiper class="swiper" previous-margin="90rpx" circular @change="swiperChange">
 				<swiper-item class="swiperitem" v-for="(item,index) in gradeList" :key="index">
 					<view class="itemBox" :class="{'active':index==swiperIndex}">
 						<image :src="item.bgImg" mode="aspectFill" class="bgImg"></image>

@@ -34,9 +34,6 @@
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
           flex-direction: column;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
   border-bottom: 1px solid #ddd;
 }
 .plItem .info {
@@ -67,7 +64,7 @@
   margin-right: 8rpx;
 }
 .plItem .info .left .desc {
-  height: 60rpx;
+  height: 62rpx;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -75,8 +72,9 @@
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
           flex-direction: column;
-  -webkit-justify-content: space-around;
-          justify-content: space-around;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
 }
 .plItem .info .left .desc .time {
   font-size: 20rpx;
@@ -130,15 +128,16 @@
   color: #999999;
 }
 .plItem .detail {
-  width: 604rpx;
+  width: 624rpx;
   font-size: 28rpx;
   font-family: PingFang SC;
   font-weight: 400;
   color: black;
   margin-bottom: 30rpx;
+  margin-left: 68rpx;
 }
 .plItem .imgs {
-  width: 632rpx;
+  width: 624rpx;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -147,17 +146,21 @@
           align-items: center;
   -webkit-flex-wrap: wrap;
           flex-wrap: wrap;
+  margin-left: 68rpx;
 }
 .plItem .imgs image {
   display: block;
   width: 198rpx;
   height: 220rpx;
   border-radius: 4rpx;
-  margin-left: 12rpx;
+  margin-right: 12rpx;
+}
+.plItem .imgs > image:nth-child(3n) {
+  margin-right: 0;
 }
 .plItem .operating {
   margin: 22rpx 0;
-  width: 604rpx;
+  width: 622rpx;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -167,6 +170,7 @@
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
           justify-content: space-between;
+  margin-left: 68rpx;
 }
 .plItem .operating .left {
   display: -webkit-box;
@@ -196,6 +200,7 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+  height: 34rpx;
 }
 .plItem .operating .right .likeBox {
   margin-right: 52rpx;
@@ -207,6 +212,7 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+  height: 34rpx;
 }
 .plItem .operating .right .item .like {
   width: 20rpx;
@@ -221,15 +227,18 @@
   font-family: PingFang SC;
   font-weight: 400;
   color: #999999;
+  margin-left: 12rpx;
+  line-height: 34rpx;
 }
 .plItem .pos {
-  width: 604rpx;
+  width: 624rpx;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+  margin-left: 68rpx;
 }
 .plItem .pos .dwIcon {
   width: 22rpx;

@@ -103,9 +103,9 @@
 				})
 			},
 			goDetail(){
-				// uni.navigateTo({
-				// 	url:"/pages/addActivity/addActivity"
-				// })
+				uni.navigateTo({
+					url:'/pages/activityDetails/activityDetails'
+				})
 			}
 		}
 	}

@@ -121,6 +121,10 @@
   border-radius: 6px;
   margin-bottom: 40rpx;
 }
+.search input {
+  width: 690rpx;
+  height: 54rpx;
+}
 .search .plClass {
   font-size: 28rpx;
   font-family: PingFang SC;

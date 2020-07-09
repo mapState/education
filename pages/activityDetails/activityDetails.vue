@@ -174,7 +174,17 @@
 						</block>
 					</view>
 				</view>
-				<view class="tabbar">
+				<view class="ks3" v-if="status==3">
+					<view class="item kfa">
+						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
+						<text>客服</text>
+					</view>
+					<view class="item">
+						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc"></image>
+						<text>收藏</text>
+					</view>
+				</view>
+				<view class="tabbar" v-if="status!=3&&status!=4">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
@@ -212,6 +222,19 @@
 						</view>
 					</view>
 				</view>
+				<view class="tabbar" v-if="status==2">
+					<view class="item kfa">
+						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
+						<text>客服</text>
+					</view>
+					<view class="item">
+						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc"></image>
+						<text>收藏</text>
+					</view>
+					<view class="wksBtn">
+						报名未开始
+					</view>
+				</view>
 				<view class="ad" v-if="showAd">
 					<image src="/static/icon/close.png" mode="aspectFit" class="closeIcon" @click="showAd=false"></image>
 					<view class="line">
@@ -234,7 +257,7 @@
 				<view class="btn1" @click="OpenGroup">
 					我要开团
 				</view>
-				<view class="btn2">
+				<view class="btn2" @click="goInfo">
 					我要参团(3)
 				</view>
 			</view>
@@ -308,13 +331,17 @@
 				toIndex: '',
 				letterDetails: [],
 				currentLetter: "Details",
-				type: 0, //1 报名中
-				showFixed:true
+				type: 0, //我的报名  1 报名中 3进行中 4已结束
+				showFixed:true,
+				status:0,//1报名中 2未开始 3进行中 4已结束
 			};
 		},
 		onLoad(params) {
 			this.top = uni.getMenuButtonBoundingClientRect().top
 			this.type = params.type
+			if(params.status){
+				this.status=params.status
+			}
 		},
 		onShareAppMessage(res) {
 			if (res.from === 'button') { // 来自页面内分享按钮
@@ -326,6 +353,11 @@
 			}
 		},
 		methods: {
+			goInfo(){
+				uni.navigateTo({
+					url:"/pages/togetherInfo/togetherInfo"
+				})
+			},
 			goCommet() {
 				uni.navigateTo({
 					url: "/pagesA/courseEvaluation/courseEvaluation"
@@ -352,7 +384,7 @@
 						});
 					});
 					this.letterDetails.some(item => {
-						if (scrollTop >= item.top && scrollTop <= (item.bottom-20)) {
+						if ((scrollTop-180) >= item.top && (scrollTop-180) <= (item.bottom-20)) {
 							this.currentLetter = item.id;
 							console.log(this.currentLetter)
 							//当前固定用的是粘性定位，如果不用粘性定位，在这里设置

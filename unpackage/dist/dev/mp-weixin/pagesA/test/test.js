@@ -231,7 +231,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     return {
       selIndex: -1,
       index: 1,
-      isAnswer: false };
+      isAnswer: true };
 
   },
   methods: {

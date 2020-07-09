@@ -247,6 +247,11 @@ __webpack_require__.r(__webpack_exports__);
         url: "/pages/commission/commission" });
 
     },
+    goSchool: function goSchool() {
+      uni.navigateTo({
+        url: "/pagesA/memberSchool/memberSchool" });
+
+    },
     goPage: function goPage(index) {
       switch (index) {
         case 0:
@@ -292,6 +297,11 @@ __webpack_require__.r(__webpack_exports__);
         case 8:
           uni.navigateTo({
             url: "/pagesA/makeMoney/makeMoney" });
+
+          break;
+        case 9:
+          uni.makePhoneCall({
+            phoneNumber: '111' });
 
           break;
         case 10:

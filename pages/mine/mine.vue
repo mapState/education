@@ -60,7 +60,7 @@
 				<text class="t1">会员学院</text>
 				<text class="t2">参与会员学院学习，获得更多权益</text>
 			</view>
-			<view class="btn">
+			<view class="btn"  @click="goSchool">
 				立即学习
 			</view>
 		</view>
@@ -110,6 +110,11 @@
 					url:"/pages/commission/commission"
 				})
 			},
+			goSchool(){
+				uni.navigateTo({
+					url:"/pagesA/memberSchool/memberSchool"
+				})
+			},
 			goPage(index){
 				switch(index){
 					case 0:
@@ -156,6 +161,11 @@
 					uni.navigateTo({
 						url:"/pagesA/makeMoney/makeMoney"
 					})
+					break;
+					case 9:
+					uni.makePhoneCall({
+					    phoneNumber: '111'
+					});
 					break;
 					case 10:
 					uni.navigateTo({

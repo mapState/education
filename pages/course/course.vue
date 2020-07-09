@@ -25,10 +25,10 @@
 				<view class="list">
 					<text class="active" @click="goCourseList">0-3岁</text>
 					<text>0-3岁</text>
-					<text>0-3岁</text>
-					<text>0-3岁</text>
-					<text>0-3岁</text>
-					<text>0-3岁</text>
+					<text>4-6岁</text>
+					<text>6-7岁</text>
+					<text>8-9岁</text>
+					<text>9-11岁</text>
 				</view>
 			</scroll-view>
 		</view>

@@ -1,3 +1,6 @@
+// @function tovmin($rpx){//$rpx为需要转换的字号
+//     @return #{$rpx * 100 / 750}vmin; 
+// }
 page{
 	background:rgba(51,51,51,1);
 }
@@ -7,6 +10,7 @@ page{
 	align-items: center;
 	justify-content: space-around;
 	height:98rpx;
+	// height:tovmin(98);
 	border-bottom: 1px solid #474747;
 	.tab{
 		text-align: center;

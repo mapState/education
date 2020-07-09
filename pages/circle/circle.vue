@@ -1,17 +1,8 @@
 <template>
 	<view class="main">
 		<view class="nav" :style="{paddingTop:top+'px'}">
-			<view class="tag tagActive">
-				热门
-			</view>
-			<view class="tag">
-				精选
-			</view>
-			<view class="tag">
-				最新
-			</view>
-			<view class="tag">
-				官方
+			<view class="tag" v-for="(item,index) in tabList1" :key="index" :class="{'tagActive':index==tabIndex1}" @click="changeTabIndex1(index)">
+				{{item}}
 			</view>
 		</view>
 		<view class="yellow">
@@ -63,6 +54,8 @@
 			return {
 				top: 24,
 				currentIndex: 0,
+				tabList1:['热门','精选','最新','官方'],
+				tabIndex1:0
 			};
 		},
 		onLoad() {
@@ -71,6 +64,9 @@
 		methods: {
 			swiperChange(e) {
 				this.currentIndex = e.detail.current
+			},
+			changeTabIndex1(index){
+				this.tabIndex1=index
 			}
 		}
 	}

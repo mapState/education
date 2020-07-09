@@ -1,54 +1,78 @@
 {
-  "description": "项目配置文件。",
-  "packOptions": {
-    "ignore": []
-  },
-  "setting": {
-    "urlCheck": false,
-    "minified": true,
-    "es6": true
-  },
-  "compileType": "miniprogram",
-  "libVersion": "",
-  "appid": "wx2d49400e53aae68d",
-  "projectname": "testwx",
-  "condition": {
-    "search": {
-      "current": -1,
-      "list": []
-    },
-    "conversation": {
-      "current": -1,
-      "list": []
-    },
-    "game": {
-      "current": -1,
-      "list": []
-    },
-    "miniprogram": {
-      "current": 1,
-      "list": [
-        {
-          "name": "position",
-          "id": 0,
-          "pathName": "pages/position/position"
-        },
-        {
-          "name": "course",
-          "id": 1,
-          "pathName": "pages/course/course"
-        },
-        {
-          "name": "courseDetails",
-          "id": 2,
-          "pathName": "pages/courseDetails/courseDetails"
-        },
-        {
-          "name": "circleDetail",
-          "id": 3,
-          "pathName": "pages/circleDetail/circleDetail"
-        }
-      ]
-    }
-  }
+	"description": "项目配置文件。",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": false,
+		"scopeDataCheck": false,
+		"coverView": true,
+		"es6": true,
+		"postcss": true,
+		"compileHotReLoad": false,
+		"preloadBackgroundData": false,
+		"minified": true,
+		"autoAudits": false,
+		"newFeature": false,
+		"uglifyFileName": false,
+		"uploadWithSourceMap": true,
+		"useIsolateContext": true,
+		"nodeModules": false,
+		"enhance": false,
+		"useCompilerModule": true,
+		"userConfirmedUseCompilerModuleSwitch": false,
+		"showShadowRootInWxmlPanel": true,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
+	},
+	"compileType": "miniprogram",
+	"libVersion": "",
+	"appid": "wx2d49400e53aae68d",
+	"projectname": "testwx",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 1,
+			"list": [
+				{
+					"name": "position",
+					"id": 0,
+					"pathName": "pages/position/position"
+				},
+				{
+					"name": "course",
+					"id": 1,
+					"pathName": "pages/course/course"
+				},
+				{
+					"name": "courseDetails",
+					"id": 2,
+					"pathName": "pages/courseDetails/courseDetails"
+				},
+				{
+					"name": "circleDetail",
+					"id": 3,
+					"pathName": "pages/circleDetail/circleDetail"
+				}
+			]
+		}
+	}
 }

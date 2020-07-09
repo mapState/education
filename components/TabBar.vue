@@ -65,12 +65,12 @@
 		},
 		methods:{
 			goCourse(){
-				uni.navigateTo({
+				uni.redirectTo({
 					url:"/pages/course/course"
 				})
 			},
 			goHome(){
-				uni.navigateTo({
+				uni.redirectTo({
 					url:"/pages/index/index"
 				})
 			},
@@ -97,13 +97,13 @@
 			},
 			goCircle(){
 				this.spin=false
-				uni.navigateTo({
+				uni.redirectTo({
 					url:"/pages/circle/circle"
 				})
 			},
 			goMine(){
 				this.spin=false
-				uni.navigateTo({
+				uni.redirectTo({
 					url:"/pages/mine/mine"
 				})
 			}

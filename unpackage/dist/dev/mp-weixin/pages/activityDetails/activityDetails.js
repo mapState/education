@@ -444,6 +444,29 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
   components: {
     uniPopup: uniPopup,
@@ -457,13 +480,17 @@ __webpack_require__.r(__webpack_exports__);
       toIndex: '',
       letterDetails: [],
       currentLetter: "Details",
-      type: 0, //1 报名中
-      showFixed: true };
-
+      type: 0, //我的报名  1 报名中 3进行中 4已结束
+      showFixed: true,
+      status: 0 //1报名中 2未开始 3进行中 4已结束
+    };
   },
   onLoad: function onLoad(params) {
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.type = params.type;
+    if (params.status) {
+      this.status = params.status;
+    }
   },
   onShareAppMessage: function onShareAppMessage(res) {
     if (res.from === 'button') {// 来自页面内分享按钮
@@ -475,6 +502,11 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
+    goInfo: function goInfo() {
+      uni.navigateTo({
+        url: "/pages/togetherInfo/togetherInfo" });
+
+    },
     goCommet: function goCommet() {
       uni.navigateTo({
         url: "/pagesA/courseEvaluation/courseEvaluation" });
@@ -501,7 +533,7 @@ __webpack_require__.r(__webpack_exports__);
 
         });
         _this.letterDetails.some(function (item) {
-          if (scrollTop >= item.top && scrollTop <= item.bottom - 20) {
+          if (scrollTop - 180 >= item.top && scrollTop - 180 <= item.bottom - 20) {
             _this.currentLetter = item.id;
             console.log(_this.currentLetter);
             //当前固定用的是粘性定位，如果不用粘性定位，在这里设置

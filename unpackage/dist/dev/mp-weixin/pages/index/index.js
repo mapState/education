@@ -238,7 +238,11 @@ __webpack_require__.r(__webpack_exports__);
       right: 0,
       currentIndex: 0,
       titleIndex: 0,
-      showAddTip: true };
+      showAddTip: false,
+      swiperList: ['https://hbimg.huabanimg.com/fafd309bf78db3cc72d851453501cfc74eb45ef150c23-xr5gos_fw658/format/webp',
+      'https://hbimg.huabanimg.com/5532df46d645484f3009553eef71931fbfb056d86bc71-qB3y3k_fw658/format/webp',
+      'https://hbimg.huabanimg.com/3a3b1760646c6ef34213e43874422267d7bd86102cbf6-nKqPxr_fw658/format/webp'] };
+
 
   },
   onLoad: function onLoad() {
@@ -274,10 +278,14 @@ __webpack_require__.r(__webpack_exports__);
         url: "/pages/eventsList/eventsList" });
 
     },
-    goDetail: function goDetail() {
-      console.log(1);
+    goDetail: function goDetail(status) {
       uni.navigateTo({
-        url: "/pages/activityDetails/activityDetails" });
+        url: "/pages/activityDetails/activityDetails?status=" + status });
+
+    },
+    goMessage: function goMessage() {
+      uni.navigateTo({
+        url: "/pagesA/news/news" });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

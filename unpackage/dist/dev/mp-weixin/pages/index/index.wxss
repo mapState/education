@@ -24,6 +24,9 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+page {
+  padding-bottom: 100rpx;
+}
 .mask {
   position: fixed;
   width: 100%;
@@ -190,6 +193,7 @@
   bottom: 0;
   width: 690rpx;
   height: 300rpx;
+  border-radius: 6rpx;
 }
 .swiper-box .swiperBox .swiper {
   width: 690rpx;

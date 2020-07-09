@@ -1,5 +1,8 @@
 <script>
 	export default {
+		// globalData:{
+		// 	t:uni.getMenuButtonBoundingClientRect()
+		// },
 		onLaunch: function() {
 			console.log('App Launch')
 		},

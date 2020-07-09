@@ -371,6 +371,124 @@ page{
 		color:rgba(0,0,0,1);
 	}
 }
+.ks3{
+	position: fixed;
+	width:100%;
+	left:0;
+	bottom:0;
+	width:750rpx;
+	height:112rpx;
+	background:rgba(255,255,255,1);
+	display: flex;
+	align-items: center;
+	z-index: 1;
+	.kfa{
+		position: relative;
+		&::after{
+			content: '';
+			position: absolute;
+			top:50%;
+			transform: translateY(-50%);
+			right:0;
+			width:1px;
+			height:40rpx;
+			background:rgba(221,221,221,1);
+		}
+	}
+	.item{
+		width:50%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content:center;
+		text{
+			font-size:28rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(0,0,0,1);
+			margin-top: 10rpx;
+		}
+		.kf{
+			width:49rpx;
+			height: 45rpx;
+		}
+		.sc{
+			width:48rpx;
+			height: 43rpx;
+		}
+	}
+	.bmBtn{
+		margin-left: 35rpx;
+		display: flex;
+		align-items: center;
+		.btn1{
+			width:160rpx;
+			height:80rpx;
+			background:rgba(221,221,221,1);
+			border-radius:40rpx 0px 0px 40rpx;
+			font-size:28rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(0,0,0,1);
+			text-align: center;
+			line-height: 80rpx;
+		}
+		.btn2{
+			width:160rpx;
+			height:80rpx;
+			background:rgba(253,211,15,1);
+			font-size:28rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(0,0,0,1);
+			text-align: center;
+			line-height: 80rpx;
+		}
+		.btn3{
+			width:160rpx;
+			height:80rpx;
+			background:rgba(238,83,47,1);
+			border-radius:0px 40rpx 40rpx 0px;
+			font-size:28rpx;
+			font-family:PingFang SC;
+			font-weight:500;
+			color:rgba(255,255,255,1);
+			text-align: center;
+			line-height: 80rpx;
+		}
+	}
+	.btns{
+		margin-left: 35rpx;
+		display: flex;
+		align-items: center;
+		.buy{
+			width:240rpx;
+			height:80rpx;
+			background:rgba(253,211,15,1);
+			border-radius:40rpx 0px 0px 40rpx;
+			font-size:32rpx;
+			font-family:PingFang SC;
+			font-weight:400;
+			color:rgba(0,0,0,1);
+			text-align: center;
+			line-height: 80rpx;
+		}
+		.group{
+			width:240rpx;
+			height:80rpx;
+			background:rgba(237,83,47,1);
+			border-radius:0px 40rpx 40rpx 0px;
+			font-size:32rpx;
+			font-family:PingFang SC;
+			font-weight:500;
+			color:rgba(255,255,255,1);
+			text-align: center;
+			line-height: 80rpx;
+		}
+	}
+}
+
 .tabbar{
 	position: fixed;
 	width:100%;
@@ -414,6 +532,19 @@ page{
 			width:48rpx;
 			height: 43rpx;
 		}
+	}
+	.wksBtn{
+		width:463rpx;
+		height:80rpx;
+		background:rgba(0,191,191,1);
+		border-radius:40rpx;
+		font-size:32rpx;
+		font-family:PingFang SC;
+		font-weight:500;
+		color:rgba(255,255,255,1);
+		text-align: center;
+		line-height: 80rpx;
+		margin-left: 50rpx;
 	}
 	.bmBtn{
 		margin-left: 35rpx;
