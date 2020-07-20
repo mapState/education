@@ -1,8 +1,8 @@
 <template>
 	<view class="main">
 		<view class="search">
-			<input class="input" placeholder="搜索活动" placeholder-class="plClass" @focus="focus=true" @blur="focus=false"/>
-			<image src="../../static/icon/ss.png" mode="aspectFill" class="ssIcon" :class="{'focusClass':focus}"></image>
+			<input class="input" placeholder="搜索活动" placeholder-class="plClass" />
+			<image src="../../static/icon/ss.png" mode="aspectFill" class="ssIcon focusClass"></image>
 		</view>
 		<view class="title">
 			<text class="t1">搜索历史</text>
@@ -35,7 +35,7 @@
 		},
 		data() {
 			return {
-				focus:false
+				
 			}
 		},
 		methods: {

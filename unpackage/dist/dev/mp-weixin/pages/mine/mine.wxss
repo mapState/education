@@ -66,6 +66,7 @@ page {
           flex-direction: column;
 }
 .info .content .noLogin {
+  position: relative;
   width: 100%;
   box-sizing: border-box;
   padding: 0 30rpx;
@@ -77,6 +78,14 @@ page {
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+}
+.info .content .noLogin .getUserBtn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
 }
 .info .content .noLogin text {
   font-size: 30rpx;

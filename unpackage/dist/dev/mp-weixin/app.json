@@ -83,6 +83,11 @@
             ]
         }
     },
+    "permission": {
+        "scope.userLocation": {
+            "desc": "获取当前位置"
+        }
+    },
     "usingComponents": {},
-    "sitemapLocation": "sitemap31.json"
+    "sitemapLocation": "sitemap87.json"
 }

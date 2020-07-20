@@ -5,17 +5,18 @@
 		</view>
 		<view class="info">
 			<view class="content">
-				<view class="noLogin" v-if="isLogin==false" @click="isLogin=true">
+				<view class="noLogin" v-if="isLogin==false">
+					<button open-type="getUserInfo" @getuserinfo="getUserInfo" class="getUserBtn"></button>
 					<view class="imgBox">
 						<image src="../../static/icon/mine/noLogin.png" mode="aspectFit"></image>
 					</view>
 					<text>授权登入</text>
 				</view>
 				<view class="top" v-else>
-					<image src="../../static/1.jpg" mode="aspectFill" class="avatar"></image>
+					<image :src="userInfo.avatar" mode="aspectFill" class="avatar"></image>
 					<view class="right">
 						<view class="row">
-							<text class="name">name</text>
+							<text class="name">{{userInfo.name}}</text>
 							<text class="up">去升级？</text>
 						</view>
 						<view class="line">
@@ -60,7 +61,7 @@
 				<text class="t1">会员学院</text>
 				<text class="t2">参与会员学院学习，获得更多权益</text>
 			</view>
-			<view class="btn"  @click="goSchool">
+			<view class="btn" @click="goSchool">
 				立即学习
 			</view>
 		</view>
@@ -89,99 +90,154 @@
 		},
 		data() {
 			return {
-				isLogin:false,
-				top:24,
-				iconText:['我的消息','我的课程','我的报名','我的成长','我的发布','我的动态','我的团队',
-					'等级权益','推广赚钱','联系客服','常见问题','其他'
+				userInfo:{
+					avatar:'',
+					name:''
+				},
+				isLogin: false,
+				top: 24,
+				iconText: ['我的消息', '我的课程', '我的报名', '我的成长', '我的发布', '我的动态', '我的团队',
+					'等级权益', '推广赚钱', '联系客服', '常见问题', '其他'
 				]
 			};
 		},
 		onLoad() {
-			this.top=uni.getMenuButtonBoundingClientRect().top
+			this.top = uni.getMenuButtonBoundingClientRect().top
 		},
-		methods:{
-			goIntegral(){
-				uni.navigateTo({
-					url:"/pages/integral/integral"
+		onShow() {
+			uni.getStorage({
+			    key: 'userInfo',
+			    success:(res) =>{
+			       this.userInfo=res.data
+						 this.isLogin=true
+			    }
+			});
+		},
+		methods: {
+			getUserInfo(info) {
+				var that = this
+				console.log(info);
+				wx.login({
+					success(res) {
+						if (res.code) {
+							if (info.detail.userInfo) {
+								console.log("点击了同意授权");
+								that.$api.post('/api/login/wx/callback', {
+									code: res.code,
+									encryptedData: info.detail.encryptedData,
+									iv: info.detail.iv
+								}).then((result) => {
+									console.log(result.data)
+									that.userInfo.avatar = result.data.avatar
+									that.userInfo.name = result.data.name
+									that.isLogin=true
+									uni.setStorage({
+										key: 'token',
+										data: result.data.token,
+										success: function() {
+
+										}
+									});
+									uni.setStorage({
+										key: 'userInfo',
+										data: that.userInfo,
+										success: function() {
+
+										}
+									});
+								})
+							} else {
+								console.log("点击了拒绝授权");
+
+							}
+						} else {
+							console.log('登录失败！' + res.errMsg)
+						}
+					}
 				})
 			},
-			goCommission(){
+			goIntegral() {
 				uni.navigateTo({
-					url:"/pages/commission/commission"
+					url: "/pages/integral/integral"
 				})
 			},
-			goSchool(){
+			goCommission() {
 				uni.navigateTo({
-					url:"/pagesA/memberSchool/memberSchool"
+					url: "/pages/commission/commission"
 				})
 			},
-			goPage(index){
-				switch(index){
+			goSchool() {
+				uni.navigateTo({
+					url: "/pagesA/memberSchool/memberSchool"
+				})
+			},
+			goPage(index) {
+				switch (index) {
 					case 0:
-					uni.navigateTo({
-						url:"/pagesA/news/news"
-					})
-					break;
+						uni.navigateTo({
+							url: "/pagesA/news/news"
+						})
+						break;
 					case 1:
-					uni.navigateTo({
-						url:"/pagesA/myCourse/myCourse"
-					})
-					break;
+						uni.navigateTo({
+							url: "/pagesA/myCourse/myCourse"
+						})
+						break;
 					case 2:
-					uni.navigateTo({
-						url:"/pagesA/mySignUp/mySignUp"
-					})
-					break;
+						uni.navigateTo({
+							url: "/pagesA/mySignUp/mySignUp"
+						})
+						break;
 					case 3:
-					uni.navigateTo({
-						url:"/pagesA/myGrowth/myGrowth"
-					})
-					break;
+						uni.navigateTo({
+							url: "/pagesA/myGrowth/myGrowth"
+						})
+						break;
 					case 4:
-					uni.navigateTo({
-						url:"/pagesA/myPost/myPost"
-					})
-					break;
+						uni.navigateTo({
+							url: "/pagesA/myPost/myPost"
+						})
+						break;
 					case 5:
-					uni.navigateTo({
-						url:"/pagesA/myActivity/myActivity"
-					})
-					break;
+						uni.navigateTo({
+							url: "/pagesA/myActivity/myActivity"
+						})
+						break;
 					case 6:
-					uni.navigateTo({
-						url:"/pagesA/mytTeam/mytTeam"
-					})
-					break;
+						uni.navigateTo({
+							url: "/pagesA/mytTeam/mytTeam"
+						})
+						break;
 					case 7:
-					uni.navigateTo({
-						url:"/pagesA/classEquity/classEquity"
-					})
-					break;
+						uni.navigateTo({
+							url: "/pagesA/classEquity/classEquity"
+						})
+						break;
 					case 8:
-					uni.navigateTo({
-						url:"/pagesA/makeMoney/makeMoney"
-					})
-					break;
+						uni.navigateTo({
+							url: "/pagesA/makeMoney/makeMoney"
+						})
+						break;
 					case 9:
-					uni.makePhoneCall({
-					    phoneNumber: '111'
-					});
-					break;
+						uni.makePhoneCall({
+							phoneNumber: '111'
+						});
+						break;
 					case 10:
-					uni.navigateTo({
-						url:"/pagesA/issue/issue"
-					})
-					break;
+						uni.navigateTo({
+							url: "/pagesA/issue/issue"
+						})
+						break;
 					case 11:
-					uni.navigateTo({
-						url:"/pagesA/other/other"
-					})
-					break;
+						uni.navigateTo({
+							url: "/pagesA/other/other"
+						})
+						break;
 				}
 			},
-			goCollect(){
+			goCollect() {
 				uni.navigateTo({
-					url:"/pagesA/myCollect/myCollect"
+					url: "/pagesA/myCollect/myCollect"
 				})
 			}
 		}

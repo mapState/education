@@ -94,8 +94,20 @@
 			this.top = uni.getMenuButtonBoundingClientRect().top
 			this.height=uni.getMenuButtonBoundingClientRect().height
 			console.log(this.height)
+			this.getAdvertList()
 		},
 		methods: {
+			//轮播
+			getAdvertList() {
+				this.$api.get('/api/static/advertList', {
+					params: {
+						type: 3
+					}
+				}).then((res) => {
+					//this.swiperList=res.data
+					console.log(res.data)
+				})
+			},
 			swiperChange(e) {
 				this.currentIndex = e.detail.current
 			},

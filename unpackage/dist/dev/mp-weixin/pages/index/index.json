@@ -1,6 +1,7 @@
 {
   "navigationStyle": "custom",
   "usingComponents": {
+    "uni-load-more": "/components/uni-load-more/uni-load-more",
     "activity": "/components/Activity",
     "tab-bar": "/components/TabBar"
   }

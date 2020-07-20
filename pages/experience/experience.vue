@@ -1,8 +1,8 @@
 <template>
 	<view class="main">
 		<view class="textarea">
-			<textarea placeholder-class="plClass" placeholder="这一刻的想法~" :maxlength="-1"/>
-		</view>
+			<textarea placeholder-class="plClass" placeholder="这一刻的想法~" :maxlength="-1" />
+			</view>
 		<view class="addBtn">
 			<view class="item">
 				<image src="../../static/img/addImg.png" mode="aspectFill" class="addImg"></image>
@@ -11,7 +11,7 @@
 				<image src="../../static/img/addVideo.png" mode="aspectFill" class="addVideo"></image>
 			</view>
 		</view>
-		<view class="row">
+		<view class="row" @click="gotomapLocation">
 			<view class="icon">
 				<image src="../../static/icon/dwa.png" mode="aspectFit" class="dw"></image>
 			</view>
@@ -65,7 +65,14 @@
 			},
 			switchChange(e){
 				console.log(e.target.value)
-			}
+			},
+			gotomapLocation(){//选取位置
+				wx.chooseLocation({
+					success: (res)=>{
+						console.log(res)
+					}
+				})
+			},
 		}
 	}
 </script>

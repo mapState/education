@@ -1,7 +1,7 @@
 <template>
 	<view class="main">
 		<view class="mask" v-if="showAddTip" @click="closeTip">
-			
+
 		</view>
 		<view class="addTip" :style="{top:(top+height+6)+'px'}" v-if="showAddTip">
 			<view class="box">
@@ -12,7 +12,7 @@
 		<view class="header" :style="{paddingTop:top+'px'}">
 			<view class="position" @click="goPosition" :style="{height:height+'px'}">
 				<image src="/static/icon/dw.png" mode="aspectFit" class="dwIcon"></image>
-				<text>杭州市江干区</text>
+				<text>{{address}}</text>
 			</view>
 			<view class="search">
 				<image src="/static/icon/ssl.png" mode="aspectFill" class="sslIcon"></image>
@@ -28,13 +28,12 @@
 			<view class="swiperBox">
 				<swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" @change="swiperChange">
 					<swiper-item v-for="item in swiperList" :key="item">
-						<image :src="item"
-						 mode="aspectFill" class="itemImg"></image>
+						<image :src="item" mode="aspectFill" class="itemImg"></image>
 					</swiper-item>
 				</swiper>
 				<view class="dots">
 					<view class="dot" v-for="item in 3" :key="item" :class="{'dotActive':item==currentIndex}">
-			
+
 					</view>
 				</view>
 			</view>
@@ -73,7 +72,7 @@
 			</block>
 		</view>
 		<!-- 		</view> -->
-		<view class="loginTip">
+		<view class="loginTip" v-if="loginStatus">
 			<view class="left">
 				<image src="/static/icon/tioIcon.png" mode="aspectFill" class="leftIcon"></image>
 				<text>您当前未登入，请登入</text>
@@ -82,40 +81,106 @@
 				去登入
 			</view>
 		</view>
+		<uni-load-more :status="loadStatus"></uni-load-more>
 		<tab-bar :tabIndex="1"></tab-bar>
 	</view>
 </template>
 
 <script>
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
+	import QQMapWX from '../../common/qqmap-wx-jssdk.min.js';
+	var qqmapsdk;
 	import Activity from '@/components/Activity.vue';
 	import TabBar from '@/components/TabBar.vue'
 	export default {
 		components: {
 			Activity,
-			TabBar
+			TabBar,
+			uniLoadMore
 		},
 		data() {
 			return {
+				loadStatus:'more',
+				loginStatus:false,
+				address:'',
 				top: 30,
 				height: 32,
-				right:0,
+				right: 0,
 				currentIndex: 0,
 				titleIndex: 0,
-				showAddTip:false,
-				swiperList:['https://hbimg.huabanimg.com/fafd309bf78db3cc72d851453501cfc74eb45ef150c23-xr5gos_fw658/format/webp',
+				showAddTip: false,
+				swiperList: ['https://hbimg.huabanimg.com/fafd309bf78db3cc72d851453501cfc74eb45ef150c23-xr5gos_fw658/format/webp',
 					'https://hbimg.huabanimg.com/5532df46d645484f3009553eef71931fbfb056d86bc71-qB3y3k_fw658/format/webp',
 					'https://hbimg.huabanimg.com/3a3b1760646c6ef34213e43874422267d7bd86102cbf6-nKqPxr_fw658/format/webp'
 				]
 			}
 		},
 		onLoad() {
-			let info=uni.getMenuButtonBoundingClientRect()
+			let info = uni.getMenuButtonBoundingClientRect()
 			this.top = info.top
 			this.height = info.height
+			this.getAddress()
+			this.getAdvertList()
+			this.getCates()
+			//this.getActivityList()
+		},
+		onReachBottom(){
+			this.loadStatus="loading"
+			setTimeout(()=>{
+				this.loadStatus="more"
+			},1000)
 		},
 		methods: {
-			closeTip(){
-				this.showAddTip=false
+			getAddress(){
+				qqmapsdk = new QQMapWX({
+					key: 'ZHVBZ-ZM36S-O3JOX-63CPR-EYOX6-EOFGR'
+				});
+				wx.getLocation({
+					type: 'wgs84',
+					success:(res)=>{
+						console.log(res);
+						//2、根据坐标获取当前位置名称，显示在顶部:腾讯地图逆地址解析
+						qqmapsdk.reverseGeocoder({
+							location: {
+								latitude: res.latitude,
+								longitude: res.longitude
+							},
+							success:(addressRes) =>{
+								console.log(addressRes);
+								//var address = addressRes.result.formatted_addresses.recommend;
+								this.address = addressRes.result.address_component.city + addressRes.result.address_component.district
+							}
+						})
+					}
+				})
+			},
+			//轮播
+			getAdvertList() {
+				this.$api.get('/api/static/advertList', {
+					params: {
+						type: 1
+					}
+				}).then((res) => {
+					//this.swiperList=res.data
+					//console.log(res.data)
+				})
+			},
+			//获取分类列表
+			getCates() {
+				this.$api.get('/api/static/dictList').then((res) => {
+					//this.swiperList=res.data
+					//console.log(res.data)
+				})
+			},
+			//活动列表
+			getActivityList(){
+				this.$api.get('/api/act/getActivityList').then((res) => {
+					//this.swiperList=res.data
+					console.log(res.data)
+				})
+			},
+			closeTip() {
+				this.showAddTip = false
 			},
 			swiperChange(e) {
 				this.currentIndex = e.detail.current
@@ -143,12 +208,12 @@
 			},
 			goDetail(status) {
 				uni.navigateTo({
-					url: "/pages/activityDetails/activityDetails?status="+status
+					url: "/pages/activityDetails/activityDetails?status=" + status
 				})
 			},
-			goMessage(){
+			goMessage() {
 				uni.navigateTo({
-					url:"/pagesA/news/news"
+					url: "/pagesA/news/news"
 				})
 			}
 		}

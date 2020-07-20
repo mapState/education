@@ -25,7 +25,7 @@
 /* 透明度 */
 /* 文章场景相关 */
 page {
-  padding-bottom: 100rpx;
+  padding-bottom: 110rpx;
 }
 .mask {
   position: fixed;
