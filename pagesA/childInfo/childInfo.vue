@@ -10,7 +10,7 @@
 			<text class="title">填写信息</text>
 			<view class="row">
 				<text class="span">孩子姓名</text>
-				<input type="text" value="" placeholder="请输入孩子名称" placeholder-class="plClass" class="input" />
+				<input type="text" value="" placeholder="请输入孩子名称" placeholder-class="plClass" class="input" v-model="name" />
 			</view>
 			<view class="row">
 				<text class="span">出生年月</text>
@@ -36,33 +36,33 @@
 			</view>
 			<view class="row">
 				<text class="span">家庭住址</text>
-				<input type="text" value="" placeholder="请输入家庭住址" placeholder-class="plClass" class="input" />
+				<input type="text" value="" placeholder="请输入家庭住址" placeholder-class="plClass" class="input" v-model="address" />
 			</view>
 		</view>
 		<view class="main" v-if="tabIndex==1">
-			<view class="child" v-for="item in 2" :key="item">
-				<view class="delBtn">
+			<view class="child" v-for="item in childList" :key="item.id">
+				<view class="delBtn" @click="delChild(item)">
 					删除
 				</view>
 				<view class="row">
 					<text class="span">孩子姓名</text>
-					<text class="ctx">陈七</text>
+					<text class="ctx">{{item.name}}</text>
 				</view>
 				<view class="row">
 					<text class="span">出生年月</text>
-					<text class="ctx">陈七</text>
+					<text class="ctx">{{item.birthday}}</text>
 				</view>
 				<view class="row">
 					<text class="span">孩子性别</text>
-					<text class="ctx">陈七</text>
+					<text class="ctx">{{item.sex==0?'女':'男'}}</text>
 				</view>
 				<view class="row">
 					<text class="span">家庭住址</text>
-					<text class="ctx">陈七</text>
+					<text class="ctx">{{item.address}}</text>
 				</view>
 			</view>
 		</view>
-		<view class="saveBtn">
+		<view class="saveBtn" @click="save">
 			保 存
 		</view>
 	</view>
@@ -80,8 +80,10 @@
 				date: currentDate,
 				dateTip: true,
 				sexTip: true,
-				array: ['男', '女'],
+				array: ['女', '男'],
 				index: 0,
+				childList:[],
+				address:''
 			};
 		},
 		computed: {
@@ -92,7 +94,49 @@
 				return this.getDate('end');
 			}
 		},
+		onLoad() {
+			this.getList()
+		},
 		methods: {
+			delChild(item){
+				console.log(item)
+				delete item.createDate
+				let d={...item}
+				d.status=0
+				console.log(d)
+				this.$api.post('/api/child/save',d).then((res)=>{
+					console.log(res)
+					this.getList()
+				})
+			},
+			getList(){
+				this.$api.get('/api/child/getList',{
+					params:{
+						userId:uni.getStorageSync('userInfo').id
+					}
+				}).then((res)=>{
+					console.log(res)
+					this.childList=res.data
+				})
+			},
+			save(){
+				if(this.name==''||this.dateTip||this.sexTip||this.address==''){
+					uni.showToast({
+						title:"请认真填写信息",
+						icon:'none'
+					})
+					return
+				}
+				this.$api.post('/api/child/save',{
+					userId:uni.getStorageSync('userInfo').id,
+					name:this.name,
+					birthday:this.date,
+					sex:parseInt(this.index),
+					address:this.address
+				}).then((res)=>{
+						this.getList()
+				})
+			},
 			changeTabIndex(index) {
 				this.tabIndex = index
 			},

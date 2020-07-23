@@ -104,6 +104,9 @@
   -webkit-align-items: center;
           align-items: center;
 }
+.row .addressTxt {
+  color: #FDD30F;
+}
 .row .rightIcon {
   position: absolute;
   width: 17rpx;

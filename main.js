@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 
 import uniRequest from 'uni-request';
-uniRequest.defaults.baseURL = 'http://192.168.0.123:10000';
+uniRequest.defaults.baseURL = 'http://192.168.0.110:10000';
 // uniRequest.defaults.headers.common['Authorization'] = 'Bearer ' + uni.getStorageSync('token');
 uniRequest.defaults.headers.post['Content-Type'] = 'application/json';
 // 请求拦截
@@ -14,7 +14,7 @@ uniRequest.interceptors.request.use(
 	},
 	err => {
 		uni.showLoading({
-			title: '网络故障',
+			title: '请求超时啦',
 			mask:"true"
 		});
 	return Promise.reject(err);
@@ -59,7 +59,7 @@ uniRequest.interceptors.request.use(
 
 Vue.config.productionTip = false
 Vue.prototype.$api=uniRequest;
-
+Vue.prototype.$baseUrl='https://smallwx.pkbkok.com/lesson/file/view/';
 App.mpType = 'app'
 
 const app = new Vue({

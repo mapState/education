@@ -1,8 +1,8 @@
 <template>
 	<view class="item" @click="goDetail">
-		<image src="https://hbimg.huabanimg.com/a0ca655c84991202c83bfb8110ee4480873d5899299ba-6voOiU_fw658/format/webp" mode="aspectFill" class="img"></image>
+		<image :src="imgUrl + detail.poster" mode="aspectFill" class="img"></image>
 		<view class="right">
-			<text class="t1">0-3岁小孩习惯培养课程大礼包，从小培养计划</text>
+			<text class="t1">{{detail.title}}</text>
 			<view class="tags">
 				<view class="tag">
 					0-3岁
@@ -25,11 +25,21 @@
 	export default {
 		data() {
 			return {
-				
+				imgUrl:''
 			};
+		},
+		props:{
+			detail:{
+				type:Object,
+				default:{}
+			}
+		},
+		mounted() {
+			this.imgUrl=this.$baseUrl
 		},
 		methods:{
 			goDetail(){
+				getApp().globalData.courseData=this.detail
 				uni.navigateTo({
 					url:"/pages/courseDetails/courseDetails"
 				})

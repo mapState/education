@@ -59,10 +59,28 @@
 				imgList: [
 					'https://hbimg.huabanimg.com/388d9f7f46ca2367215019e2cc657a120232f1a090ab6d-VROHhO_fw658/format/webp',
 					'https://hbimg.huabanimg.com/6949b1b94886ea5688ded50a31f2bc24d2ed3aaa2c94e-dJ0QDC_fw658/format/webp'
-				]
+				],
+				pageNo:1,
+				pageSize:5,
+				userId:''
 			};
 		},
+		onLoad() {
+			this.userId=uni.getStorageSync("userInfo").id
+			this.getList()
+		},
 		methods: {
+			getList(){
+				this.$api.get('/api/club/getMomentByMyself',{
+					params:{
+						pageSize:this.pageSize,
+						pageNo:this.pageNo,
+						userId:this.userId
+					}
+				}).then((res)=>{
+					console.log(res)
+				})
+			},
 			previewImage() {
 				uni.previewImage({
 					urls: this.imgList

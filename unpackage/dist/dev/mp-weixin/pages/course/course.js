@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _course_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./course.vue?vue&type=script&lang=js& */ 104);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _course_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _course_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _course_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./course.vue?vue&type=style&index=0&lang=scss& */ 106);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
 
 var renderjs
 
@@ -195,21 +195,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {
   components: {
     TabBar: TabBar,
@@ -219,7 +204,12 @@ __webpack_require__.r(__webpack_exports__);
     return {
       top: 24,
       currentIndex: 0,
-      height: 32 };
+      height: 32,
+      pageSize: 5,
+      pageNo: 1,
+      ageIndex: 0,
+      classList: [],
+      courseList: [] };
 
   },
   onLoad: function onLoad() {
@@ -227,8 +217,36 @@ __webpack_require__.r(__webpack_exports__);
     this.height = uni.getMenuButtonBoundingClientRect().height;
     console.log(this.height);
     this.getAdvertList();
+    this.getCates();
   },
   methods: {
+    changeAgeIndex: function changeAgeIndex(index) {
+      this.ageIndex = index;
+    },
+    //获取分类列表
+    getCates: function getCates() {var _this = this;
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: 2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+        } }).
+      then(function (res) {
+        console.log(res.data);
+        _this.classList = res.data;
+        var types = res.data['0'].dictVoList['0'].id;
+        _this.getCourseList(types);
+      });
+    },
+    getCourseList: function getCourseList(types) {var _this2 = this;
+      this.$api.get('/api/lesson/list', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          types: types } }).
+
+      then(function (res) {
+        _this2.courseList = res.data;
+      });
+    },
     //轮播
     getAdvertList: function getAdvertList() {
       this.$api.get('/api/static/advertList', {
@@ -248,9 +266,8 @@ __webpack_require__.r(__webpack_exports__);
         url: "/pages/searchCourses/searchCourses" });
 
     },
-    goCourseList: function goCourseList() {
-      uni.navigateTo({
-        url: "/pages/courseList/courseList" });
+    goCourseList: function goCourseList(item) {
+      console.log(item);
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

@@ -10,7 +10,7 @@
 		<scroll-view class="scroll-view" scroll-y scroll-with-animation="true" :scroll-into-view="toIndex" @scroll="scrollHandle">
 			<view class="main">
 				<view class="ss">
-					<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593333346662&di=d4cceef20cedcd44a9c1105a107a1803&imgtype=0&src=http%3A%2F%2Ft8.baidu.com%2Fit%2Fu%3D1484500186%2C1503043093%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D853"
+					<image :src="imgUrl+detail.poster"
 					 mode="aspectFill" class="ssImge"></image>
 				</view>
 				<!-- <swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" :indicator-dots="true"
@@ -22,7 +22,7 @@
 				</swiper> -->
 				<view class="titleBox">
 					<view class="title">
-						<text>0-3岁小孩习惯培养课程大礼包...</text>
+						<text>{{detail.title}}</text>
 						<view class="icons" @click="$refs.sharePop.open">
 							<image src="../../static/icon/share.png" mode="aspectFit"></image>
 							<text>赚佣金</text>
@@ -38,7 +38,7 @@
 					</view>
 					<view class="price">
 						<view class="col">
-							￥<text class="t1">119</text>
+							￥<text class="t1">{{detail.price}}</text>
 						</view>
 						<view class="buy">
 							已购102458
@@ -58,23 +58,20 @@
 					</view> -->
 					<view class="list">
 						<scroll-view class="scroll-view_H" scroll-x="true">
-							<view class="item" v-for="item in 5" :key="item">
-								<image src="../../static/1.jpg" mode="aspectFill"></image>
-								<text>我要做个乖宝宝</text>
+							<view class="item" v-for="item in recomedList" :key="item.id">
+								<image :src="imgUrl+item.poster" mode="aspectFill"></image>
+								<text>{{item.title}}</text>
 							</view>
 						</scroll-view>
 					</view>
 				</view>
 				<text class="block">1</text>
-				<view class="tabs" :style="{top:top+'px'}">
+				<view class="tabs">
 					<text :class="{'active':currentLetter=='Details'}" @click="toView('Details')">详情介绍</text>
 					<text :class="{'active':currentLetter=='Evaluation'}" @click="toView('Evaluation')">用户评价</text>
 				</view>
 				<view class="detailBox module" id="Details">
-					<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593333346662&di=d4cceef20cedcd44a9c1105a107a1803&imgtype=0&src=http%3A%2F%2Ft8.baidu.com%2Fit%2Fu%3D1484500186%2C1503043093%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D853"
-					 mode="aspectFill"></image>
-					<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593333346662&di=d4cceef20cedcd44a9c1105a107a1803&imgtype=0&src=http%3A%2F%2Ft8.baidu.com%2Fit%2Fu%3D1484500186%2C1503043093%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D853"
-					 mode="aspectFill" class=""></image>
+					<rich-text :nodes="detail.intro"></rich-text>
 				</view>
 				<view class="block">1
 				</view>
@@ -185,17 +182,25 @@
 		},
 		data() {
 			return {
+				detail:{},
 				top: 22,
 				scrollTop: 0,
 				showAd: true,
 				toIndex: '',
 				letterDetails: [],
 				currentLetter:"Details",
-				type:0
+				type:0,
+				recomedList:[],
+				imgUrl:'',
+				commentList:[]
 			};
 		},
 		onLoad(params) {
+			this.imgUrl=this.$baseUrl
 			this.top = uni.getMenuButtonBoundingClientRect().top
+			this.detail=getApp().globalData.courseData
+			this.getCommentList()
+			this.getStudyContent()
 			if(params.type){
 				this.type=params.type
 			}
@@ -210,6 +215,25 @@
 			}
 		},
 		methods: {
+			getCommentList(){
+				this.$api.get('/api/lesson/getCommentList',{
+					params:{
+						lessonId:this.detail.id
+					}
+				}).then((res)=>{
+					this.commentList=res.data
+				})
+			},
+			getStudyContent(){
+				this.$api.get('/api/lesson/getBookListByLessonId',{
+					params:{
+						lessonId:this.detail.contentLesson,
+						type:1
+					}
+				}).then((res)=>{
+					this.recomedList=res.data
+				})
+			},
 			goEval(){
 				uni.navigateTo({
 					url:"/pagesA/courseEvaluation/courseEvaluation"

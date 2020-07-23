@@ -130,6 +130,7 @@
 									console.log(result.data)
 									that.userInfo.avatar = result.data.avatar
 									that.userInfo.name = result.data.name
+									that.userInfo.id = result.data.id
 									that.isLogin=true
 									uni.setStorage({
 										key: 'token',

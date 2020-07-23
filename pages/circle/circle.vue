@@ -55,18 +55,42 @@
 				top: 24,
 				currentIndex: 0,
 				tabList1:['热门','精选','最新','官方'],
-				tabIndex1:0
+				tabIndex1:0,
+				pageNo:1,
+				pageSize:5,
 			};
 		},
 		onLoad() {
 			this.top = uni.getMenuButtonBoundingClientRect().top
+			this.getCates()
+			this.getCircleList()
 		},
 		methods: {
+			getCircleList(){
+				this.$api.get('/api/club/getMomentList',{
+					params:{
+						pageNo:this.pageNo,
+						pageSize:this.pageSize,
+						type:this.tabIndex1+1
+					}
+				})
+			},
+			//获取分类列表
+			getCates() {
+				this.$api.get('/api/static/dictList',{
+					params:{
+						type:4 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+					}
+				}).then((res) => {
+					console.log(res.data)
+				})
+			},
 			swiperChange(e) {
 				this.currentIndex = e.detail.current
 			},
 			changeTabIndex1(index){
 				this.tabIndex1=index
+				this.getCircleList()
 			}
 		}
 	}

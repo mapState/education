@@ -45,7 +45,15 @@
 			"current": -1,
 			"list": []
 		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
 		"game": {
+			"current": -1,
+			"list": []
+		},
+		"gamePlugin": {
 			"current": -1,
 			"list": []
 		},
@@ -53,24 +61,69 @@
 			"current": 1,
 			"list": [
 				{
-					"name": "position",
 					"id": 0,
-					"pathName": "pages/position/position"
+					"name": "position",
+					"pathName": "pages/position/position",
+					"query": ""
 				},
 				{
-					"name": "course",
 					"id": 1,
-					"pathName": "pages/course/course"
+					"name": "course",
+					"pathName": "pages/course/course",
+					"query": ""
 				},
 				{
-					"name": "courseDetails",
 					"id": 2,
-					"pathName": "pages/courseDetails/courseDetails"
+					"name": "courseDetails",
+					"pathName": "pages/courseDetails/courseDetails",
+					"query": ""
 				},
 				{
-					"name": "circleDetail",
 					"id": 3,
-					"pathName": "pages/circleDetail/circleDetail"
+					"name": "circleDetail",
+					"pathName": "pages/circleDetail/circleDetail",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "pages/activityDetails/activityDetails",
+					"pathName": "pages/activityDetails/activityDetails",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/eventsList/eventsList",
+					"pathName": "pages/eventsList/eventsList",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/myActivity/myActivity",
+					"pathName": "pagesA/myActivity/myActivity",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/eventsList/eventsList",
+					"pathName": "pages/eventsList/eventsList",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/index/index",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/course/course",
+					"pathName": "pages/course/course",
+					"scene": null
 				}
 			]
 		}

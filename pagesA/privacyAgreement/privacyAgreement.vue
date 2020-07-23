@@ -13,8 +13,19 @@
 	export default {
 		data() {
 			return {
-				
+				dt:{}
 			};
+		},
+		onLoad() {
+			this.getData()
+		},
+		methods:{
+			getData(){
+				this.$api.get('/api/static/agreementList').then((res)=>{
+					this.dt=res.data
+					//console.log(res.data)
+				})
+			}
 		}
 	}
 </script>

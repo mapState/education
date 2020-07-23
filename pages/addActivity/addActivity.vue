@@ -9,18 +9,23 @@
 				<text>活动封面</text>
 			</view>
 		</view>
-		<view class="row">
+		<view class="row" @click="gotomapLocation">
 			<view class="icon">
 				<image src="../../static/icon/dwa.png" mode="aspectFit" class="dw"></image>
 			</view>
-			<text>活动地点</text>
+			<text class="addressTxt" v-if="address">{{address}}</text>
+			<text v-else>活动地点</text>
 			<image src="../../static/icon/right.png" mode="aspectFit" class="rightIcon"></image>
 		</view>
 		<view class="row">
 			<view class="icon">
 				<image src="../../static/icon/time.png" mode="aspectFit" class="timeIcon"></image>
 			</view>
-			<text>活动时间</text>
+			<e-picker mode="dateTime" :showValue="currentDateTime" @change="handleChange('currentDateTime',$event)">
+				<view class="time">
+					{{currentDateTime||'活动时间'}}
+				</view>
+			</e-picker>
 			<image src="../../static/icon/right.png" mode="aspectFit" class="rightIcon"></image>
 		</view>
 		<view class="row">
@@ -83,13 +88,25 @@
 		},
 		data() {
 			return {
-				
+				address:'',
+				currentDateTime:''
 			};
 		},
 		methods:{
+			handleChange(type, e) {
+				this[type] = e
+			},
 			openPop(){
 				this.$refs.catePost.open()
-			}
+			},
+			gotomapLocation(){//选取位置
+				wx.chooseLocation({
+					success: (res)=>{
+						this.address=res.address
+						console.log(res)
+					}
+				})
+			},
 		}
 	}
 </script>

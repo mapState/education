@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _experience_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./experience.vue?vue&type=script&lang=js& */ 160);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _experience_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _experience_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _experience_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./experience.vue?vue&type=style&index=0&lang=scss& */ 162);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
 
 var renderjs
 
@@ -184,27 +184,42 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 {
   components: {
     uniPopup: uniPopup },
 
   data: function data() {
-    return {};
-
+    return {
+      isProtect: 1,
+      type: 1, //类型1 成长经历 2活动 3课程 4帖子
+      content: '',
+      address: '' };
 
   },
   methods: {
     openPop: function openPop() {
-      uni.showToast({
-        title: 'ok' });
+      this.$api.post('/api/club/publish', {
+        address: this.address,
+        type: this.type,
+        content: this.content,
+        isProtect: this.isProtect }).
+      then(function (res) {
+        if (res.code == 10200) {
+          uni.showToast({
+            title: "发布成功" });
 
+        }
+      });
     },
     switchChange: function switchChange(e) {
+      this.isProtect = e.target.value ? 0 : 1;
       console.log(e.target.value);
     },
-    gotomapLocation: function gotomapLocation() {//选取位置
+    gotomapLocation: function gotomapLocation() {var _this = this; //选取位置
       wx.chooseLocation({
         success: function success(res) {
+          _this.address = res.address;
           console.log(res);
         } });
 

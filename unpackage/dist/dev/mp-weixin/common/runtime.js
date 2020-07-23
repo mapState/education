@@ -108,7 +108,7 @@
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"components/Activity":"components/Activity","components/TabBar":"components/TabBar","components/uni-load-more/uni-load-more":"components/uni-load-more/uni-load-more","components/uni-popup/uni-popup":"components/uni-popup/uni-popup","components/CourseItem":"components/CourseItem","components/CommentItem":"components/CommentItem","components/circleItem":"components/circleItem","components/uni-transition/uni-transition":"components/uni-transition/uni-transition"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"components/Activity":"components/Activity","components/TabBar":"components/TabBar","components/uni-load-more/uni-load-more":"components/uni-load-more/uni-load-more","components/uni-popup/uni-popup":"components/uni-popup/uni-popup","components/CourseItem":"components/CourseItem","components/CommentItem":"components/CommentItem","components/e-picker/e-picker":"components/e-picker/e-picker","components/circleItem":"components/circleItem","components/uni-transition/uni-transition":"components/uni-transition/uni-transition"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

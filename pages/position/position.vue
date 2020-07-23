@@ -71,7 +71,7 @@
 					</view>
 				</view>
 				<view class="abcList" @touchstart="touchStart" @touchend="touchEnd" @touchmove.stop="touchMove">
-					<view class="item" v-for="item in abcList" :key="item" :class="{ active: currentLetter == item }" @touchstart="getLetter" @touchend="setLetter" :id="item">
+					<view class="item" v-for="(item,index) in abcList" :key="index" :class="{ active: currentLetter == item }" @touchstart="getLetter" @touchend="setLetter" :id="item">
 						{{item}}
 					</view>
 				</view>
@@ -127,23 +127,23 @@
 			},
 			//移动时
 			touchMove(e) {
-				uni.vibrateShort();
-				let y = e.touches[0].clientY;
-				let offsettop = e.currentTarget.offsetTop;
+			// 	uni.vibrateShort();
+			// 	let y = e.touches[0].clientY;
+			// 	let offsettop = e.currentTarget.offsetTop;
 			
-				//判断选择区域,只在选择区才会生效
-				if (y > offsettop) {
-					let num = parseInt((y - offsettop) / 15); //右边每个字母元素的高度
-					let letter = this.alphabet[num];
-					this.tipsLetter = letter;
+			// 	//判断选择区域,只在选择区才会生效
+			// 	if (y > offsettop) {
+			// 		let num = parseInt((y - offsettop) / 15); //右边每个字母元素的高度
+			// 		let letter = this.alphabet[num];
+			// 		this.tipsLetter = letter;
 			
-					let curentLetter = this.letterTransform(letter);
-					uni.showToast({
-						title: curentLetter,
-						icon: "none",
-						duration: 1000
-					});
-				}
+			// 		let curentLetter = this.letterTransform(letter);
+			// 		uni.showToast({
+			// 			title: curentLetter,
+			// 			icon: "none",
+			// 			duration: 1000
+			// 		});
+			// 	}
 			},
 			//触发结束
 			touchEnd() {
@@ -151,7 +151,7 @@
 			},
 			//移动开始获取字母，并放大提示
 			getLetter(e) {
-				uni.vibrateShort();
+				//uni.vibrateShort();
 				let {
 					id
 				} = e.currentTarget;

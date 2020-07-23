@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mytTeam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mytTeam.vue?vue&type=script&lang=js& */ 240);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _mytTeam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _mytTeam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _mytTeam_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mytTeam.vue?vue&type=style&index=0&lang=scss& */ 242);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
 
 var renderjs
 
@@ -190,17 +190,35 @@ var _default =
 {
   data: function data() {
     return {
-      top: 24 };
+      top: 24,
+      tabIndex: 0 };
 
   },
   onLoad: function onLoad() {
     this.top = uni.getMenuButtonBoundingClientRect().top;
+    this.getList1();
   },
   methods: {
+    changeTabIndex: function changeTabIndex(index) {
+      this.tabIndex = index;
+      index == 0 ? this.getList1() : this.getList2();
+    },
     goBack: function goBack() {
       uni.navigateBack({
         delta: 1 });
 
+    },
+    //我的团队1
+    getList1: function getList1() {
+      this.$api.get('/api/view/firstTeam').then(function (res) {
+        console.log(res.data);
+      });
+    },
+    //我的二级团队
+    getList2: function getList2() {
+      this.$api.get('/api/view/secondTeam').then(function (res) {
+        console.log(res.data);
+      });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

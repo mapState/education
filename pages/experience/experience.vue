@@ -1,7 +1,7 @@
 <template>
 	<view class="main">
 		<view class="textarea">
-			<textarea placeholder-class="plClass" placeholder="这一刻的想法~" :maxlength="-1" />
+			<textarea placeholder-class="plClass" placeholder="这一刻的想法~" :maxlength="-1" v-model="content"/>
 			</view>
 		<view class="addBtn">
 			<view class="item">
@@ -15,7 +15,8 @@
 			<view class="icon">
 				<image src="../../static/icon/dwa.png" mode="aspectFit" class="dw"></image>
 			</view>
-			<text>所在位置</text>
+			<text class="addressTxt" v-if="address">{{address}}</text>
+			<text v-else>所在位置</text>
 			<image src="../../static/icon/right.png" mode="aspectFit" class="rightIcon"></image>
 		</view>
 		<view class="row">
@@ -54,21 +55,35 @@
 		},
 		data() {
 			return {
-				
+				isProtect:1,
+				type:1,//类型1 成长经历 2活动 3课程 4帖子
+				content:'',
+				address:''
 			};
 		},
 		methods:{
 			openPop(){
-				uni.showToast({
-					title:'ok'
+				this.$api.post('/api/club/publish',{
+					address:this.address,
+					type:this.type,
+					content:this.content,
+					isProtect:this.isProtect
+				}).then((res)=>{
+					if(res.code==10200){
+						uni.showToast({
+							title:"发布成功"
+						})
+					}
 				})
 			},
 			switchChange(e){
+				this.isProtect=e.target.value?0:1
 				console.log(e.target.value)
 			},
 			gotomapLocation(){//选取位置
 				wx.chooseLocation({
 					success: (res)=>{
+						this.address=res.address
 						console.log(res)
 					}
 				})

@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _addPost_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./addPost.vue?vue&type=script&lang=js& */ 152);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _addPost_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _addPost_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _addPost_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./addPost.vue?vue&type=style&index=0&lang=scss& */ 154);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
 
 var renderjs
 
@@ -134,7 +134,10 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 431));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 431));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
 
 
 
@@ -189,14 +192,54 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     uniPopup: uniPopup },
 
   data: function data() {
-    return {};
-
+    return {
+      type: 4, //类型1 成长经历 2活动 3课程 4帖子
+      content: '',
+      address: '',
+      dictId: '0',
+      classList: [] };
 
   },
+  onLoad: function onLoad() {
+    this.getClass(4);
+  },
   methods: {
-    openPop: function openPop() {
+    getClass: function getClass(type) {var _this = this;
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: type } }).
+
+      then(function (res) {
+        _this.classList = res.data;
+      });
+    },
+    selDictId: function selDictId(dictId) {
+      this.dictId = dictId;
+    },
+    submit: function submit() {
+      this.$api.post('/api/club/publish', {
+        address: this.address,
+        type: this.type,
+        content: this.content,
+        dictId: this.dictId }).
+      then(function (res) {
+        uni.showToast({
+          title: "发布成功" });
+
+      });
+    },
+    showCates: function showCates() {
       this.$refs.catePost.open();
+    },
+    gotomapLocation: function gotomapLocation() {var _this2 = this; //选取位置
+      wx.chooseLocation({
+        success: function success(res) {
+          _this2.address = res.address;
+          console.log(res);
+        } });
+
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _activityDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./activityDetails.vue?vue&type=script&lang=js& */ 56);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _activityDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _activityDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _activityDetails_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./activityDetails.vue?vue&type=style&index=0&lang=scss& */ 58);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
 
 var renderjs
 
@@ -101,6 +101,14 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var f0 = _vm._f("changeTime")(_vm.detailData.startDate)
+
+  var f1 = _vm._f("changeTime")(_vm.detailData.endDate)
+
+  var f2 = _vm._f("changeTime")(_vm.detailData.signStartDate)
+
+  var f3 = _vm._f("changeTime")(_vm.detailData.signEndDate)
+
   if (!_vm._isMounted) {
     _vm.e0 = _vm.$refs.sharePop.open
 
@@ -114,6 +122,18 @@ var render = function() {
 
     _vm.e3 = _vm.$refs.popup1.close
   }
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        f0: f0,
+        f1: f1,
+        f2: f2,
+        f3: f3
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -474,6 +494,9 @@ __webpack_require__.r(__webpack_exports__);
 
   data: function data() {
     return {
+      totalDays: '', //总天数
+      laveDays: '', //剩余天数
+      detailData: {},
       top: 22,
       scrollTop: 0,
       showAd: true,
@@ -485,12 +508,18 @@ __webpack_require__.r(__webpack_exports__);
       status: 0 //1报名中 2未开始 3进行中 4已结束
     };
   },
+  filters: {
+    changeTime: function changeTime(val) {
+      if (val) {
+        return val.substr(0, 10);
+      }
+      return '';
+    } },
+
   onLoad: function onLoad(params) {
     this.top = uni.getMenuButtonBoundingClientRect().top;
-    this.type = params.type;
-    if (params.status) {
-      this.status = params.status;
-    }
+    this.detailData = getApp().globalData.activeData;
+    this.getLaveTime();
   },
   onShareAppMessage: function onShareAppMessage(res) {
     if (res.from === 'button') {// 来自页面内分享按钮
@@ -502,6 +531,24 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
+    getLaveTime: function getLaveTime() {
+      var t1 = this.detailData.startDate.replace(new RegExp("-", "gm"), "/").substr(0, 10);
+      var t2 = this.detailData.endDate.replace(new RegExp("-", "gm"), "/").substr(0, 10);
+      t1 = new Date(t1).getTime();
+      t2 = new Date(t2).getTime();
+      this.totalDays = this.geta(t1, t2);
+      var nowData = new Date().getTime();
+      var endData = this.detailData.signEndDate.replace(new RegExp("-", "gm"), "/").substr(0, 10);
+      endData = new Date(endData).getTime();
+      this.laveDays = this.geta(nowData, endData);
+    },
+    //获取时间差
+    geta: function geta(date1, date2) {//date2结束时间
+      var date3 = date2 - date1; //时间差的毫秒数
+      //计算出相差天数
+      var days = Math.floor(date3 / (24 * 3600 * 1000));
+      return days + 1;
+    },
     goInfo: function goInfo() {
       uni.navigateTo({
         url: "/pages/togetherInfo/togetherInfo" });

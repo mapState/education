@@ -5,8 +5,8 @@
 				{{item}}
 			</view>
 		</view>
-		<view class="list">
-			<view class="item" v-for="item in 2" :key="item">
+		<view class="list" v-if="tabIndex==0">
+			<view class="item">
 				<view class="courseImg">
 					<text v-if="item==0" class="yx">有效</text>
 					<text v-if="item==1" class="yx sx">失效</text>
@@ -25,14 +25,9 @@
 					<view class="time">
 						到时时间：2020-06-26 20:30
 					</view>
-					<!-- <view class="price">
-						￥<text class="num">119</text> <text class="t1">已购10293</text>
-						<view class="btn">
-							去订购
-						</view>
-					</view> -->
 				</view>
 			</view>
+			<uni-load-more :status="loadStatus1"></uni-load-more>
 		</view>
 	</view>
 </template>
@@ -42,13 +37,45 @@
 		data() {
 			return {
 				tabIndex:0,
-				tabList:['全部','有效(1)','失效(10)']
+				tabList:['全部','有效(1)','失效(10)'],
+				pageNo1:1,
+				loadStatus1:'more',
+				pageNo2:1,
+				loadStatus2:'more',
+				pageNo3:1,
+				loadStatus3:'more'
 			};
+		},
+		onLoad() {
+			this.getListAll()
+		},
+		onReachBottom(){
+			if(this.tabIndex==0){
+				
+			}else if(this.tabIndex==1){
+				
+			}else{
+				
+			}
 		},
 		methods:{
 			changeTabIndex(index){
 				this.tabIndex=index
-			}
+			},
+			getListAll(){
+				this.$api.get('/api/lesson/getLessonByUser',{
+					params:{
+						pageNo:this.pageNo,
+						pageSize:5
+					}
+				}).then((res)=>{
+					if(res.data.length>0){
+						this.allList=this.allList.concat(res.data)
+					}else{
+						
+					}
+				})
+			},
 		}
 	}
 </script>

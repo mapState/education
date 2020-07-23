@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _myCourse_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./myCourse.vue?vue&type=script&lang=js& */ 280);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _myCourse_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _myCourse_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _myCourse_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./myCourse.vue?vue&type=style&index=0&lang=scss& */ 282);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
 
 var renderjs
 
@@ -92,7 +92,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  uniLoadMore: function() {
+    return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 410))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -164,22 +168,49 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
-//
-//
-//
-//
-//
 var _default =
 {
   data: function data() {
     return {
       tabIndex: 0,
-      tabList: ['全部', '有效(1)', '失效(10)'] };
+      tabList: ['全部', '有效(1)', '失效(10)'],
+      pageNo1: 1,
+      loadStatus1: 'more',
+      pageNo2: 1,
+      loadStatus2: 'more',
+      pageNo3: 1,
+      loadStatus3: 'more' };
 
+  },
+  onLoad: function onLoad() {
+    this.getListAll();
+  },
+  onReachBottom: function onReachBottom() {
+    if (this.tabIndex == 0) {
+
+    } else if (this.tabIndex == 1) {
+
+    } else {
+
+    }
   },
   methods: {
     changeTabIndex: function changeTabIndex(index) {
       this.tabIndex = index;
+    },
+    getListAll: function getListAll() {var _this = this;
+      this.$api.get('/api/lesson/getLessonByUser', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: 5 } }).
+
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this.allList = _this.allList.concat(res.data);
+        } else {
+
+        }
+      });
     } } };exports.default = _default;
 
 /***/ }),

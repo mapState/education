@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _courseDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./courseDetails.vue?vue&type=script&lang=js& */ 128);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _courseDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _courseDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _courseDetails_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./courseDetails.vue?vue&type=style&index=0&lang=scss& */ 130);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
 
 var renderjs
 
@@ -318,9 +318,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
 {
   components: {
     uniPopup: uniPopup,
@@ -329,17 +326,25 @@ __webpack_require__.r(__webpack_exports__);
 
   data: function data() {
     return {
+      detail: {},
       top: 22,
       scrollTop: 0,
       showAd: true,
       toIndex: '',
       letterDetails: [],
       currentLetter: "Details",
-      type: 0 };
+      type: 0,
+      recomedList: [],
+      imgUrl: '',
+      commentList: [] };
 
   },
   onLoad: function onLoad(params) {
+    this.imgUrl = this.$baseUrl;
     this.top = uni.getMenuButtonBoundingClientRect().top;
+    this.detail = getApp().globalData.courseData;
+    this.getCommentList();
+    this.getStudyContent();
     if (params.type) {
       this.type = params.type;
     }
@@ -354,6 +359,25 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
+    getCommentList: function getCommentList() {var _this = this;
+      this.$api.get('/api/lesson/getCommentList', {
+        params: {
+          lessonId: this.detail.id } }).
+
+      then(function (res) {
+        _this.commentList = res.data;
+      });
+    },
+    getStudyContent: function getStudyContent() {var _this2 = this;
+      this.$api.get('/api/lesson/getBookListByLessonId', {
+        params: {
+          lessonId: this.detail.contentLesson,
+          type: 1 } }).
+
+      then(function (res) {
+        _this2.recomedList = res.data;
+      });
+    },
     goEval: function goEval() {
       uni.navigateTo({
         url: "/pagesA/courseEvaluation/courseEvaluation" });
@@ -367,7 +391,7 @@ __webpack_require__.r(__webpack_exports__);
     toView: function toView(val) {
       this.toIndex = val;
     },
-    scrollHandle: function scrollHandle(e) {var _this = this;
+    scrollHandle: function scrollHandle(e) {var _this3 = this;
       var scrollTop = e.detail.scrollTop;
       this.scrollTop = scrollTop;
       console.log(scrollTop);
@@ -378,20 +402,20 @@ __webpack_require__.r(__webpack_exports__);
         d.forEach(function (item) {
           item.top = item.top - top;
           item.bottom = item.bottom - top;
-          _this.letterDetails.push({
+          _this3.letterDetails.push({
             id: item.id,
             top: item.top,
             bottom: item.bottom });
 
         });
-        _this.letterDetails.some(function (item) {
+        _this3.letterDetails.some(function (item) {
           if (scrollTop - 180 >= item.top && scrollTop - 180 <= item.bottom - 20) {
-            _this.currentLetter = item.id;
+            _this3.currentLetter = item.id;
             //当前固定用的是粘性定位，如果不用粘性定位，在这里设置
             return true;
           }
         });
-        console.log(_this.currentLetter);
+        console.log(_this3.currentLetter);
       }).exec();
     },
     goBack: function goBack() {

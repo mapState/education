@@ -2,12 +2,12 @@
 	<view class="main">
 		<view class="item" v-for="(item,index) in list" :key="item" :class="{'bn':item.show}">
 			<view class="title" @click="changeShow(index)">
-				<text class="t1">参团后的注意事项怎么了解？</text>
+				<text class="t1">{{item.questionName}}</text>
 				<image src="../static/icon/bottom.png" mode="aspectFit" class="icon" v-if="item.show"></image>
 				<image src="../static/icon/top.png" mode="aspectFit" class="icon" v-else></image>
 			</view>
 			<view class="detail" v-if="item.show">
-				参团成功后，会有活动附件，点击活动附件即可查询注意事项
+				{{item.answerWord}}
 			</view>
 		</view>
 	</view>
@@ -17,16 +17,24 @@
 	export default {
 		data() {
 			return {
-				list:[{
-					show:false
-				},{
-					show:false
-				}]
+				list:[]
 			};
+		},
+		onLoad() {
+			this.getList()
 		},
 		methods:{
 			changeShow(index){
 				this.list[index].show=!this.list[index].show
+			},
+			getList(){
+				this.$api.get('/api/static/questionList').then((res)=>{
+					console.log(res.data)
+					res.data.forEach((item)=>{
+						item.show=false
+					})
+					this.list=res.data
+				})
 			}
 		}
 	}

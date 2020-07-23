@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _circle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./circle.vue?vue&type=script&lang=js& */ 176);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _circle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _circle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _circle_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./circle.vue?vue&type=style&index=0&lang=scss& */ 178);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
 
 var renderjs
 
@@ -130,7 +130,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 424));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var circleItem = function circleItem() {__webpack_require__.e(/*! require.ensure | components/circleItem */ "components/circleItem").then((function () {return resolve(__webpack_require__(/*! @/components/circleItem.vue */ 454));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 424));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var circleItem = function circleItem() {__webpack_require__.e(/*! require.ensure | components/circleItem */ "components/circleItem").then((function () {return resolve(__webpack_require__(/*! @/components/circleItem.vue */ 460));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -187,18 +187,42 @@ __webpack_require__.r(__webpack_exports__);
       top: 24,
       currentIndex: 0,
       tabList1: ['热门', '精选', '最新', '官方'],
-      tabIndex1: 0 };
+      tabIndex1: 0,
+      pageNo: 1,
+      pageSize: 5 };
 
   },
   onLoad: function onLoad() {
     this.top = uni.getMenuButtonBoundingClientRect().top;
+    this.getCates();
+    this.getCircleList();
   },
   methods: {
+    getCircleList: function getCircleList() {
+      this.$api.get('/api/club/getMomentList', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          type: this.tabIndex1 + 1 } });
+
+
+    },
+    //获取分类列表
+    getCates: function getCates() {
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: 4 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+        } }).
+      then(function (res) {
+        console.log(res.data);
+      });
+    },
     swiperChange: function swiperChange(e) {
       this.currentIndex = e.detail.current;
     },
     changeTabIndex1: function changeTabIndex1(index) {
       this.tabIndex1 = index;
+      this.getCircleList();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

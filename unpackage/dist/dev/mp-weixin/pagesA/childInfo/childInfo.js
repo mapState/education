@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _childInfo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./childInfo.vue?vue&type=script&lang=js& */ 384);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _childInfo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _childInfo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _childInfo_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./childInfo.vue?vue&type=style&index=0&lang=scss& */ 386);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
 
 var renderjs
 
@@ -130,7 +130,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
 //
 //
 //
@@ -212,8 +212,10 @@ var _default =
       date: currentDate,
       dateTip: true,
       sexTip: true,
-      array: ['男', '女'],
-      index: 0 };
+      array: ['女', '男'],
+      index: 0,
+      childList: [],
+      address: '' };
 
   },
   computed: {
@@ -224,7 +226,49 @@ var _default =
       return this.getDate('end');
     } },
 
+  onLoad: function onLoad() {
+    this.getList();
+  },
   methods: {
+    delChild: function delChild(item) {var _this = this;
+      console.log(item);
+      delete item.createDate;
+      var d = _objectSpread({}, item);
+      d.status = 0;
+      console.log(d);
+      this.$api.post('/api/child/save', d).then(function (res) {
+        console.log(res);
+        _this.getList();
+      });
+    },
+    getList: function getList() {var _this2 = this;
+      this.$api.get('/api/child/getList', {
+        params: {
+          userId: uni.getStorageSync('userInfo').id } }).
+
+      then(function (res) {
+        console.log(res);
+        _this2.childList = res.data;
+      });
+    },
+    save: function save() {var _this3 = this;
+      if (this.name == '' || this.dateTip || this.sexTip || this.address == '') {
+        uni.showToast({
+          title: "请认真填写信息",
+          icon: 'none' });
+
+        return;
+      }
+      this.$api.post('/api/child/save', {
+        userId: uni.getStorageSync('userInfo').id,
+        name: this.name,
+        birthday: this.date,
+        sex: parseInt(this.index),
+        address: this.address }).
+      then(function (res) {
+        _this3.getList();
+      });
+    },
     changeTabIndex: function changeTabIndex(index) {
       this.tabIndex = index;
     },
@@ -251,6 +295,7 @@ var _default =
       day = day > 9 ? day : '0' + day;
       return "".concat(year, "-").concat(month, "-").concat(day);
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

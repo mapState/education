@@ -23,31 +23,14 @@
 		<view class="scroll-view">
 			<scroll-view class="scroll-view_H" scroll-x="true" >
 				<view class="list">
-					<text class="active" @click="goCourseList">0-3岁</text>
-					<text>0-3岁</text>
-					<text>4-6岁</text>
-					<text>6-7岁</text>
-					<text>8-9岁</text>
-					<text>9-11岁</text>
+					<text class="" :class="{'active':index==ageIndex}" v-for="(item,index) in classList" :key="index" @click="changeAgeIndex(index)">{{item.name}}</text>
 				</view>
 			</scroll-view>
 		</view>
 		<view class="cates">
-			<view class="cate">
-				<image src="../../static/icon/xg.png" mode="aspectFit" class="icon1"></image>
-				<text>行为习惯</text>
-			</view>
-			<view class="cate">
-				<image src="../../static/icon/qx.png" mode="aspectFit" class="icon2"></image>
-				<text>情绪心理</text>
-			</view>
-			<view class="cate">
-				<image src="../../static/icon/zl.png" mode="aspectFit" class="icon3"></image>
-				<text>智力开发</text>
-			</view>
-			<view class="cate">
-				<image src="../../static/icon/jw.png" mode="aspectFit" class="icon4"></image>
-				<text>社会交往</text>
+			<view class="cate" v-for="(item,index) in classList[ageIndex].dictVoList" :key="index">
+				<image :src="$baseUrl+item.iconUrl" mode="aspectFit" class="icon1"></image>
+				<text>{{item.name}}</text>
 			</view>
 		</view>
 		<view class="block">
@@ -69,7 +52,9 @@
 			</view>
 		</view>
 		<view class="list">
-			<course-item v-for="item in 2" :key="item"></course-item>
+			<block v-for="(item,index) in courseList" :key="item.id">
+				<course-item :detail="item"></course-item>
+			</block>
 		</view>
 	<tab-bar :tabIndex="2"></tab-bar>
 	</view>
@@ -87,7 +72,12 @@
 			return {
 				top: 24,
 				currentIndex: 0,
-				height:32
+				height:32,
+				pageSize:5,
+				pageNo:1,
+				ageIndex:0,
+				classList:[],
+				courseList:[]
 			};
 		},
 		onLoad() {
@@ -95,8 +85,36 @@
 			this.height=uni.getMenuButtonBoundingClientRect().height
 			console.log(this.height)
 			this.getAdvertList()
+			this.getCates()
 		},
 		methods: {
+			changeAgeIndex(index){
+				this.ageIndex=index
+			},
+			//获取分类列表
+			getCates() {
+				this.$api.get('/api/static/dictList',{
+					params:{
+						type:2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+					}
+				}).then((res) => {
+					console.log(res.data)
+					this.classList=res.data
+					let types=res.data['0'].dictVoList['0'].id
+					this.getCourseList(types)
+				})
+			},
+			getCourseList(types){
+				this.$api.get('/api/lesson/list',{
+					params:{
+						pageNo:this.pageNo,
+						pageSize:this.pageSize,
+						types
+					}
+				}).then((res)=>{
+					this.courseList=res.data
+				})
+			},
 			//轮播
 			getAdvertList() {
 				this.$api.get('/api/static/advertList', {
@@ -116,10 +134,9 @@
 					url:"/pages/searchCourses/searchCourses"
 				})
 			},
-			goCourseList(){
-				uni.navigateTo({
-					url:"/pages/courseList/courseList"
-				})
+			goCourseList(item){
+				console.log(item)
+				
 			}
 		}
 	}

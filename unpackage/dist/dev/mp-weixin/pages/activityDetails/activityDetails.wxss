@@ -282,6 +282,8 @@ page {
           flex-direction: column;
   -webkit-justify-content: space-around;
           justify-content: space-around;
+  padding-left: 28rpx;
+  box-sizing: border-box;
 }
 .section .local .item .t1 {
   font-size: 26rpx;

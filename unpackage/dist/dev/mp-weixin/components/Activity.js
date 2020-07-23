@@ -13,7 +13,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Activity_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Activity.vue?vue&type=script&lang=js& */ 420);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Activity_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Activity_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _Activity_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Activity.vue?vue&type=style&index=0&lang=scss& */ 422);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
 
 var renderjs
 
@@ -81,6 +81,25 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var f0 = _vm._f("changeTime")(_vm.detail.signStartDate)
+
+  var f1 = _vm._f("changeTime")(_vm.detail.signEndDate)
+
+  var f2 = _vm._f("changeTime")(_vm.detail.startDate)
+
+  var f3 = _vm._f("changeTime")(_vm.detail.endDate)
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        f0: f0,
+        f1: f1,
+        f2: f2,
+        f3: f3
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -154,6 +173,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
+//
 var _default =
 {
   data: function data() {
@@ -164,8 +184,21 @@ var _default =
   props: {
     type: {
       type: Number,
-      default: 0 } },
+      default: 0 },
 
+    detail: {
+      type: Object,
+      default: {} } },
+
+
+  filters: {
+    changeTime: function changeTime(time) {
+      if (time) {
+        return time.substr(5, 5);
+      }
+      return '';
+
+    } },
 
   methods: {} };exports.default = _default;
 

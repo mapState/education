@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _position_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./position.vue?vue&type=script&lang=js& */ 31);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _position_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _position_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _position_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./position.vue?vue&type=style&index=0&lang=scss& */ 34);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
 
 var renderjs
 
@@ -307,22 +307,27 @@ var _city = _interopRequireDefault(__webpack_require__(/*! @/static/city.json */
 var _default = { data: function data() {return { cities: _city.default.data.cities, tabIndex: 0, abcList: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'W', 'X', 'Y', 'Z'], letterDetails: [], currentLetter: 'A', tipsLetter: '', toIndex: '' };}, methods: { changeIndex: function changeIndex(index) {this.tabIndex = index;}, scrollHandle: function scrollHandle(e) {var _this = this;var view = uni.createSelectorQuery().in(this).selectAll(".list-item");view.boundingClientRect(function (d) {var top = d[0].top;d.forEach(function (item) {item.top = item.top - top;item.bottom = item.bottom - top;_this.letterDetails.push({ id: item.id, top: item.top, bottom: item.bottom });});}).exec();var scrollTop = e.detail.scrollTop;this.letterDetails.some(function (item) {if (scrollTop >= item.top && scrollTop <= item.bottom - 20) {_this.currentLetter = item.id; //当前固定用的是粘性定位，如果不用粘性定位，在这里设置
           return true;}});}, touchStart: function touchStart(e) {// console.log(e);
     }, //移动时
-    touchMove: function touchMove(e) {uni.vibrateShort();var y = e.touches[0].clientY;var offsettop = e.currentTarget.offsetTop; //判断选择区域,只在选择区才会生效
-      if (y > offsettop) {var num = parseInt((y - offsettop) / 15); //右边每个字母元素的高度
-        var letter = this.alphabet[num];this.tipsLetter = letter;var curentLetter = this.letterTransform(letter);uni.showToast({ title: curentLetter, icon: "none", duration: 1000 });}}, //触发结束
+    touchMove: function touchMove(e) {// 	uni.vibrateShort();
+      // 	let y = e.touches[0].clientY;
+      // 	let offsettop = e.currentTarget.offsetTop;
+      // 	//判断选择区域,只在选择区才会生效
+      // 	if (y > offsettop) {
+      // 		let num = parseInt((y - offsettop) / 15); //右边每个字母元素的高度
+      // 		let letter = this.alphabet[num];
+      // 		this.tipsLetter = letter;
+      // 		let curentLetter = this.letterTransform(letter);
+      // 		uni.showToast({
+      // 			title: curentLetter,
+      // 			icon: "none",
+      // 			duration: 1000
+      // 		});
+      // 	}
+    }, //触发结束
     touchEnd: function touchEnd() {this.toIndex = this.tipsLetter;}, //移动开始获取字母，并放大提示
-    getLetter: function getLetter(e) {uni.vibrateShort();var id = e.currentTarget.id;this.tipsLetter = id;var curentLetter = this.letterTransform(id);uni.showToast({ title: curentLetter, icon: "none", duration: 1000 });}, //移动结束设置字母，赋值到toIndex
+    getLetter: function getLetter(e) {//uni.vibrateShort();
+      var id = e.currentTarget.id;this.tipsLetter = id;var curentLetter = this.letterTransform(id);uni.showToast({ title: curentLetter, icon: "none", duration: 1000 });}, //移动结束设置字母，赋值到toIndex
     setLetter: function setLetter() {this.toIndex = this.tipsLetter;}, //提示字母转换
-    letterTransform: function letterTransform(letter) {var str = "";if (letter == "area") {
-        str = "区县";
-      } else if (letter == "hot") {
-        str = "热门";
-      } else {
-        str = letter;
-      }
-
-      return str;
-    } } };exports.default = _default;
+    letterTransform: function letterTransform(letter) {var str = "";if (letter == "area") {str = "区县";} else if (letter == "hot") {str = "热门";} else {str = letter;}return str;} } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

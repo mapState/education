@@ -45,18 +45,18 @@
 					</view>
 					<view class="price">
 						<view class="col">
-							￥<text class="t1">119</text><text class="t2">单人价</text>
+							￥<text class="t1">{{detailData.personalPrice}}</text><text class="t2">单人价</text>
 						</view>
 						<view class="col ct">
-							￥<text class="t1">1019</text><text class="t2">参团价</text>
+							￥<text class="t1">{{detailData.groupPrice}}</text><text class="t2">参团价</text>
 						</view>
 						<view class="col">
 							<image src="../../static/icon/eye.png" mode="aspectFit" class="eye"></image>
-							<text class="t2">10514</text>
+							<text class="t2">{{detailData.fake}}</text>
 						</view>
 						<view class="col">
 							<image src="../../static/icon/peo.png" mode="aspectFit" class="uesr"></image>
-							<text class="t2">10515</text>
+							<text class="t2">{{detailData.groupNumber}}</text>
 						</view>
 					</view>
 				</view>
@@ -67,28 +67,28 @@
 					<view class="local">
 						<view class="item">
 							<text class="t1">活动地点</text>
-							<text class="t2">杭州江干区九堡...</text>
+							<text class="t2">{{detailData.address}}</text>
 							<image src="../../static/icon/pdw.png" mode="aspectFit" class="dw"></image>
 						</view>
 						<view class="item">
 							<text class="t1">主办方</text>
-							<text class="t2">杭州教育机构...</text>
+							<text class="t2">{{detailData.organizer}}</text>
 							<image src="../../static/icon/tel.png" mode="aspectFit" class="tel"></image>
 						</view>
 					</view>
 					<view class="time1">
 						<view class="left">
 							<text class="t1">活动时间</text>
-							<text class="t2">2020-05-10 至 2020-06-22</text>
+							<text class="t2">{{detailData.startDate |changeTime}} 至 {{detailData.endDate|changeTime}}</text>
 						</view>
-						<text class="t3">共10天</text>
+						<text class="t3">共{{totalDays}}天</text>
 					</view>
 					<view class="time1">
 						<view class="left">
 							<text class="t1">报名时间</text>
-							<text class="t2">2020-05-10 至 2020-06-22</text>
+							<text class="t2">{{detailData.signStartDate |changeTime}} 至 {{detailData.signEndDate |changeTime}}</text>
 						</view>
-						<text class="t3">剩余10天</text>
+						<text class="t3">剩余{{laveDays}}天</text>
 					</view>
 					<view class="time1">
 						<view class="left">
@@ -325,6 +325,9 @@
 		},
 		data() {
 			return {
+				totalDays:'',//总天数
+				laveDays:'',//剩余天数
+				detailData:{},
 				top: 22,
 				scrollTop: 0,
 				showAd: true,
@@ -336,12 +339,18 @@
 				status:0,//1报名中 2未开始 3进行中 4已结束
 			};
 		},
+		filters:{
+			changeTime(val){
+				if(val){
+					return val.substr(0,10)
+				}
+				return ''
+			}
+		},
 		onLoad(params) {
 			this.top = uni.getMenuButtonBoundingClientRect().top
-			this.type = params.type
-			if(params.status){
-				this.status=params.status
-			}
+			this.detailData = getApp().globalData.activeData
+			this.getLaveTime()
 		},
 		onShareAppMessage(res) {
 			if (res.from === 'button') { // 来自页面内分享按钮
@@ -353,6 +362,24 @@
 			}
 		},
 		methods: {
+			getLaveTime(){
+				let t1 = this.detailData.startDate.replace(new RegExp("-","gm"),"/").substr(0,10);
+				let t2 = this.detailData.endDate.replace(new RegExp("-","gm"),"/").substr(0,10);
+				t1 = new Date(t1).getTime()
+				t2 = new Date(t2).getTime()
+				this.totalDays=this.geta(t1,t2)
+				let nowData=new Date().getTime()
+				let endData=this.detailData.signEndDate.replace(new RegExp("-","gm"),"/").substr(0,10);
+				endData=new Date(endData).getTime()
+				this.laveDays=this.geta(nowData,endData)
+			},
+			//获取时间差
+			geta(date1,date2){ //date2结束时间
+				var date3=date2-date1  //时间差的毫秒数
+				//计算出相差天数
+				var days=Math.floor(date3/(24*3600*1000))
+				return days+1
+			},
 			goInfo(){
 				uni.navigateTo({
 					url:"/pages/togetherInfo/togetherInfo"

@@ -10,10 +10,10 @@
 			<text class="t2">团队人数</text>
 		</view>
 		<view class="tabs">
-			<view class="tab active">
+			<view class="tab" :class="{'active':tabIndex==0}" @click="changeTabIndex(0)">
 				一级
 			</view>
-			<view class="tab">
+			<view class="tab" :class="{'active':tabIndex==1}" @click="changeTabIndex(1)">
 				二级
 			</view>
 		</view>
@@ -58,16 +58,34 @@
 	export default {
 		data() {
 			return {
-				top:24
+				top:24,
+				tabIndex:0
 			};
 		},
 		onLoad() {
 			this.top=uni.getMenuButtonBoundingClientRect().top
+			this.getList1()
 		},
 		methods:{
+			changeTabIndex(index){
+				this.tabIndex=index
+				index==0?this.getList1():this.getList2()
+			},
 			goBack(){
 				uni.navigateBack({
 					delta:1
+				})
+			},
+			//我的团队1
+			getList1(){
+				this.$api.get('/api/view/firstTeam').then((res) => {
+					console.log(res.data)
+				})
+			},
+			//我的二级团队
+			getList2(){
+				this.$api.get('/api/view/secondTeam').then((res) => {
+					console.log(res.data)
 				})
 			}
 		}

@@ -1,36 +1,37 @@
 <template>
 	<view class="item">
-		<image src="https://hbimg.huabanimg.com/afc6085a1964e84263c6b95fcf374473b33ba9ae1c43d2-yI7y1s_fw658/format/webp" mode="aspectFill"
+		<image :src="detail.poster" mode="aspectFill"
 		 class="leftImg"></image>
 		<view class="right">
 			<view class="row">
-				<text class="t1">杭州小记者内蒙古宁夏夏令营梦幻迪士尼，亲子活动</text>
+				<text class="t1">{{detail.title}}</text>
 			</view>
 			<view class="row">
 				<view class="tag">夏令营</view>
 				<image src="/static/icon/eye.png" mode="aspectFill" class="eyeIcon"></image>
-				<text class="gray">111125</text>
+				<text class="gray">{{detail.fake}}</text>
 				<image src="/static/icon/peo.png" mode="aspectFill" class="peoIcon"></image>
-				<text class="gray userNum">101</text>
+				<text class="gray userNum">{{detail.groupNumber}}</text>
 				<text class="gray">3km</text>
 			</view>
 			<view class="row">
-				<text class="time">报名时间：06/25 - 03/25</text>
+				<view class="time" v-if="detail.state==1">报名时间 : {{detail.signStartDate | changeTime}} - {{detail.signEndDate |changeTime}}</view>
+				<view class="time" v-else>活动时间 : {{detail.startDate | changeTime}} - {{detail.endDate |changeTime}}</view>
 			</view>
 			<view class="row btnBox">
 				<view class="price">
-					￥<text class="t">119</text><text class="tt">￥119</text>
+					￥<text class="t">{{detail.groupPrice}}</text><text class="tt">￥{{detail.personalPrice}}</text>
 				</view>
-				<view class="btn1" v-if="type==0">
-					报名中
-				</view>
-				<view class="btn2" v-if="type==1">
+				<view class="btn2" v-if="detail.state==1">
 					未开始
 				</view>
-				<view class="btn3" v-if="type==2">
+				<view class="btn1" v-if="detail.state==2">
+					报名中
+				</view>
+				<view class="btn3" v-if="detail.state==3">
 					进行中
 				</view>
-				<view class="btn4" v-if="type==3">
+				<view class="btn4" v-if="detail.state==4">
 					已结束
 				</view>
 			</view>
@@ -49,6 +50,19 @@
 			type:{
 				type:Number,
 				default:0
+			},
+			detail:{
+				type:Object,
+				default:{}
+			}
+		},
+		filters:{
+			changeTime(time){
+				if(time){
+					return time.substr(5,5)
+				}
+				return''
+				
 			}
 		},
 		methods:{

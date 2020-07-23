@@ -430,14 +430,14 @@ page {
   font-family: PingFang SC;
   font-weight: 400;
   color: #333333;
+  margin-left: 30rpx;
+  margin-right: 20rpx;
 }
 .tabs .active {
   font-size: 34rpx;
   font-family: PingFang SC;
   font-weight: bold;
   color: black;
-  margin-left: 30rpx;
-  margin-right: 50rpx;
 }
 .tabbar {
   position: fixed;

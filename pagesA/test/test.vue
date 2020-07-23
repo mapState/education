@@ -89,7 +89,15 @@
 				isAnswer:true
 			};
 		},
+		onLoad() {
+			this.getList()
+		},
 		methods:{
+			getList(){
+				this.$api.get('/api/learn/questionList').then((res)=>{
+					console.log(res)
+				})
+			},
 			selOption(index){
 				console.log(index)
 				this.selIndex=index

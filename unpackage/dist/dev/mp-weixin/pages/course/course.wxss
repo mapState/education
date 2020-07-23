@@ -168,12 +168,11 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  -webkit-justify-content: space-around;
-          justify-content: space-around;
   padding: 36rpx 0;
   margin-bottom: 20rpx;
 }
 .cates .cate {
+  width: 25%;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

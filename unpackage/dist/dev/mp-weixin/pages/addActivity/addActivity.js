@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _addActivity_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./addActivity.vue?vue&type=script&lang=js& */ 168);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _addActivity_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _addActivity_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _addActivity_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./addActivity.vue?vue&type=style&index=0&lang=scss& */ 170);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
 
 var renderjs
 
@@ -93,6 +93,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
+  ePicker: function() {
+    return Promise.all(/*! import() | components/e-picker/e-picker */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/e-picker/e-picker")]).then(__webpack_require__.bind(null, /*! @/components/e-picker/e-picker.vue */ 454))
+  },
   uniPopup: function() {
     return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 431))
   }
@@ -213,18 +216,35 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
+
+
+
+
+
 {
   components: {
     uniPopup: uniPopup },
 
   data: function data() {
-    return {};
-
+    return {
+      address: '',
+      currentDateTime: '' };
 
   },
   methods: {
+    handleChange: function handleChange(type, e) {
+      this[type] = e;
+    },
     openPop: function openPop() {
       this.$refs.catePost.open();
+    },
+    gotomapLocation: function gotomapLocation() {var _this = this; //选取位置
+      wx.chooseLocation({
+        success: function success(res) {
+          _this.address = res.address;
+          console.log(res);
+        } });
+
     } } };exports.default = _default;
 
 /***/ }),

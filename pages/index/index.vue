@@ -12,7 +12,7 @@
 		<view class="header" :style="{paddingTop:top+'px'}">
 			<view class="position" @click="goPosition" :style="{height:height+'px'}">
 				<image src="/static/icon/dw.png" mode="aspectFit" class="dwIcon"></image>
-				<text>{{address}}</text>
+				<text>{{addressData.city}}</text>
 			</view>
 			<view class="search">
 				<image src="/static/icon/ssl.png" mode="aspectFill" class="sslIcon"></image>
@@ -27,7 +27,7 @@
 		<view class="swiper-box">
 			<view class="swiperBox">
 				<swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" @change="swiperChange">
-					<swiper-item v-for="item in swiperList" :key="item">
+					<swiper-item v-for="(item,index) in swiperList" :key="index">
 						<image :src="item" mode="aspectFill" class="itemImg"></image>
 					</swiper-item>
 				</swiper>
@@ -38,12 +38,12 @@
 				</view>
 			</view>
 		</view>
-		<view class="category" @click="goEventsList">
-			<view class="cate">
-				<image src="../../static/icon/cate1.png" mode="aspectFill" class="icon1"></image>
-				<text>儿童</text>
+		<view class="category">
+			<view class="cate" v-for="(item,index) in classList" :key="index" :index="index" @click="goEventsList(index)">
+				<image :src="imgUrl + item.iconUrl" mode="aspectFill" class="icon1"></image>
+				<text>{{item.name}}</text>
 			</view>
-			<view class="cate">
+			<!-- <view class="cate">
 				<image src="../../static/icon/cate2.png" mode="aspectFill" class="icon2"></image>
 				<text>成人</text>
 			</view>
@@ -58,7 +58,7 @@
 			<view class="cate">
 				<image src="../../static/icon/cate5.png" mode="aspectFill" class="icon5"></image>
 				<text>国际</text>
-			</view>
+			</view> -->
 		</view>
 		<view class="block">
 		</view>
@@ -67,8 +67,8 @@
 			<view :class="{'titleActive':titleIndex==1}" @click="changeTitle(1)">最新活动</view>
 		</view>
 		<view class="list">
-			<block v-for="(item,index) in 4" :key="index">
-				<Activity :type="index" @click.native="goDetail(index+1)"></Activity>
+			<block v-for="(item,index) in hotActiveList" :key="index">
+				<Activity :type="index" @click.native="goDetail(item)" :detail="item"></Activity>
 			</block>
 		</view>
 		<!-- 		</view> -->
@@ -100,9 +100,15 @@
 		},
 		data() {
 			return {
+				imgUrl:'',
+				classList:[],
+				hotActiveList:[],
+				pageNo1:1,
+				pageNo2:1,
+				pageSize:5,
 				loadStatus:'more',
 				loginStatus:false,
-				address:'',
+				addressData:{},
 				top: 30,
 				height: 32,
 				right: 0,
@@ -112,48 +118,39 @@
 				swiperList: ['https://hbimg.huabanimg.com/fafd309bf78db3cc72d851453501cfc74eb45ef150c23-xr5gos_fw658/format/webp',
 					'https://hbimg.huabanimg.com/5532df46d645484f3009553eef71931fbfb056d86bc71-qB3y3k_fw658/format/webp',
 					'https://hbimg.huabanimg.com/3a3b1760646c6ef34213e43874422267d7bd86102cbf6-nKqPxr_fw658/format/webp'
-				]
+				],
+				jw:{},//经纬度
 			}
 		},
 		onLoad() {
+			this.imgUrl=this.$baseUrl
 			let info = uni.getMenuButtonBoundingClientRect()
 			this.top = info.top
 			this.height = info.height
-			this.getAddress()
+			//this.getAddress()
 			this.getAdvertList()
-			this.getCates()
-			//this.getActivityList()
+			setTimeout(()=>{
+				uni.getStorage({
+				    key: 'address',
+				    success:(res)=>{
+				      this.addressData=res.data
+				    },
+						complete:()=>{
+							this.getCates()
+						}
+				})
+				// this.addressData=getApp().globalData.addressData
+				// console.log(getApp().globalData.addressData)
+				// this.getActivityList1() //热门
+			},400)
 		},
 		onReachBottom(){
-			this.loadStatus="loading"
-			setTimeout(()=>{
-				this.loadStatus="more"
-			},1000)
+			if(this.loadStatus=="noMore"){
+				return
+			}
+			this.getActivityList1()
 		},
 		methods: {
-			getAddress(){
-				qqmapsdk = new QQMapWX({
-					key: 'ZHVBZ-ZM36S-O3JOX-63CPR-EYOX6-EOFGR'
-				});
-				wx.getLocation({
-					type: 'wgs84',
-					success:(res)=>{
-						console.log(res);
-						//2、根据坐标获取当前位置名称，显示在顶部:腾讯地图逆地址解析
-						qqmapsdk.reverseGeocoder({
-							location: {
-								latitude: res.latitude,
-								longitude: res.longitude
-							},
-							success:(addressRes) =>{
-								console.log(addressRes);
-								//var address = addressRes.result.formatted_addresses.recommend;
-								this.address = addressRes.result.address_component.city + addressRes.result.address_component.district
-							}
-						})
-					}
-				})
-			},
 			//轮播
 			getAdvertList() {
 				this.$api.get('/api/static/advertList', {
@@ -167,16 +164,44 @@
 			},
 			//获取分类列表
 			getCates() {
-				this.$api.get('/api/static/dictList').then((res) => {
+				this.$api.get('/api/static/dictList',{
+					params:{
+						type:1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+					}
+				}).then((res) => {
 					//this.swiperList=res.data
-					//console.log(res.data)
+					console.log(res.data)
+					this.classList=res.data
+					this.getActivityList1() //热门
 				})
 			},
 			//活动列表
-			getActivityList(){
-				this.$api.get('/api/act/getActivityList').then((res) => {
+			getActivityList1(){
+				this.loadStatus="loading"
+				this.$api.get('/api/act/getActivityList',{
+					params:{
+						pageNo:this.pageNo1,
+						pageSize:this.pageSize,
+						lat:this.addressData.lat,
+						lng:this.addressData.lng
+					}
+				}).then((res) => {
 					//this.swiperList=res.data
 					console.log(res.data)
+					res.data.forEach((item)=>{
+						item.poster=this.$baseUrl+item.poster
+					})
+					if(res.data.length>0){
+						this.hotActiveList=this.hotActiveList.concat(res.data)
+						this.pageNo1++
+						if(res.data.length<this.pageSize){
+							this.loadStatus="noMore"
+						}else{
+							this.loadStatus='more'
+						}
+					}else{
+						this.loadStatus="noMore"
+					}
 				})
 			},
 			closeTip() {
@@ -201,14 +226,16 @@
 					url: "/pages/search/search"
 				})
 			},
-			goEventsList() {
+			goEventsList(index) {
 				uni.navigateTo({
-					url: "/pages/eventsList/eventsList"
+					url: "/pages/eventsList/eventsList?fIndex="+index
 				})
 			},
-			goDetail(status) {
+			goDetail(data) {
+				getApp().globalData.activeData=data
+				console.log(getApp().globalData.activeData)
 				uni.navigateTo({
-					url: "/pages/activityDetails/activityDetails?status=" + status
+					url: "/pages/activityDetails/activityDetails"
 				})
 			},
 			goMessage() {
