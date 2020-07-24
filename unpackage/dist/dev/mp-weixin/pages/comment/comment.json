@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "全部评价",
   "usingComponents": {
-    "activity": "/components/Activity"
+    "uni-load-more": "/components/uni-load-more/uni-load-more"
   }
 }

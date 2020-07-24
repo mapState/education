@@ -57,10 +57,10 @@ _uniRequest.default.interceptors.response.use(function (response) {
   }
 }, function (error) {
   uni.hideLoading();
-  uni.showLoading({
-    title: '网络故障...',
-    mask: "true" });
-
+  // uni.showLoading({
+  // 	title: '网络故障...',
+  // 	mask:"true"
+  // });
   //console.log('返回进入拦截失败')
   return Promise.reject(error);
 });

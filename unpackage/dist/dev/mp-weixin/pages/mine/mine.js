@@ -216,6 +216,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 {
   components: {
     TabBar: TabBar },
@@ -246,6 +247,26 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
+    getPhoneNumber: function getPhoneNumber(e) {
+      var that = this;
+      console.log(e);
+      wx.login({
+        success: function success(res) {
+          if (res.code) {
+            if (e.detail.errMsg == "getPhoneNumber:ok") {
+              that.$api.post('/api/login/wx/callback', {
+                code: res.code,
+                encryptedData: e.detail.encryptedData,
+                iv: e.detail.iv }).
+              then(function (result) {
+                console.log(result);
+              });
+            }
+          }
+        } });
+
+
+    },
     getUserInfo: function getUserInfo(info) {
       var that = this;
       console.log(info);
@@ -260,6 +281,26 @@ __webpack_require__.r(__webpack_exports__);
                 iv: info.detail.iv }).
               then(function (result) {
                 console.log(result.data);
+                that.userInfo.avatar = result.data.avatar;
+                that.userInfo.name = result.data.name;
+                that.userInfo.id = result.data.id;
+                that.isLogin = true;
+                uni.setStorage({
+                  key: 'token',
+                  data: result.data.token,
+                  success: function success() {
+
+                  } });
+
+                uni.setStorage({
+                  key: 'userInfo',
+                  data: that.userInfo,
+                  success: function success() {
+
+                  } });
+
+              }).catch(function (result) {
+                console.log(result);
                 that.userInfo.avatar = result.data.avatar;
                 that.userInfo.name = result.data.name;
                 that.userInfo.id = result.data.id;

@@ -177,15 +177,12 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var _default =
 {
   data: function data() {
-    return {};
-
+    return {
+      imgUrl: '',
+      tagList: [] };
 
   },
   props: {
-    type: {
-      type: Number,
-      default: 0 },
-
     detail: {
       type: Object,
       default: {} } },
@@ -200,7 +197,38 @@ var _default =
 
     } },
 
-  methods: {} };exports.default = _default;
+  mounted: function mounted() {
+    this.imgUrl = this.$baseUrl;
+    this.getCates();
+  },
+  methods: {
+    //获取分类列表
+    getCates: function getCates() {var _this = this;
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: 1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+        } }).
+      then(function (res) {
+        //this.swiperList=res.data
+        console.log(res.data);
+        //this.classList=res.data
+        var pid = '';
+        var tagList = [];
+        res.data.forEach(function (item) {
+          if (item.id == _this.detail.typeId) {
+            tagList.push(item.name);
+            pid = item.pid;
+          }
+        });
+        console.log(tagList);
+        res.data.forEach(function (item) {
+          if (item.id == pid) {
+            tagList.push(item.name);
+            _this.tagList = tagList;
+          }
+        });
+      });
+    } } };exports.default = _default;
 
 /***/ }),
 

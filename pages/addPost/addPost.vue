@@ -15,7 +15,7 @@
 			<view class="icon">
 				<image src="../../static/icon/dwa.png" mode="aspectFit" class="dw"></image>
 			</view>
-			<text class="addressTxt" v-if="address">{{address}}</text>
+			<text class="" v-if="address">{{address}}</text>
 			<text v-else>所在位置</text>
 			<image src="../../static/icon/right.png" mode="aspectFit" class="rightIcon"></image>
 		</view>
@@ -23,7 +23,10 @@
 			<view class="icon">
 				<image src="../../static/icon/fl1.png" mode="aspectFit" class="fl"></image>
 			</view>
-			<text>帖子分类</text>
+			<view class="" v-if="claItem">
+				{{claItem}}
+			</view>
+			<text v-else>帖子分类</text>
 			<image src="../../static/icon/right.png" mode="aspectFit" class="rightIcon"></image>
 		</view>
 		<view class="fixenBtn" @click="submit">
@@ -35,13 +38,13 @@
 					帖子分类
 				</view>
 				<view class="cateList">
-					<view class="item" :class="{'itemActive':dictId==0}">
+					<view class="item" :class="{'itemActive':dictId==0}" @click="selDictId(0,'全部')">
 						全部
 					</view>
 					<view class="item" v-for="(item,index) in classList" :key="item.id" 
 					:class="{'itemActive':dictId==item.id}"
-					@click="selDictId(item.id)">
-						{{item}}
+					@click="selDictId(item.id,item.name)">
+						{{item.name}}
 					</view>
 				</view>
 			</view>
@@ -61,7 +64,8 @@
 				content:'',
 				address:'',
 				dictId:'0',
-				classList:[]
+				classList:[],
+				claItem:''
 			};
 		},
 		onLoad() {
@@ -77,8 +81,10 @@
 					this.classList=res.data
 				})
 			},
-			selDictId(dictId){
+			selDictId(dictId,txt){
 				this.dictId=dictId
+				this.claItem=txt
+				this.$refs.catePost.close()
 			},
 			submit(){
 				this.$api.post('/api/club/publish',{

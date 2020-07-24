@@ -324,9 +324,6 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
       then(function (res) {
         //this.swiperList=res.data
         console.log(res.data);
-        res.data.forEach(function (item) {
-          item.poster = _this3.$baseUrl + item.poster;
-        });
         if (res.data.length > 0) {
           _this3.hotActiveList = _this3.hotActiveList.concat(res.data);
           _this3.pageNo1++;

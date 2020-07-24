@@ -27,7 +27,7 @@
 			"outputPath": ""
 		},
 		"useIsolateContext": true,
-		"useCompilerModule": false,
+		"useCompilerModule": true,
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
@@ -86,43 +86,22 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/activityDetails/activityDetails",
-					"pathName": "pages/activityDetails/activityDetails",
+					"name": "pages/addPost/addPost",
+					"pathName": "pages/addPost/addPost",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "pages/eventsList/eventsList",
-					"pathName": "pages/eventsList/eventsList",
+					"name": "pagesA/classEquity/classEquity",
+					"pathName": "pagesA/classEquity/classEquity",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "pagesA/myActivity/myActivity",
-					"pathName": "pagesA/myActivity/myActivity",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/eventsList/eventsList",
-					"pathName": "pages/eventsList/eventsList",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/index/index",
-					"pathName": "pages/index/index",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/course/course",
-					"pathName": "pages/course/course",
+					"name": "pages/search/search",
+					"pathName": "pages/search/search",
 					"scene": null
 				}
 			]

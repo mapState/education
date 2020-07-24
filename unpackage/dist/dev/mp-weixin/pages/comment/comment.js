@@ -92,11 +92,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  uniLoadMore: function() {
+    return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 410))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var f0 = _vm._f("changeTime")(_vm.detail.signStartDate)
+
+  var f1 = _vm._f("changeTime")(_vm.detail.signEndDate)
+
+  var f2 = _vm._f("changeTime")(_vm.detail.startDate)
+
+  var f3 = _vm._f("changeTime")(_vm.detail.endDate)
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        f0: f0,
+        f1: f1,
+        f2: f2,
+        f3: f3
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -130,60 +153,174 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 417));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default =
 {
-  components: {
-    Activity: Activity },
-
   data: function data() {
-    return {};
+    return {
+      loadStatus: 'more',
+      imgUrl: '',
+      pageNo: 1,
+      pageSize: 5,
+      tableId: '',
+      detail: {},
+      tagList: [],
+      list: [] };
 
+  },
+  filters: {
+    changeTime: function changeTime(time) {
+      if (time) {
+        return time.substr(5, 5);
+      }
+      return '';
 
-  } };exports.default = _default;
+    } },
+
+  onLoad: function onLoad() {
+    this.imgUrl = this.$baseUrl;
+    this.getCates();
+    this.detail = getApp().globalData.activeData;
+    this.getList();
+  },
+  onReachBottom: function onReachBottom() {
+    this.getList();
+  },
+  methods: {
+    wantJoin: function wantJoin() {
+      uni.navigateBack({
+        delta: 1 });
+
+    },
+    //获取分类列表
+    getCates: function getCates() {var _this = this;
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: 1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+        } }).
+      then(function (res) {
+        //this.swiperList=res.data
+        console.log(res.data);
+        //this.classList=res.data
+        var pid = '';
+        var tagList = [];
+        res.data.forEach(function (item) {
+          if (item.id == _this.detail.typeId) {
+            tagList.push(item.name);
+            pid = item.pid;
+          }
+        });
+        console.log(tagList);
+        res.data.forEach(function (item) {
+          if (item.id == pid) {
+            tagList.push(item.name);
+            _this.tagList = tagList;
+          }
+        });
+      });
+    },
+    getList: function getList() {var _this2 = this;
+      this.loadStatus = "loading";
+      this.$api.get('/api/comment/getList', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          type: 1, //1活动评价 2课程评价 3圈子评论
+          tableId: this.detail.id } }).
+
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this2.list = _this2.list.concat(res.data);
+          _this2.loadStatus = "more";
+          _this2.pageNo++;
+        } else {
+          _this2.loadStatus = "noMore";
+        }
+      });
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

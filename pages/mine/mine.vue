@@ -7,6 +7,7 @@
 			<view class="content">
 				<view class="noLogin" v-if="isLogin==false">
 					<button open-type="getUserInfo" @getuserinfo="getUserInfo" class="getUserBtn"></button>
+					<!-- <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="getUserBtn"></button> -->
 					<view class="imgBox">
 						<image src="../../static/icon/mine/noLogin.png" mode="aspectFit"></image>
 					</view>
@@ -90,9 +91,9 @@
 		},
 		data() {
 			return {
-				userInfo:{
-					avatar:'',
-					name:''
+				userInfo: {
+					avatar: '',
+					name: ''
 				},
 				isLogin: false,
 				top: 24,
@@ -106,14 +107,34 @@
 		},
 		onShow() {
 			uni.getStorage({
-			    key: 'userInfo',
-			    success:(res) =>{
-			       this.userInfo=res.data
-						 this.isLogin=true
-			    }
+				key: 'userInfo',
+				success: (res) => {
+					this.userInfo = res.data
+					this.isLogin = true
+				}
 			});
 		},
 		methods: {
+			getPhoneNumber(e) {
+				var that = this;
+				console.log(e)
+				wx.login({
+					success(res){
+						if(res.code){
+							if (e.detail.errMsg == "getPhoneNumber:ok") {
+								that.$api.post('/api/login/wx/callback', {
+									code: res.code,
+									encryptedData: e.detail.encryptedData,
+									iv: e.detail.iv
+								}).then((result)=>{
+									console.log(result)
+								})
+							}
+						}
+					}
+				})
+				
+			},
 			getUserInfo(info) {
 				var that = this
 				console.log(info);
@@ -131,7 +152,7 @@
 									that.userInfo.avatar = result.data.avatar
 									that.userInfo.name = result.data.name
 									that.userInfo.id = result.data.id
-									that.isLogin=true
+									that.isLogin = true
 									uni.setStorage({
 										key: 'token',
 										data: result.data.token,
@@ -144,6 +165,26 @@
 										data: that.userInfo,
 										success: function() {
 
+										}
+									});
+								}).catch((result)=>{
+									console.log(result)
+									that.userInfo.avatar = result.data.avatar
+									that.userInfo.name = result.data.name
+									that.userInfo.id = result.data.id
+									that.isLogin = true
+									uni.setStorage({
+										key: 'token',
+										data: result.data.token,
+										success: function() {
+									
+										}
+									});
+									uni.setStorage({
+										key: 'userInfo',
+										data: that.userInfo,
+										success: function() {
+									
 										}
 									});
 								})

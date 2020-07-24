@@ -886,6 +886,7 @@ page {
 }
 .giftList {
   width: 100%;
+  padding-bottom: 10rpx;
 }
 .giftList .title {
   width: 690rpx;
@@ -897,14 +898,8 @@ page {
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  padding-top: 43rpx;
-  padding-bottom: 48rpx;
-}
-.giftList .title:nth-child(1) {
-  font-size: 30rpx;
-  font-family: PingFang SC;
-  font-weight: bold;
-  color: black;
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
 }
 .giftList .title:nth-child(1) {
   font-size: 30rpx;
@@ -926,7 +921,6 @@ page {
   display: flex;
 }
 .giftList .list .scroll-view_H .item {
-  padding-top: 40rpx;
   display: inline-block;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;

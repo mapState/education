@@ -11,7 +11,7 @@
 		<scroll-view class="scroll-view" scroll-y scroll-with-animation="true" :scroll-into-view="toIndex" @scroll="scrollHandle">
 			<view class="main">
 				<view class="ss">
-					<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593333346662&di=d4cceef20cedcd44a9c1105a107a1803&imgtype=0&src=http%3A%2F%2Ft8.baidu.com%2Fit%2Fu%3D1484500186%2C1503043093%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D853"
+					<image :src="imgUrl+detailData.poster"
 					 mode="aspectFill" class="ssImge"></image>
 					 <view class="income">
 					 	<text>累计佣金收益:￥1234</text>
@@ -29,18 +29,15 @@
 				</swiper> -->
 				<view class="titleBox">
 					<view class="title">
-						<text>杭州小记者内蒙古宁夏夏令营梦幻迪士尼</text>
+						<text>{{detailData.title}}</text>
 						<view class="icons" @click="$refs.sharePop.open">
 							<image src="../../static/icon/share.png" mode="aspectFit"></image>
 							<text>赚佣金</text>
 						</view>
 					</view>
 					<view class="tags">
-						<view class="tag">
-							夏令营
-						</view>
-						<view class="tag">
-							踏春
+						<view class="tag" v-for="(item,index) in tagList" :key="index">
+							{{item}}
 						</view>
 					</view>
 					<view class="price">
@@ -126,9 +123,9 @@
 						</view>
 						<view class="list">
 							<scroll-view class="scroll-view_H" scroll-x="true">
-								<view class="item" v-for="item in 5" :key="item">
-									<image src="../../static/1.jpg" mode="aspectFill"></image>
-									<text>我要做个乖宝宝</text>
+								<view class="item" v-for="item in giveList" :key="item.id">
+									<image :src="imgUrl+item.poster" mode="aspectFill"></image>
+									<text>{{item.title}}</text>
 								</view>
 							</scroll-view>
 						</view>
@@ -139,9 +136,7 @@
 					<view class="flCaption">
 						<view class="title">现场领取其他福利：</view>
 						<view class="detail">
-							演示文字：首先，心理压力比较具体和直接，它涉及的问题比较广泛如果你想在装修过程中省心一些，
-							那就请你费一些银子吧。省心的办法不是没有，只是看你肯不肯选罢了。找一家声誉好的大型装修公司
-							全包。一般来说全包的价格从每平米建筑面积500元至1000元，再贵的也有，这要看你怎么设计，怎么用料。大公司就这样好，他为了保证自己的信誉不受损害，一定会认真地对待每个客户。所以在用料和做工上你完全可以放心。你所做的就是准备好付银子和验收。
+							{{detailData.welfare}}
 						</view>
 					</view>
 				</view>
@@ -153,8 +148,8 @@
 						</view>
 					</view>
 					<view class="commentBox">
-						<block v-for="it in 2" :key="it">
-							<Activity :type="3"></Activity>
+						<block v-for="it in oldEve" :key="it.id">
+							<Activity :detail="it"></Activity>
 							<view class="plBox">
 								<view class="top">
 									<text>评论</text>
@@ -174,26 +169,27 @@
 						</block>
 					</view>
 				</view>
-				<view class="ks3" v-if="status==3">
+				<view class="ks3" v-if="detailData.state==3">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
 					</view>
-					<view class="item">
-						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc"></image>
+					<view class="item" @click="doCollect">
+						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc" v-if="false"></image>
+						<image src="../../static/icon/heart.png" mode="aspectFit" class="sc" v-else></image>
 						<text>收藏</text>
 					</view>
 				</view>
-				<view class="tabbar" v-if="status!=3&&status!=4">
+				<view class="tabbar" v-if="detailData.state==2">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
 					</view>
-					<view class="item">
+					<view class="item" @click="doCollect">
 						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc"></image>
 						<text>收藏</text>
 					</view>
-					<view class="btns" v-if="type==0">
+					<view class="btns">
 						<view class="buy">
 							单独购买
 						</view>
@@ -222,13 +218,14 @@
 						</view>
 					</view>
 				</view>
-				<view class="tabbar" v-if="status==2">
+				<view class="tabbar" v-if="detailData.state==1">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
 					</view>
-					<view class="item">
-						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc"></image>
+					<view class="item" @click="doCollect">
+						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc" v-if="false"></image>
+						<image src="../../static/icon/heart.png" mode="aspectFit" class="sc" v-else></image>
 						<text>收藏</text>
 					</view>
 					<view class="wksBtn">
@@ -337,6 +334,10 @@
 				type: 0, //我的报名  1 报名中 3进行中 4已结束
 				showFixed:true,
 				status:0,//1报名中 2未开始 3进行中 4已结束
+				//classList:[],
+				tagList:[],
+				giveList:[],//赠送福利
+				oldEve:[]
 			};
 		},
 		filters:{
@@ -351,6 +352,9 @@
 			this.top = uni.getMenuButtonBoundingClientRect().top
 			this.detailData = getApp().globalData.activeData
 			this.getLaveTime()
+			this.getCates()
+			this.getGiveCourse()//赠送的课程
+			this.getOldEve()//往期评价
 		},
 		onShareAppMessage(res) {
 			if (res.from === 'button') { // 来自页面内分享按钮
@@ -362,6 +366,66 @@
 			}
 		},
 		methods: {
+			doCollect(){
+				//let status=this.detailData.s
+				//this.collected(0)
+			},
+			//收藏
+			collected(status){
+				this.$api.post('/api/user/store',{
+					type:1,//1活动 2收藏
+					status,
+					tableId:this.detailData.id,
+					userId:uni.getStorageSync('userInfo').id
+				}).then((res)=>{
+					console.log(res)
+				})
+			},
+			getOldEve(){
+				this.$api.get('/api/act/getCommentActivityId',{
+					params:{
+						activityId:this.detailData.id 
+					}
+				}).then((res)=>{
+					this.oldEve=res.data
+				})
+			},
+			// getGiveCourse(){
+			// 	this.$api.get('/api/act/getLessonByActivityId',{
+			// 		params:{
+			// 			activityId:this.detailData.id
+			// 		}
+			// 	}).then((res)=>{
+			// 		this.giveList=res.data
+			// 	})
+			// },
+			//获取分类列表
+			getCates() {
+				this.$api.get('/api/static/dictList',{
+					params:{
+						type:1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+					}
+				}).then((res) => {
+					//this.swiperList=res.data
+					console.log(res.data)
+					//this.classList=res.data
+					let pid=''
+					let tagList=[]
+					res.data.forEach((item)=>{
+						if(item.id==this.detailData.typeId){
+							tagList.push(item.name)
+							pid=item.pid
+						}
+					})
+					console.log(tagList)
+					res.data.forEach((item)=>{
+						if(item.id==pid){
+							tagList.push(item.name)
+							this.tagList=tagList
+						}
+					})
+				})
+			},
 			getLaveTime(){
 				let t1 = this.detailData.startDate.replace(new RegExp("-","gm"),"/").substr(0,10);
 				let t2 = this.detailData.endDate.replace(new RegExp("-","gm"),"/").substr(0,10);
@@ -397,7 +461,7 @@
 			scrollHandle(e) {
 				let scrollTop = e.detail.scrollTop
 				this.scrollTop = scrollTop
-				console.log(scrollTop)
+				//console.log(scrollTop)
 				let view = uni.createSelectorQuery().in(this).selectAll(".module");
 				view.boundingClientRect(d => {
 					let top = d[0].top
@@ -413,12 +477,12 @@
 					this.letterDetails.some(item => {
 						if ((scrollTop-180) >= item.top && (scrollTop-180) <= (item.bottom-20)) {
 							this.currentLetter = item.id;
-							console.log(this.currentLetter)
+							//console.log(this.currentLetter)
 							//当前固定用的是粘性定位，如果不用粘性定位，在这里设置
 							return true;
 						}
 					});
-					console.log(this.currentLetter)
+					//console.log(this.currentLetter)
 				}).exec()
 			},
 			goBack() {

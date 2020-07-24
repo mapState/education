@@ -168,6 +168,54 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
@@ -179,7 +227,10 @@ var _default =
       pageNo2: 1,
       loadStatus2: 'more',
       pageNo3: 1,
-      loadStatus3: 'more' };
+      loadStatus3: 'more',
+      allList: [],
+      effList: [],
+      lostList: [] };
 
   },
   onLoad: function onLoad() {
@@ -187,28 +238,75 @@ var _default =
   },
   onReachBottom: function onReachBottom() {
     if (this.tabIndex == 0) {
-
+      this.getListAll();
     } else if (this.tabIndex == 1) {
-
+      this.getListEff();
     } else {
-
+      this.getListLost();
     }
   },
   methods: {
     changeTabIndex: function changeTabIndex(index) {
       this.tabIndex = index;
+      if (index == 0 && this.allList.length == 0) {
+        this.getListAll();
+      }
+      if (index == 1 && this.effList.length == 0) {
+        this.getListEff();
+      }
+      if (index == 2 && this.lostList.length == 0) {
+        this.getListLost();
+      }
     },
     getListAll: function getListAll() {var _this = this;
+      this.loadStatus1 = "loading";
       this.$api.get('/api/lesson/getLessonByUser', {
         params: {
-          pageNo: this.pageNo,
+          pageNo: this.pageNo1,
           pageSize: 5 } }).
 
       then(function (res) {
         if (res.data.length > 0) {
           _this.allList = _this.allList.concat(res.data);
+          _this.pageNo1++;
         } else {
-
+          _this.loadStatus1 = "noMore";
+        }
+      });
+    },
+    getListEff: function getListEff() {var _this2 = this;
+      this.loadStatus2 = "loading";
+      this.$api.get('/api/lesson/getLessonByUser', {
+        params: {
+          pageNo: this.pageNo2,
+          pageSize: 5,
+          status: 1 //0删除 1正常
+        } }).
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this2.effList = _this2.effList.concat(res.data);
+          _this2.loadStatus2 = "more";
+          _this2.pageNo2++;
+        } else {
+          _this2.loadStatus2 = "noMore";
+        }
+      });
+    },
+    getListLost: function getListLost() {var _this3 = this;
+      this.loadStatus3 = "loading";
+      this.$api.get('/api/lesson/getLessonByUser', {
+        params: {
+          pageNo: this.pageNo3,
+          pageSize: 5,
+          status: 0 //0删除 1正常
+        } }).
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this3.lostList = _this3.lostList.concat(res.data);
+          _this3.loadStatus3 = "more";
+          _this3.pageNo3++;
+        } else {
+          _this3.loadStatus3 = "noMore";
         }
       });
     } } };exports.default = _default;

@@ -92,7 +92,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  uniLoadMore: function() {
+    return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 410))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -214,6 +218,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
 {
   components: {
     Activity: Activity },
@@ -221,11 +228,88 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       tabIndex: 0,
-      tabList: ['审核中', '审核失败', '审核通过'] };
+      tabList: ['审核中', '审核失败', '审核通过'],
+      loadStatus1: 'more',
+      loadStatus2: 'more',
+      loadStatus3: 'more',
+      pageNo1: 1,
+      pageNo2: 1,
+      pageNo3: 1,
+      pageSize: 5,
+      list1: [],
+      list2: [],
+      list3: [] };
 
   },
+  onLoad: function onLoad() {
+    this.getList1();
+  },
   methods: {
+    //审核中
+    getList1: function getList1() {var _this = this;
+      this.loadStatus1 = "loading";
+      this.$api.get('/api/act/getPublishActivityByUser', {
+        params: {
+          pageNo: this.pageNo1,
+          pageSize: this.pageSize,
+          passStatus: 1 //审核状态 (0为平台创建,1未审核 2审核拒绝 3审核成功)
+        } }).
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this.list1 = _this.list1.concat(res.data);
+          _this.pageNo1++;
+          _this.loadStatus1 = "more";
+        } else {
+          _this.loadStatus1 = "noMore";
+        }
+      });
+    },
+    getList2: function getList2() {var _this2 = this;
+      this.loadStatus2 = "loading";
+      this.$api.get('/api/act/getPublishActivityByUser', {
+        params: {
+          pageNo: this.pageNo2,
+          pageSize: this.pageSize,
+          passStatus: 2 //审核状态 (0为平台创建,1未审核 2审核拒绝 3审核成功)
+        } }).
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this2.list2 = _this2.list2.concat(res.data);
+          _this2.pageNo2++;
+          _this2.loadStatus2 = "more";
+        } else {
+          _this2.loadStatus2 = "noMore";
+        }
+      });
+    },
+    getList3: function getList3() {var _this3 = this;
+      this.loadStatus3 = "loading";
+      this.$api.get('/api/act/getPublishActivityByUser', {
+        params: {
+          pageNo: this.pageNo3,
+          pageSize: this.pageSize,
+          passStatus: 3 //审核状态 (0为平台创建,1未审核 2审核拒绝 3审核成功)
+        } }).
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this3.list3 = _this3.list3.concat(res.data);
+          _this3.pageNo3++;
+          _this3.loadStatus3 = "more";
+        } else {
+          _this3.loadStatus3 = "noMore";
+        }
+      });
+    },
     changeTabIndex: function changeTabIndex(index) {
+      if (index == 0 && this.list1.length <= 0) {
+        this.getList1();
+      }
+      if (index == 1 && this.list2.length <= 0) {
+        this.getList2();
+      }
+      if (index == 2 && this.list3.length <= 0) {
+        this.getList3();
+      }
       this.tabIndex = index;
     },
     goPage: function goPage(type) {

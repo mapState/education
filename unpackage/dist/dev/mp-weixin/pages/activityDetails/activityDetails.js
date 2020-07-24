@@ -484,9 +484,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
 {
   components: {
     uniPopup: uniPopup,
@@ -505,8 +502,12 @@ __webpack_require__.r(__webpack_exports__);
       currentLetter: "Details",
       type: 0, //我的报名  1 报名中 3进行中 4已结束
       showFixed: true,
-      status: 0 //1报名中 2未开始 3进行中 4已结束
-    };
+      status: 0, //1报名中 2未开始 3进行中 4已结束
+      //classList:[],
+      tagList: [],
+      giveList: [], //赠送福利
+      oldEve: [] };
+
   },
   filters: {
     changeTime: function changeTime(val) {
@@ -520,6 +521,9 @@ __webpack_require__.r(__webpack_exports__);
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.detailData = getApp().globalData.activeData;
     this.getLaveTime();
+    this.getCates();
+    this.getGiveCourse(); //赠送的课程
+    this.getOldEve(); //往期评价
   },
   onShareAppMessage: function onShareAppMessage(res) {
     if (res.from === 'button') {// 来自页面内分享按钮
@@ -531,6 +535,66 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
+    doCollect: function doCollect() {
+      //let status=this.detailData.s
+      //this.collected(0)
+    },
+    //收藏
+    collected: function collected(status) {
+      this.$api.post('/api/user/store', {
+        type: 1, //1活动 2收藏
+        status: status,
+        tableId: this.detailData.id,
+        userId: uni.getStorageSync('userInfo').id }).
+      then(function (res) {
+        console.log(res);
+      });
+    },
+    getOldEve: function getOldEve() {var _this = this;
+      this.$api.get('/api/act/getCommentActivityId', {
+        params: {
+          activityId: this.detailData.id } }).
+
+      then(function (res) {
+        _this.oldEve = res.data;
+      });
+    },
+    // getGiveCourse(){
+    // 	this.$api.get('/api/act/getLessonByActivityId',{
+    // 		params:{
+    // 			activityId:this.detailData.id
+    // 		}
+    // 	}).then((res)=>{
+    // 		this.giveList=res.data
+    // 	})
+    // },
+    //获取分类列表
+    getCates: function getCates() {var _this2 = this;
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: 1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+        } }).
+      then(function (res) {
+        //this.swiperList=res.data
+        console.log(res.data);
+        //this.classList=res.data
+        var pid = '';
+        var tagList = [];
+        res.data.forEach(function (item) {
+          if (item.id == _this2.detailData.typeId) {
+            tagList.push(item.name);
+            pid = item.pid;
+          }
+        });
+        console.log(tagList);
+        res.data.forEach(function (item) {
+          if (item.id == pid) {
+            tagList.push(item.name);
+            _this2.tagList = tagList;
+          }
+        });
+      });
+    },
     getLaveTime: function getLaveTime() {
       var t1 = this.detailData.startDate.replace(new RegExp("-", "gm"), "/").substr(0, 10);
       var t2 = this.detailData.endDate.replace(new RegExp("-", "gm"), "/").substr(0, 10);
@@ -563,31 +627,31 @@ __webpack_require__.r(__webpack_exports__);
       this.toIndex = val;
       this.currentLetter = val;
     },
-    scrollHandle: function scrollHandle(e) {var _this = this;
+    scrollHandle: function scrollHandle(e) {var _this3 = this;
       var scrollTop = e.detail.scrollTop;
       this.scrollTop = scrollTop;
-      console.log(scrollTop);
+      //console.log(scrollTop)
       var view = uni.createSelectorQuery().in(this).selectAll(".module");
       view.boundingClientRect(function (d) {
         var top = d[0].top;
         d.forEach(function (item) {
           item.top = item.top - top;
           item.bottom = item.bottom - top;
-          _this.letterDetails.push({
+          _this3.letterDetails.push({
             id: item.id,
             top: item.top,
             bottom: item.bottom });
 
         });
-        _this.letterDetails.some(function (item) {
+        _this3.letterDetails.some(function (item) {
           if (scrollTop - 180 >= item.top && scrollTop - 180 <= item.bottom - 20) {
-            _this.currentLetter = item.id;
-            console.log(_this.currentLetter);
+            _this3.currentLetter = item.id;
+            //console.log(this.currentLetter)
             //当前固定用的是粘性定位，如果不用粘性定位，在这里设置
             return true;
           }
         });
-        console.log(_this.currentLetter);
+        //console.log(this.currentLetter)
       }).exec();
     },
     goBack: function goBack() {

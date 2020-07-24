@@ -291,8 +291,10 @@ __webpack_require__.r(__webpack_exports__);
 
   data: function data() {
     return {
+      imgUrl: '',
       top: 24,
       swiperIndex: 0,
+      //gradeList:[],
       gradeList: [{
         bgImg: '../static/img/grade1.png',
         name: '游客',
@@ -324,13 +326,31 @@ __webpack_require__.r(__webpack_exports__);
         num1: 10,
         num2: 10 }],
 
-      selIndex: 0 };
+      selIndex: 0,
+      menuList: [] };
 
   },
   onLoad: function onLoad() {
+    this.imgUrl = this.$baseUrl;
     this.top = uni.getMenuButtonBoundingClientRect().top;
+    this.getUserLevel();
+    this.getMenuList();
   },
   methods: {
+    //获取经验套餐列表
+    getMenuList: function getMenuList() {var _this = this;
+      this.$api.get('/api/static/getMenuList').then(function (res) {
+        console.log(res.data);
+        _this.menuList = res.data;
+      });
+    },
+    //获取用户等级
+    getUserLevel: function getUserLevel() {
+      this.$api.get('/api/static/userLevel').then(function (res) {
+        console.log(res.data);
+        //this.gradeList=res.data
+      });
+    },
     goBack: function goBack() {
       uni.navigateBack({
         delta: 1 });
@@ -340,7 +360,11 @@ __webpack_require__.r(__webpack_exports__);
       this.swiperIndex = e.detail.current;
     },
     selItem: function selItem(index) {
-      this.selIndex = index;
+      if (index == this.selIndex) {
+        this.selIndex = 0;
+      } else {
+        this.selIndex = index;
+      }
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

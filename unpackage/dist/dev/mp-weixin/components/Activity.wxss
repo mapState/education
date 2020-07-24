@@ -86,7 +86,7 @@
   line-height: 34rpx;
   border: 1rpx solid #dddddd;
   border-radius: 17rpx;
-  margin-right: 30rpx;
+  margin-right: 20rpx;
 }
 .item .right .row .gray {
   font-size: 24rpx;

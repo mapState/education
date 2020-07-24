@@ -29,6 +29,7 @@
 					</view>
 				</view>
 			</view>
+			<uni-load-more :status="loadStatus1"></uni-load-more>
 		</view>
 		<view class="list" v-if="tabIndex==1">
 			<view class="item" @click="goPage(2)">
@@ -54,6 +55,7 @@
 					</view>
 				</view>
 			</view>
+			<uni-load-more :status="loadStatus2"></uni-load-more>
 		</view>
 		<view class="passList" v-if="tabIndex==2">
 			<view class="tabs">
@@ -74,8 +76,9 @@
 				</view>
 			</view>
 			<block v-for="(item,index) in 4" :key="index">
-				<Activity :type="index" @click.native="goDetail"></Activity>
+				<Activity  @click.native="goDetail" :detail="item"></Activity>
 			</block>
+			<uni-load-more :status="loadStatus3"></uni-load-more>
 		</view>
 	</view>
 </template>
@@ -89,11 +92,88 @@
 		data() {
 			return {
 				tabIndex:0,
-				tabList:['审核中','审核失败','审核通过']
+				tabList:['审核中','审核失败','审核通过'],
+				loadStatus1:'more',
+				loadStatus2:'more',
+				loadStatus3:'more',
+				pageNo1:1,
+				pageNo2:1,
+				pageNo3:1,
+				pageSize:5,
+				list1:[],
+				list2:[],
+				list3:[]
 			};
 		},
+		onLoad() {
+			this.getList1()
+		},
 		methods:{
+			//审核中
+			getList1(){
+				this.loadStatus1="loading"
+				this.$api.get('/api/act/getPublishActivityByUser',{
+					params:{
+						pageNo:this.pageNo1,
+						pageSize:this.pageSize,
+						passStatus:1,//审核状态 (0为平台创建,1未审核 2审核拒绝 3审核成功)
+					}
+				}).then((res)=>{
+					if(res.data.length>0){
+						this.list1=this.list1.concat(res.data)
+						this.pageNo1++
+						this.loadStatus1="more"
+					}else{
+						this.loadStatus1="noMore"
+					}
+				})
+			},
+			getList2(){
+				this.loadStatus2="loading"
+				this.$api.get('/api/act/getPublishActivityByUser',{
+					params:{
+						pageNo:this.pageNo2,
+						pageSize:this.pageSize,
+						passStatus:2,//审核状态 (0为平台创建,1未审核 2审核拒绝 3审核成功)
+					}
+				}).then((res)=>{
+					if(res.data.length>0){
+						this.list2=this.list2.concat(res.data)
+						this.pageNo2++
+						this.loadStatus2="more"
+					}else{
+						this.loadStatus2="noMore"
+					}
+				})
+			},
+			getList3(){
+				this.loadStatus3="loading"
+				this.$api.get('/api/act/getPublishActivityByUser',{
+					params:{
+						pageNo:this.pageNo3,
+						pageSize:this.pageSize,
+						passStatus:3,//审核状态 (0为平台创建,1未审核 2审核拒绝 3审核成功)
+					}
+				}).then((res)=>{
+					if(res.data.length>0){
+						this.list3=this.list3.concat(res.data)
+						this.pageNo3++
+						this.loadStatus3="more"
+					}else{
+						this.loadStatus3="noMore"
+					}
+				})
+			},
 			changeTabIndex(index){
+				if(index==0&&this.list1.length<=0){
+					this.getList1()
+				}
+				if(index==1&&this.list2.length<=0){
+					this.getList2()
+				}
+				if(index==2&&this.list3.length<=0){
+					this.getList3()
+				}
 				this.tabIndex=index
 			},
 			goPage(type){

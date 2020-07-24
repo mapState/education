@@ -1,13 +1,13 @@
 <template>
 	<view class="item">
-		<image :src="detail.poster" mode="aspectFill"
+		<image :src="imgUrl + detail.poster" mode="aspectFill"
 		 class="leftImg"></image>
 		<view class="right">
 			<view class="row">
 				<text class="t1">{{detail.title}}</text>
 			</view>
 			<view class="row">
-				<view class="tag">夏令营</view>
+				<view class="tag" v-for="(item,index) in tagList" :key="index">{{item}}</view>
 				<image src="/static/icon/eye.png" mode="aspectFill" class="eyeIcon"></image>
 				<text class="gray">{{detail.fake}}</text>
 				<image src="/static/icon/peo.png" mode="aspectFill" class="peoIcon"></image>
@@ -43,14 +43,11 @@
 	export default {
 		data() {
 			return {
-
+				imgUrl:'',
+				tagList:[]
 			};
 		},
 		props:{
-			type:{
-				type:Number,
-				default:0
-			},
 			detail:{
 				type:Object,
 				default:{}
@@ -65,8 +62,38 @@
 				
 			}
 		},
+		mounted() {
+			this.imgUrl=this.$baseUrl
+			this.getCates()
+		},
 		methods:{
-			
+			//获取分类列表
+			getCates() {
+				this.$api.get('/api/static/dictList',{
+					params:{
+						type:1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+					}
+				}).then((res) => {
+					//this.swiperList=res.data
+					console.log(res.data)
+					//this.classList=res.data
+					let pid=''
+					let tagList=[]
+					res.data.forEach((item)=>{
+						if(item.id==this.detail.typeId){
+							tagList.push(item.name)
+							pid=item.pid
+						}
+					})
+					console.log(tagList)
+					res.data.forEach((item)=>{
+						if(item.id==pid){
+							tagList.push(item.name)
+							this.tagList=tagList
+						}
+					})
+				})
+			},
 		}
 	}
 </script>
@@ -118,7 +145,7 @@
 					line-height: 34rpx;
 					border: 1rpx solid rgba(221, 221, 221, 1);
 					border-radius: 17rpx;
-					margin-right: 30rpx;
+					margin-right:20rpx;
 				}
 
 				.gray {

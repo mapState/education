@@ -72,14 +72,14 @@
 			</view>
 		</view>
 		<view class="empiricList">
-			<view class="item" v-for="(item,index) in 6" :key="item" @click="selItem(index)" :class="{'active':selIndex==index}">
-				<image src="../static/icon/buyem.png" mode="aspectFit" class="selImg" v-if="selIndex==index"></image>
-				<view class="em">100经验</view>
+			<view class="item" v-for="(item,index) in menuList" :key="item" @click="selItem(item.id)" :class="{'active':selIndex==item.id}">
+				<image src="../static/icon/buyem.png" mode="aspectFit" class="selImg" v-if="selIndex==item.id"></image>
+				<view class="em">{{item.expValue}}经验</view>
 				<view class="line">
 					
 				</view>
 				<view class="price">
-					￥15
+					￥{{item.money}}
 				</view>
 			</view>
 		</view>
@@ -146,8 +146,10 @@
 		},
 		data() {
 			return {
+				imgUrl:'',
 				top: 24,
 				swiperIndex: 0,
+				//gradeList:[],
 				gradeList: [{
 					bgImg: '../static/img/grade1.png',
 					name: '游客',
@@ -179,13 +181,31 @@
 					num1: 10,
 					num2: 10
 				}],
-				selIndex:0
+				selIndex:0,
+				menuList:[]
 			};
 		},
 		onLoad() {
+			this.imgUrl=this.$baseUrl
 			this.top = uni.getMenuButtonBoundingClientRect().top
+			this.getUserLevel()
+			this.getMenuList()
 		},
 		methods: {
+			//获取经验套餐列表
+			getMenuList(){
+				this.$api.get('/api/static/getMenuList').then((res)=>{
+					console.log(res.data)
+					this.menuList=res.data
+				})
+			},
+			//获取用户等级
+			getUserLevel(){
+				this.$api.get('/api/static/userLevel').then((res)=>{
+					console.log(res.data)
+					//this.gradeList=res.data
+				})
+			},
 			goBack() {
 				uni.navigateBack({
 					delta: 1
@@ -195,7 +215,11 @@
 				this.swiperIndex = e.detail.current;
 			},
 			selItem(index){
-				this.selIndex=index
+				if(index==this.selIndex){
+					this.selIndex=0
+				}else{
+					this.selIndex=index
+				}
 			}
 		}
 	}

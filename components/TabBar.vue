@@ -153,7 +153,7 @@
 		flex-direction: column;
 		height: 100%;
 		align-items: center;
-		justify-content: space-around;
+		justify-content:space-around;
 		.homea{
 			width:40rpx;
 			height: 47rpx;

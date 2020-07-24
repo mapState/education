@@ -154,6 +154,9 @@
   padding-top: 38rpx;
   padding-bottom: 12rpx;
 }
+.catePost .yow {
+  color: #fdd30f;
+}
 .catePost .cateList {
   width: 100%;
   padding: 0 20rpx;

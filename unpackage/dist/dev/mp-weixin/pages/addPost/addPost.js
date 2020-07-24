@@ -187,6 +187,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
 {
   components: {
     uniPopup: uniPopup },
@@ -197,7 +200,8 @@ __webpack_require__.r(__webpack_exports__);
       content: '',
       address: '',
       dictId: '0',
-      classList: [] };
+      classList: [],
+      claItem: '' };
 
   },
   onLoad: function onLoad() {
@@ -213,8 +217,10 @@ __webpack_require__.r(__webpack_exports__);
         _this.classList = res.data;
       });
     },
-    selDictId: function selDictId(dictId) {
+    selDictId: function selDictId(dictId, txt) {
       this.dictId = dictId;
+      this.claItem = txt;
+      this.$refs.catePost.close();
     },
     submit: function submit() {
       this.$api.post('/api/club/publish', {

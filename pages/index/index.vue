@@ -188,9 +188,6 @@
 				}).then((res) => {
 					//this.swiperList=res.data
 					console.log(res.data)
-					res.data.forEach((item)=>{
-						item.poster=this.$baseUrl+item.poster
-					})
 					if(res.data.length>0){
 						this.hotActiveList=this.hotActiveList.concat(res.data)
 						this.pageNo1++
