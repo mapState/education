@@ -10,8 +10,7 @@
 		<scroll-view class="scroll-view" scroll-y scroll-with-animation="true" :scroll-into-view="toIndex" @scroll="scrollHandle">
 			<view class="main">
 				<view class="ss">
-					<image :src="imgUrl+detail.poster"
-					 mode="aspectFill" class="ssImge"></image>
+					<image :src="imgUrl+detail.poster" mode="aspectFill" class="ssImge"></image>
 				</view>
 				<!-- <swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" :indicator-dots="true"
 				 indicator-color="#fff" indicator-active-color="#FDD30F">
@@ -29,11 +28,8 @@
 						</view>
 					</view>
 					<view class="tags">
-						<view class="tag">
-							0-3岁
-						</view>
-						<view class="tag">
-							行为习惯
+						<view class="tag" v-for="(item,index) in tagList" :key="index">
+							{{item}}
 						</view>
 					</view>
 					<view class="price">
@@ -46,26 +42,28 @@
 					</view>
 				</view>
 				<text class="block">1</text>
-				<view class="detailTitle">
-					<view class="tt">
-						学习内容
+				<template v-if="recomedList.length>0">
+					<view class="detailTitle">
+						<view class="tt">
+							学习内容
+						</view>
 					</view>
-				</view>
-				<view class="giftList">
-					<!-- <view class="title">
-						<text>0-3岁小孩习惯培养课程大礼包</text>
-						<text>价值300元</text>
-					</view> -->
-					<view class="list">
-						<scroll-view class="scroll-view_H" scroll-x="true">
-							<view class="item" v-for="item in recomedList" :key="item.id">
-								<image :src="imgUrl+item.poster" mode="aspectFill"></image>
-								<text>{{item.title}}</text>
-							</view>
-						</scroll-view>
+					<view class="giftList">
+						<!-- <view class="title">
+							<text>0-3岁小孩习惯培养课程大礼包</text>
+							<text>价值300元</text>
+						</view> -->
+						<view class="list">
+							<scroll-view class="scroll-view_H" scroll-x="true">
+								<view class="item" v-for="item in recomedList" :key="item.id">
+									<image :src="imgUrl+item.poster" mode="aspectFill"></image>
+									<text>{{item.title}}</text>
+								</view>
+							</scroll-view>
+						</view>
 					</view>
-				</view>
-				<text class="block">1</text>
+					<text class="block">1</text>
+				</template>
 				<view class="tabs">
 					<text :class="{'active':currentLetter=='Details'}" @click="toView('Details')">详情介绍</text>
 					<text :class="{'active':currentLetter=='Evaluation'}" @click="toView('Evaluation')">用户评价</text>
@@ -83,7 +81,7 @@
 						全包。一般来说全包的价格从每平米建筑面积500元至1000元，再贵的也有，这要看你怎么设计，怎么用料。大公司就这样好，他为了保证自己的信誉不受损害，一定会认真地对待每个客户。所以在用料和做工上你完全可以放心。你所做的就是准备好付银子和验收。
 					</view>
 				</view> -->
-				<view class="module" id="Evaluation">
+				<view class="module" id="Evaluation" style="width:100%;">
 					<view class="detailTitle">
 						<text></text>
 						<view class="">
@@ -91,7 +89,7 @@
 						</view>
 					</view>
 					<view class="pjList">
-						<comment-item v-for="item in 3" :key="item"></comment-item>
+						<comment-item v-for="item in commentList" :key="item.id" :detail="item"></comment-item>
 					</view>
 				</view>
 				<view class="tabbar">
@@ -99,8 +97,9 @@
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
 					</view>
-					<view class="item">
-						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc"></image>
+					<view class="item" @click="doCollected">
+						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc" v-if="detail.isStore"></image>
+						<image src="../../static/icon/heart.png" mode="aspectFit" class="sc" v-else></image>
 						<text>收藏</text>
 					</view>
 					<view class="pjBtn" @click="goEval" v-if="type==1">
@@ -146,7 +145,7 @@
 					<text>发送给朋友</text>
 					<button open-type="share" class="shareBtn"></button>
 				</view>
-				<view class="item">
+				<view class="item" @click="getPoster">
 					<image src="../../static/img/poster.png" mode="aspectFill"></image>
 					<text>生成海报</text>
 				</view>
@@ -155,7 +154,7 @@
 		<view class="ad" v-if="showAd">
 			<image src="/static/icon/close.png" mode="aspectFit" class="closeIcon" @click="showAd=false"></image>
 			<view class="line">
-		
+
 			</view>
 			<view class="imgBox">
 				<image src="/static/img/hb.png" mode="aspectFit" class="bgImg"></image>
@@ -167,6 +166,16 @@
 				</view>
 			</view>
 		</view>
+		<view class="canvasBox" style="width:0;height:0;overflow: hidden;opacity:0;position:fixed;left:-750px;top:0;">
+			<canvas canvas-id='myCanvas' :style="{width:width+'px',height: height+'px'}"></canvas>
+		</view>
+		<uni-popup ref="poster" type="center" :maskClick="false">
+			<view class="posterBox">
+				<image :src="tmpImg" mode="aspectFill" class="posterImg"></image>
+				<text class="posterTip" @click="saveImageToPhotosAlbum">保存到手机</text>
+				<image src="../../static/icon/closeIcon.png" mode="aspectFill" class="closeIcon" @click="closePoser"></image>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -182,27 +191,36 @@
 		},
 		data() {
 			return {
-				detail:{},
+				tmpImg: '',
+				width: 570,
+				height: 820,
+				pixelRatio: 2,
+				codePath: '/static/tmp/code.jpg', //小程序码
+				poserImg: 'https://t8.baidu.com/it/u=3887179165,3572970878&fm=79&app=86&size=h300&n=0&g=4n&f=jpeg?sec=1596352536&t=2736120db00abcf307212a6d5ddfce18',
+				tagList: [],
+				detail: {},
 				top: 22,
 				scrollTop: 0,
 				showAd: true,
 				toIndex: '',
 				letterDetails: [],
-				currentLetter:"Details",
-				type:0,
-				recomedList:[],
-				imgUrl:'',
-				commentList:[]
+				currentLetter: "Details",
+				type: 0,
+				recomedList: [],
+				imgUrl: '',
+				commentList: [],
+				pageNo: 1,
 			};
 		},
 		onLoad(params) {
-			this.imgUrl=this.$baseUrl
+			this.imgUrl = this.$baseUrl
 			this.top = uni.getMenuButtonBoundingClientRect().top
-			this.detail=getApp().globalData.courseData
+			this.detail = getApp().globalData.courseData
+			this.getCates()
 			this.getCommentList()
 			this.getStudyContent()
-			if(params.type){
-				this.type=params.type
+			if (params.type) {
+				this.type = params.type
 			}
 		},
 		onShareAppMessage(res) {
@@ -215,37 +233,77 @@
 			}
 		},
 		methods: {
-			getCommentList(){
-				this.$api.get('/api/lesson/getCommentList',{
-					params:{
-						lessonId:this.detail.id
-					}
+			doCollected(){
+				let status=this.detail.isStore==0?1:0
+				this.$api.post('/api/user/store',{
+					type:2,//1活动 2课程
+					status,
+					tableId:this.detail.id,
+					userId:uni.getStorageSync('userInfo').id
 				}).then((res)=>{
-					this.commentList=res.data
+					this.detail.isStore=status
 				})
 			},
-			getStudyContent(){
-				this.$api.get('/api/lesson/getBookListByLessonId',{
-					params:{
-						lessonId:this.detail.contentLesson,
-						type:1
+			getCates() {
+				this.$api.get('/api/static/dictList', {
+					params: {
+						type: 2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
 					}
-				}).then((res)=>{
-					this.recomedList=res.data
+				}).then((res) => {
+					let pid = ''
+					let tagList = []
+					res.data.forEach((item) => {
+						if (item.id == this.detail.typeId) {
+							tagList.push(item.name)
+							pid = item.pid
+						}
+					})
+					console.log(tagList)
+					res.data.forEach((item) => {
+						if (item.id == pid) {
+							tagList.push(item.name)
+						}
+					})
+					this.tagList = tagList
 				})
 			},
-			goEval(){
+			getCommentList() {
+				this.$api.get('/api/comment/getList', {
+					params: {
+						pageNo: this.pageNo,
+						pageSize: 5,
+						tableId: this.detail.id,
+						type: 2
+					}
+				}).then((res) => {
+					if (res.data.length > 0) {
+						this.commentList = this.commentList.concat(res.data)
+						this.pageNo++
+					}
+				})
+			},
+			getStudyContent() {
+				this.$api.get('/api/lesson/getBookListByLessonId', {
+					params: {
+						lessonId: this.detail.id,
+						type: 1
+					}
+				}).then((res) => {
+					this.recomedList = res.data
+				})
+			},
+			goEval() {
 				uni.navigateTo({
-					url:"/pagesA/courseEvaluation/courseEvaluation"
+					url: "/pagesA/courseEvaluation/courseEvaluation"
 				})
 			},
-			goBuy(){
+			goBuy() {
 				uni.navigateTo({
-					url:"/pages/courseBuy/courseBuy"
+					url: "/pages/courseBuy/courseBuy"
 				})
 			},
-			toView(val){
-				this.toIndex=val
+			toView(val) {
+				this.toIndex = val
 			},
 			scrollHandle(e) {
 				let scrollTop = e.detail.scrollTop
@@ -265,7 +323,7 @@
 						});
 					});
 					this.letterDetails.some(item => {
-						if ((scrollTop-180)>= item.top && (scrollTop-180) <= item.bottom-20) {
+						if ((scrollTop - 180) >= item.top && (scrollTop - 180) <= item.bottom - 20) {
 							this.currentLetter = item.id;
 							//当前固定用的是粘性定位，如果不用粘性定位，在这里设置
 							return true;
@@ -290,7 +348,138 @@
 				uni.navigateTo({
 					url: "/pages/comment/comment"
 				})
-			}
+			},
+			//生成 海报
+			closePoser() {
+				this.$refs.poster.close()
+			},
+			getPoster() {
+				this.$refs.sharePop.close()
+				uni.showLoading({
+					title: '海报生成中...',
+					mask: true
+				});
+				let that = this
+				let context = wx.createCanvasContext('myCanvas');
+				context.width = this.width;
+				context.height = this.height;
+				let x = context.width / 2;
+				wx.getImageInfo({
+					src: this.poserImg,
+					success: (res) => {
+						context.fillStyle = "#FFFFFF";
+						context.fillRect(0, 0, this.width, this.height);
+						// context.drawImage(this.bgPath, 0, 0, this.width, this.height);
+						context.drawImage(res.path, 0, 0, this.width, 530);
+						context.setFontSize(28);
+						context.setFillStyle('#000000');
+						context.setTextAlign('center');
+						let text = '杭州小记者内蒙古宁夏夏令营梦幻迪士尼'
+						if (text.length > 20) {
+							text = text.substr(0, 20) + '...'
+						}
+						context.fillText(text, this.width / 2, 600);
+						let tip = '长按识别，立即参加'
+						context.setFontSize(28);
+						context.fillText(tip, 320, 760);
+						context.save();
+						context.restore();
+						let yq = '邀您参加'
+						context.setFillStyle('#666666');
+						context.font = 'normal bold 24px sans-serif';
+						context.fillText(yq, 340, 720);
+						context.save();
+						context.restore();
+						let name = '张雨溪'
+						context.setFillStyle('#000000');
+						context.font = 'normal bold 26px sans-serif';
+						context.fillText(name, 340, 690);
+						context.save();
+						context.restore();
+						wx.getImageInfo({
+							src: that.codePath,
+							success: (res1) => {
+								context.drawImage(that.codePath, 33, 650, 132, 132);
+								wx.getImageInfo({
+									src: this.poserImg,
+									success: (avatar) => {
+										console.log(avatar)
+										var avatarurl_width = 62; //绘制的头像宽度
+										var avatarurl_heigth = 62; //绘制的头像高度
+										var avatarurl_x = 200; //绘制的头像在画布上的位置
+										var avatarurl_y = 660; //绘制的头像在画布上的位置
+										context.beginPath(); //开始绘制
+										context.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_heigth / 2 + avatarurl_y, avatarurl_width / 2, 0, Math.PI * 2, false);
+										context.clip();
+										context.drawImage(avatar.path, 200, 660, 62, 62);
+										context.save();
+										context.draw();
+										setTimeout(() => {
+											wx.canvasToTempFilePath({
+												canvasId: 'myCanvas',
+												x: 0, //指定的画布区域的左上角横坐标	
+												y: 0, //指定的画布区域的左上角纵坐标	
+												width: this.width, //指定的画布区域的宽度
+												height: this.height, //指定的画布区域的高度
+												destWidth: this.width, //输出的图片的宽度 
+												destHeight: this.height, //输出的图片的高度
+												success: (res) => {
+													var tempFilePath = res.tempFilePath;
+													this.tmpImg = tempFilePath
+													console.log(tempFilePath)
+													uni.hideLoading();
+													this.$refs.poster.open()
+												},
+												fail: (res) => {
+													console.log(res);
+													uni.hideLoading();
+												}
+											});
+										}, 300);
+									}
+								})
+
+							}
+						})
+					}
+				})
+			},
+			saveImageToPhotosAlbum() {
+				var that = this
+				var value = that.tmpImg; // 你的图片路径
+				if (value != undefined && value != "") {
+					wx.saveImageToPhotosAlbum({
+						filePath: value,
+						success: (res) => {
+							// that.hideModal();
+							// that.hideMoments();
+							wx.showToast({
+								title: "已保存到相册",
+								icon: 'none',
+								duration: 1500,
+								mask: true
+							})
+						},
+						fail: function(res) {
+							console.error(res)
+							//首次保存会询问你是否授权，选是就好了
+							// if (res.errMsg == "saveImageToPhotosAlbum:fail auth deny") {
+							console.error("打开设置窗口");
+							wx.openSetting({
+								success(settingdata) {
+									console.error(settingdata)
+									if (settingdata.authSetting["scope.writePhotosAlbum"]) {
+										console.error("获取权限成功，再次点击图片保存到相册")
+									} else {
+										console.error("获取权限失败")
+									}
+								}
+							})
+							// }
+						}
+					})
+				}
+			},
 		}
 	}
 </script>

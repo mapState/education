@@ -185,31 +185,48 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 {
   components: {
     uniPopup: uniPopup },
 
   data: function data() {
     return {
+      imgUrl: '',
       isProtect: 1,
       type: 1, //类型1 成长经历 2活动 3课程 4帖子
       content: '',
-      address: '' };
+      address: '',
+      imgList: [],
+      tmpImgList: [],
+      videoList: [] };
 
+  },
+  onLoad: function onLoad() {
+    this.imgUrl = this.$baseUrl;
   },
   methods: {
     openPop: function openPop() {
+      var arr = this.imgList.join();
       this.$api.post('/api/club/publish', {
         address: this.address,
         type: this.type,
         content: this.content,
-        isProtect: this.isProtect }).
+        isProtect: this.isProtect,
+        resUrl: arr }).
       then(function (res) {
-        if (res.code == 10200) {
-          uni.showToast({
-            title: "发布成功" });
+        uni.showToast({
+          title: "发布成功",
+          duration: 500 });
 
-        }
+        setTimeout(function () {
+          uni.navigateBack({
+            delta: 1 });
+
+        }, 1200);
       });
     },
     switchChange: function switchChange(e) {
@@ -221,6 +238,51 @@ __webpack_require__.r(__webpack_exports__);
         success: function success(res) {
           _this.address = res.address;
           console.log(res);
+        } });
+
+    },
+    addImg: function addImg() {var _this2 = this;
+      uni.chooseImage({
+        count: 3,
+        success: function success(chooseImageRes) {
+          var tempFilePaths = chooseImageRes.tempFilePaths;
+          console.log(tempFilePaths);var _loop = function _loop(
+          i) {
+            console.log(i);
+            uni.uploadFile({
+              url: _this2.$uploadUrl,
+              filePath: tempFilePaths[i],
+              name: 'file',
+              success: function success(uploadFileRes) {
+                console.log(JSON.parse(uploadFileRes.data));
+                var res = JSON.parse(uploadFileRes.data);
+                _this2.$set(_this2.tmpImgList, i, res.data);
+                if (_this2.tmpImgList.length == tempFilePaths.length) {
+                  _this2.imgList = _this2.imgList.concat(_this2.tmpImgList);
+                }
+              } });};for (var i = 0; i < tempFilePaths.length; i++) {_loop(i);
+
+          }
+        } });
+
+    },
+    addVideo: function addVideo() {var _this3 = this;
+      uni.chooseVideo({
+        count: 1,
+        success: function success(res) {
+          var videoPath = res.tempFilePath;
+          var thumPath = res.thumbTempFilePath;
+          console.log(res);
+          uni.uploadFile({
+            url: _this3.$uploadUrl,
+            filePath: videoPath,
+            name: 'file',
+            success: function success(uploadFileRes) {
+              console.log(JSON.parse(uploadFileRes.data));
+              var result = JSON.parse(uploadFileRes.data);
+              _this3.videoList.push(result.data);
+            } });
+
         } });
 
     } } };exports.default = _default;

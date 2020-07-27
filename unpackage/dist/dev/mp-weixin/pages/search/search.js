@@ -220,17 +220,21 @@ __webpack_require__.r(__webpack_exports__);
         if (res.data.length > 0) {
           _this2.list = _this2.list.concat(res.data);
           _this2.pageNo++;
-          _this2.loadStatus = "more";
+          if (res.data.length == 5) {
+            _this2.loadStatus = "more";
+          } else {
+            _this2.loadStatus = "noMore";
+          }
         } else {
           _this2.loadStatus = "noMore";
         }
       });
     },
-    clearHistory: function clearHistory() {
+    clearHistory: function clearHistory() {var _this3 = this;
       uni.showModal({
         title: '提示',
         content: '确定清除搜索历史?',
-        success: function success(res) {var _this3 = this;
+        success: function success(res) {
           if (res.confirm) {
             uni.removeStorage({
               key: 'historyList',

@@ -86,22 +86,22 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/addPost/addPost",
-					"pathName": "pages/addPost/addPost",
+					"name": "pages/eventsList/eventsList",
+					"pathName": "pages/eventsList/eventsList",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "pagesA/classEquity/classEquity",
-					"pathName": "pagesA/classEquity/classEquity",
+					"name": "pages/courseList/courseList",
+					"pathName": "pages/courseList/courseList",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "pages/search/search",
-					"pathName": "pages/search/search",
+					"name": "pages/addActivity/addActivity",
+					"pathName": "pages/addActivity/addActivity",
 					"scene": null
 				}
 			]

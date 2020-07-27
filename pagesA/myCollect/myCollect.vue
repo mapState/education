@@ -9,14 +9,14 @@
 				</view>
 			</view>
 			<view class="list" v-if="tabIndex==0">
-				<block v-for="(item,index) in 4" :key="index">
-					<Activity :type="index"></Activity>
+				<block v-for="item in list1" :key="item.id">
+					<Activity :detail="item"></Activity>
 				</block>
-				<uni-load-more :status="loadStatus1"></uni-load-more>
+				<!-- <uni-load-more :status="loadStatus1"></uni-load-more> -->
 			</view>
 			<view class="list" v-if="tabIndex==1">
-				<course-item v-for="item in 2" :key="item"></course-item>
-				<uni-load-more :status="loadStatus2"></uni-load-more>
+				<course-item v-for="item in list2" :key="item.id" :detail="item"></course-item>
+				<!-- <uni-load-more :status="loadStatus2"></uni-load-more> -->
 			</view>
 	</view>
 </template>

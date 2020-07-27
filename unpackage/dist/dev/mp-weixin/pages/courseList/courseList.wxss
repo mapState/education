@@ -75,6 +75,7 @@
   height: 54rpx;
   padding-left: 40rpx;
   box-sizing: border-box;
+  line-height: 54rpx;
 }
 .search .inputBox .plClass {
   font-size: 28rpx;

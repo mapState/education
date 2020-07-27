@@ -318,6 +318,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
 {
   components: {
     uniPopup: uniPopup,
@@ -326,6 +335,13 @@ __webpack_require__.r(__webpack_exports__);
 
   data: function data() {
     return {
+      tmpImg: '',
+      width: 570,
+      height: 820,
+      pixelRatio: 2,
+      codePath: '/static/tmp/code.jpg', //小程序码
+      poserImg: 'https://t8.baidu.com/it/u=3887179165,3572970878&fm=79&app=86&size=h300&n=0&g=4n&f=jpeg?sec=1596352536&t=2736120db00abcf307212a6d5ddfce18',
+      tagList: [],
       detail: {},
       top: 22,
       scrollTop: 0,
@@ -336,13 +352,15 @@ __webpack_require__.r(__webpack_exports__);
       type: 0,
       recomedList: [],
       imgUrl: '',
-      commentList: [] };
+      commentList: [],
+      pageNo: 1 };
 
   },
   onLoad: function onLoad(params) {
     this.imgUrl = this.$baseUrl;
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.detail = getApp().globalData.courseData;
+    this.getCates();
     this.getCommentList();
     this.getStudyContent();
     if (params.type) {
@@ -359,23 +377,63 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
-    getCommentList: function getCommentList() {var _this = this;
-      this.$api.get('/api/lesson/getCommentList', {
-        params: {
-          lessonId: this.detail.id } }).
-
+    doCollected: function doCollected() {var _this = this;
+      var status = this.detail.isStore == 0 ? 1 : 0;
+      this.$api.post('/api/user/store', {
+        type: 2, //1活动 2课程
+        status: status,
+        tableId: this.detail.id,
+        userId: uni.getStorageSync('userInfo').id }).
       then(function (res) {
-        _this.commentList = res.data;
+        _this.detail.isStore = status;
       });
     },
-    getStudyContent: function getStudyContent() {var _this2 = this;
+    getCates: function getCates() {var _this2 = this;
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: 2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+        } }).
+      then(function (res) {
+        var pid = '';
+        var tagList = [];
+        res.data.forEach(function (item) {
+          if (item.id == _this2.detail.typeId) {
+            tagList.push(item.name);
+            pid = item.pid;
+          }
+        });
+        console.log(tagList);
+        res.data.forEach(function (item) {
+          if (item.id == pid) {
+            tagList.push(item.name);
+          }
+        });
+        _this2.tagList = tagList;
+      });
+    },
+    getCommentList: function getCommentList() {var _this3 = this;
+      this.$api.get('/api/comment/getList', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: 5,
+          tableId: this.detail.id,
+          type: 2 } }).
+
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this3.commentList = _this3.commentList.concat(res.data);
+          _this3.pageNo++;
+        }
+      });
+    },
+    getStudyContent: function getStudyContent() {var _this4 = this;
       this.$api.get('/api/lesson/getBookListByLessonId', {
         params: {
-          lessonId: this.detail.contentLesson,
+          lessonId: this.detail.id,
           type: 1 } }).
 
       then(function (res) {
-        _this2.recomedList = res.data;
+        _this4.recomedList = res.data;
       });
     },
     goEval: function goEval() {
@@ -391,7 +449,7 @@ __webpack_require__.r(__webpack_exports__);
     toView: function toView(val) {
       this.toIndex = val;
     },
-    scrollHandle: function scrollHandle(e) {var _this3 = this;
+    scrollHandle: function scrollHandle(e) {var _this5 = this;
       var scrollTop = e.detail.scrollTop;
       this.scrollTop = scrollTop;
       console.log(scrollTop);
@@ -402,20 +460,20 @@ __webpack_require__.r(__webpack_exports__);
         d.forEach(function (item) {
           item.top = item.top - top;
           item.bottom = item.bottom - top;
-          _this3.letterDetails.push({
+          _this5.letterDetails.push({
             id: item.id,
             top: item.top,
             bottom: item.bottom });
 
         });
-        _this3.letterDetails.some(function (item) {
+        _this5.letterDetails.some(function (item) {
           if (scrollTop - 180 >= item.top && scrollTop - 180 <= item.bottom - 20) {
-            _this3.currentLetter = item.id;
+            _this5.currentLetter = item.id;
             //当前固定用的是粘性定位，如果不用粘性定位，在这里设置
             return true;
           }
         });
-        console.log(_this3.currentLetter);
+        console.log(_this5.currentLetter);
       }).exec();
     },
     goBack: function goBack() {
@@ -434,6 +492,137 @@ __webpack_require__.r(__webpack_exports__);
       uni.navigateTo({
         url: "/pages/comment/comment" });
 
+    },
+    //生成 海报
+    closePoser: function closePoser() {
+      this.$refs.poster.close();
+    },
+    getPoster: function getPoster() {var _this6 = this;
+      this.$refs.sharePop.close();
+      uni.showLoading({
+        title: '海报生成中...',
+        mask: true });
+
+      var that = this;
+      var context = wx.createCanvasContext('myCanvas');
+      context.width = this.width;
+      context.height = this.height;
+      var x = context.width / 2;
+      wx.getImageInfo({
+        src: this.poserImg,
+        success: function success(res) {
+          context.fillStyle = "#FFFFFF";
+          context.fillRect(0, 0, _this6.width, _this6.height);
+          // context.drawImage(this.bgPath, 0, 0, this.width, this.height);
+          context.drawImage(res.path, 0, 0, _this6.width, 530);
+          context.setFontSize(28);
+          context.setFillStyle('#000000');
+          context.setTextAlign('center');
+          var text = '杭州小记者内蒙古宁夏夏令营梦幻迪士尼';
+          if (text.length > 20) {
+            text = text.substr(0, 20) + '...';
+          }
+          context.fillText(text, _this6.width / 2, 600);
+          var tip = '长按识别，立即参加';
+          context.setFontSize(28);
+          context.fillText(tip, 320, 760);
+          context.save();
+          context.restore();
+          var yq = '邀您参加';
+          context.setFillStyle('#666666');
+          context.font = 'normal bold 24px sans-serif';
+          context.fillText(yq, 340, 720);
+          context.save();
+          context.restore();
+          var name = '张雨溪';
+          context.setFillStyle('#000000');
+          context.font = 'normal bold 26px sans-serif';
+          context.fillText(name, 340, 690);
+          context.save();
+          context.restore();
+          wx.getImageInfo({
+            src: that.codePath,
+            success: function success(res1) {
+              context.drawImage(that.codePath, 33, 650, 132, 132);
+              wx.getImageInfo({
+                src: _this6.poserImg,
+                success: function success(avatar) {
+                  console.log(avatar);
+                  var avatarurl_width = 62; //绘制的头像宽度
+                  var avatarurl_heigth = 62; //绘制的头像高度
+                  var avatarurl_x = 200; //绘制的头像在画布上的位置
+                  var avatarurl_y = 660; //绘制的头像在画布上的位置
+                  context.beginPath(); //开始绘制
+                  context.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_heigth / 2 + avatarurl_y, avatarurl_width / 2, 0, Math.PI * 2, false);
+                  context.clip();
+                  context.drawImage(avatar.path, 200, 660, 62, 62);
+                  context.save();
+                  context.draw();
+                  setTimeout(function () {
+                    wx.canvasToTempFilePath({
+                      canvasId: 'myCanvas',
+                      x: 0, //指定的画布区域的左上角横坐标	
+                      y: 0, //指定的画布区域的左上角纵坐标	
+                      width: _this6.width, //指定的画布区域的宽度
+                      height: _this6.height, //指定的画布区域的高度
+                      destWidth: _this6.width, //输出的图片的宽度 
+                      destHeight: _this6.height, //输出的图片的高度
+                      success: function success(res) {
+                        var tempFilePath = res.tempFilePath;
+                        _this6.tmpImg = tempFilePath;
+                        console.log(tempFilePath);
+                        uni.hideLoading();
+                        _this6.$refs.poster.open();
+                      },
+                      fail: function fail(res) {
+                        console.log(res);
+                        uni.hideLoading();
+                      } });
+
+                  }, 300);
+                } });
+
+
+            } });
+
+        } });
+
+    },
+    saveImageToPhotosAlbum: function saveImageToPhotosAlbum() {
+      var that = this;
+      var value = that.tmpImg; // 你的图片路径
+      if (value != undefined && value != "") {
+        wx.saveImageToPhotosAlbum({
+          filePath: value,
+          success: function success(res) {
+            // that.hideModal();
+            // that.hideMoments();
+            wx.showToast({
+              title: "已保存到相册",
+              icon: 'none',
+              duration: 1500,
+              mask: true });
+
+          },
+          fail: function fail(res) {
+            console.error(res);
+            //首次保存会询问你是否授权，选是就好了
+            // if (res.errMsg == "saveImageToPhotosAlbum:fail auth deny") {
+            console.error("打开设置窗口");
+            wx.openSetting({
+              success: function success(settingdata) {
+                console.error(settingdata);
+                if (settingdata.authSetting["scope.writePhotosAlbum"]) {
+                  console.error("获取权限成功，再次点击图片保存到相册");
+                } else {
+                  console.error("获取权限失败");
+                }
+              } });
+
+            // }
+          } });
+
+      }
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

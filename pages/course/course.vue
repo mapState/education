@@ -105,12 +105,10 @@
 				})
 			},
 			getCourseList(types){
-				this.$api.get('/api/lesson/list',{
-					params:{
-						pageNo:this.pageNo,
-						pageSize:this.pageSize,
-						types
-					}
+				this.$api.post('/api/lesson/list',{
+					pageNo:this.pageNo,
+					pageSize:this.pageSize,
+					types
 				}).then((res)=>{
 					this.courseList=res.data
 				})

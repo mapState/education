@@ -92,20 +92,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  uniLoadMore: function() {
+    return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 410))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  if (!_vm._isMounted) {
-    _vm.e0 = function($event) {
-      _vm.focus = true
-    }
-
-    _vm.e1 = function($event) {
-      _vm.focus = false
-    }
-  }
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -139,41 +134,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 440));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 440));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -251,22 +212,139 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
   data: function data() {
     return {
+      tagIndex: 0,
+      classList: [],
       focus: false,
       filterType: 0,
-      showMask: false };
+      showMask: false,
+      loadStatus: 'noMore',
+      list: [],
+      sexIndex: -1,
+      keyword: '1',
+      language: 1, //	1中文 2英语
+      pageNo: 1,
+      pageSize: 5,
+      sex: '',
+      types: [] };
 
   },
+  onLoad: function onLoad() {
+    this.getList();
+    this.getCates();
+  },
   methods: {
+    selSex: function selSex(index) {
+      this.sexIndex = index;
+      if (index == -1) {
+        this.sex = '';
+      } else {
+        this.sex = index;
+      }
+      this.closeMask();
+      this.pageNo = 1;
+      this.keyword = '';
+      this.language = '';
+      this.types = [];
+      this.list = [];
+      this.getList();
+    },
+    selTypeId: function selTypeId(index) {
+      this.tagIndex = index;
+      this.closeMask();
+      if (index == 0) {
+        this.types = [];
+      } else {
+        this.types.push(index);
+      }
+      this.pageNo = 1;
+      this.keyword = '';
+      this.language = '';
+      this.sex = '';
+      this.list = [];
+      this.getList();
+    },
+    //获取分类列表
+    getCates: function getCates() {var _this = this;
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: 2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+        } }).
+      then(function (res) {
+        console.log(res.data);
+        _this.classList = res.data;
+      });
+    },
+    goSearch: function goSearch() {
+      uni.navigateTo({
+        url: "/pages/searchCourses/searchCourses" });
+
+    },
+    getList: function getList() {var _this2 = this;
+      this.loadStatus = "loading";
+      wx.request({
+        url: this.$rqUrl + '/api/lesson/list',
+        method: "POST",
+        data: {
+          language: this.language,
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          sex: this.sex,
+          types: this.types },
+
+        success: function success(res) {
+          console.log(res.data);
+          if (res.data.data.length > 0) {
+            _this2.list = _this2.list.concat(res.data.data);
+            _this2.pageNo++;
+            if (res.data.data.length == _this2.pageSize) {
+              _this2.loadStatus = "more";
+            } else {
+              _this2.loadStatus = "noMore";
+            }
+          } else {
+            _this2.loadStatus = "noMore";
+          }
+        } });
+
+      // this.$api.post('/api/lesson/list', {
+      // 	language: this.language,
+      // 	pageNo: this.pageNo,
+      // 	pageSize: this.pageSize,
+      // 	sex: this.sex,
+      // 	types: JSON.stringify(this.types)
+      // }).then((res) => {
+      // 	if (res.data.length > 0) {
+      // 		this.list = this.list.concat(res.data)
+      // 		this.pageNo++
+      // 		if (res.data.length == this.pageSize) {
+      // 			this.loadStatus = "more"
+      // 		} else {
+      // 			this.loadStatus = "noMore"
+      // 		}
+      // 	} else {
+      // 		this.loadStatus = "noMore"
+      // 	}
+      // })
+    },
     changeType: function changeType(index) {
       if (index !== 2) {
         this.filterType = index;
         this.showMask = true;
+      } else {
+        this.language = this.language == 1 ? 2 : 1;
+        this.pageNo = 1;
+        this.keyword = '';
+        this.types = [];
+        this.sex = '';
+        this.list = [];
+        this.getList();
       }
     },
     closeMask: function closeMask() {
       this.filterType = 0;
       this.showMask = false;
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

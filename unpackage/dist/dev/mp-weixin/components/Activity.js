@@ -188,6 +188,11 @@ var _default =
       default: {} } },
 
 
+  computed: {
+    imgPath: function imgPath() {
+      return this.imgUrl + this.detail.poster;
+    } },
+
   filters: {
     changeTime: function changeTime(time) {
       if (time) {
@@ -199,9 +204,11 @@ var _default =
 
   mounted: function mounted() {
     this.imgUrl = this.$baseUrl;
+    console.log(this.imgUrl);
     this.getCates();
   },
   methods: {
+    //问题不大
     //获取分类列表
     getCates: function getCates() {var _this = this;
       this.$api.get('/api/static/dictList', {
@@ -224,9 +231,9 @@ var _default =
         res.data.forEach(function (item) {
           if (item.id == pid) {
             tagList.push(item.name);
-            _this.tagList = tagList;
           }
         });
+        _this.tagList = tagList;
       });
     } } };exports.default = _default;
 

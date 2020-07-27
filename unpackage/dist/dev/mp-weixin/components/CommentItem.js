@@ -142,14 +142,17 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
-//
 var _default =
 {
   data: function data() {
     return {};
 
 
-  } };exports.default = _default;
+  },
+  props: {
+    detail: {
+      type: Object,
+      default: {} } } };exports.default = _default;
 
 /***/ }),
 

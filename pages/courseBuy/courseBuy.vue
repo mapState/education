@@ -29,7 +29,7 @@
 		<view class="detailTitle noBoder">
 			<text></text>
 			<view class="">
-				学习内容
+				学习有效期
 			</view>
 			<view class="other">
 				60天

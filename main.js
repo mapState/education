@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 
 import uniRequest from 'uni-request';
-uniRequest.defaults.baseURL = 'http://192.168.0.110:10000';
+uniRequest.defaults.baseURL = 'http://192.168.0.188:10000';
 // uniRequest.defaults.headers.common['Authorization'] = 'Bearer ' + uni.getStorageSync('token');
 uniRequest.defaults.headers.post['Content-Type'] = 'application/json';
 // 请求拦截
@@ -58,8 +58,10 @@ uniRequest.interceptors.request.use(
 
 
 Vue.config.productionTip = false
-Vue.prototype.$api=uniRequest;
+Vue.prototype.$api=uniRequest; 
+Vue.prototype.$rqUrl='http://192.168.0.188:10000';
 Vue.prototype.$baseUrl='https://smallwx.pkbkok.com/lesson/file/view/';
+Vue.prototype.$uploadUrl='https://smallwx.pkbkok.com/lesson/file/upload';
 App.mpType = 'app'
 
 const app = new Vue({

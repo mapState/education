@@ -213,9 +213,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
-//
-//
-//
 var _default =
 {
   data: function data() {
@@ -230,11 +227,13 @@ var _default =
       loadStatus3: 'more',
       allList: [],
       effList: [],
-      lostList: [] };
+      lostList: [],
+      tagList: [] };
 
   },
   onLoad: function onLoad() {
     this.getListAll();
+    this.getCates();
   },
   onReachBottom: function onReachBottom() {
     if (this.tabIndex == 0) {
@@ -246,6 +245,29 @@ var _default =
     }
   },
   methods: {
+    getCates: function getCates() {var _this = this;
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: 2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+        } }).
+      then(function (res) {
+        var pid = '';
+        var tagList = [];
+        res.data.forEach(function (item) {
+          if (item.id == _this.detail.typeId) {
+            tagList.push(item.name);
+            pid = item.pid;
+          }
+        });
+        console.log(tagList);
+        res.data.forEach(function (item) {
+          if (item.id == pid) {
+            tagList.push(item.name);
+          }
+        });
+        _this.tagList = tagList;
+      });
+    },
     changeTabIndex: function changeTabIndex(index) {
       this.tabIndex = index;
       if (index == 0 && this.allList.length == 0) {
@@ -258,7 +280,7 @@ var _default =
         this.getListLost();
       }
     },
-    getListAll: function getListAll() {var _this = this;
+    getListAll: function getListAll() {var _this2 = this;
       this.loadStatus1 = "loading";
       this.$api.get('/api/lesson/getLessonByUser', {
         params: {
@@ -267,14 +289,14 @@ var _default =
 
       then(function (res) {
         if (res.data.length > 0) {
-          _this.allList = _this.allList.concat(res.data);
-          _this.pageNo1++;
+          _this2.allList = _this2.allList.concat(res.data);
+          _this2.pageNo1++;
         } else {
-          _this.loadStatus1 = "noMore";
+          _this2.loadStatus1 = "noMore";
         }
       });
     },
-    getListEff: function getListEff() {var _this2 = this;
+    getListEff: function getListEff() {var _this3 = this;
       this.loadStatus2 = "loading";
       this.$api.get('/api/lesson/getLessonByUser', {
         params: {
@@ -284,15 +306,15 @@ var _default =
         } }).
       then(function (res) {
         if (res.data.length > 0) {
-          _this2.effList = _this2.effList.concat(res.data);
-          _this2.loadStatus2 = "more";
-          _this2.pageNo2++;
+          _this3.effList = _this3.effList.concat(res.data);
+          _this3.loadStatus2 = "more";
+          _this3.pageNo2++;
         } else {
-          _this2.loadStatus2 = "noMore";
+          _this3.loadStatus2 = "noMore";
         }
       });
     },
-    getListLost: function getListLost() {var _this3 = this;
+    getListLost: function getListLost() {var _this4 = this;
       this.loadStatus3 = "loading";
       this.$api.get('/api/lesson/getLessonByUser', {
         params: {
@@ -302,11 +324,11 @@ var _default =
         } }).
       then(function (res) {
         if (res.data.length > 0) {
-          _this3.lostList = _this3.lostList.concat(res.data);
-          _this3.loadStatus3 = "more";
-          _this3.pageNo3++;
+          _this4.lostList = _this4.lostList.concat(res.data);
+          _this4.loadStatus3 = "more";
+          _this4.pageNo3++;
         } else {
-          _this3.loadStatus3 = "noMore";
+          _this4.loadStatus3 = "noMore";
         }
       });
     } } };exports.default = _default;

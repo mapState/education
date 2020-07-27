@@ -1,3 +1,6 @@
+page{
+	padding-bottom: 180rpx;
+}
 .textarea{
 	width:100%;
 	background-color: #fff;
@@ -11,6 +14,17 @@
 		font-family:PingFang SC;
 		font-weight:400;
 		color:rgba(153,153,153,1);
+	}
+}
+.fileList{
+	width:690rpx;
+	padding:0 30rpx;
+	.file{
+		width:33.33%;
+		height:220rpx;
+		padding-right: 10rpx;
+		box-sizing: border-box;
+		margin-bottom: 10rpx;
 	}
 }
 .addBtn{

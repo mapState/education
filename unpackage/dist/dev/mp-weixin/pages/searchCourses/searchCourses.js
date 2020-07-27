@@ -92,20 +92,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  uniLoadMore: function() {
+    return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 410))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  if (!_vm._isMounted) {
-    _vm.e0 = function($event) {
-      _vm.focus = true
-    }
-
-    _vm.e1 = function($event) {
-      _vm.focus = false
-    }
-  }
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -139,7 +134,8 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 440));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 440));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
 
 
 
@@ -176,10 +172,85 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
   data: function data() {
     return {
-      focus: false };
+      loadStatus: 'noMore',
+      historyListC: [],
+      keyWord: '',
+      pageNo: 1,
+      list: [] };
 
   },
-  methods: {} };exports.default = _default;
+  onLoad: function onLoad() {var _this = this;
+    uni.getStorage({
+      key: 'historyListC',
+      success: function success(res) {
+        _this.historyListC = res.data;
+      } });
+
+  },
+  onReachBottom: function onReachBottom() {
+    this.getList();
+  },
+  methods: {
+    search: function search(e) {
+      var key = e.detail.value;
+      console.log(key);
+      this.pageNo = 1;
+      this.list = [];
+      this.getList();
+      if (this.historyListC.indexOf(key) == -1) {
+        this.historyListC.push(key);
+        uni.setStorageSync('historyListC', this.historyListC);
+      }
+    },
+    historySearch: function historySearch(key) {
+      this.keyWord = key;
+      this.pageNo = 1;
+      this.list = [];
+      this.getList();
+    },
+    getList: function getList() {var _this2 = this;
+      this.loadStatus = "loading";
+      this.$api.post('/api/lesson/list', {
+        keyword: this.keyWord,
+        pageSize: 5,
+        pageNo: this.pageNo }).
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this2.list = _this2.list.concat(res.data);
+          _this2.pageNo++;
+          if (res.data.length == 5) {
+            _this2.loadStatus = "more";
+          } else {
+            _this2.loadStatus = "noMore";
+          }
+        } else {
+          _this2.loadStatus = "noMore";
+        }
+      });
+    },
+    clearHistory: function clearHistory() {var _this3 = this;
+      uni.showModal({
+        title: '提示',
+        content: '确定清除搜索历史?',
+        success: function success(res) {
+          if (res.confirm) {
+            uni.removeStorage({
+              key: 'historyListC',
+              success: function success(res) {
+                _this3.historyListC = [];
+                uni.showToast({
+                  title: "清除成功",
+                  icon: 'none' });
+
+              } });
+
+          } else if (res.cancel) {
+            console.log('用户点击取消');
+          }
+        } });
+
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

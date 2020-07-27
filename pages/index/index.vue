@@ -27,12 +27,12 @@
 		<view class="swiper-box">
 			<view class="swiperBox">
 				<swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" @change="swiperChange">
-					<swiper-item v-for="(item,index) in swiperList" :key="index">
-						<image :src="item" mode="aspectFill" class="itemImg"></image>
+					<swiper-item v-for="(item,index) in swiperList" :key="index" @click="linkPage(item)">
+						<image :src="item.imageUrl" mode="aspectFill" class="itemImg"></image>
 					</swiper-item>
 				</swiper>
-				<view class="dots">
-					<view class="dot" v-for="item in 3" :key="item" :class="{'dotActive':item==currentIndex}">
+				<view class="dots" v-if="swiperList.length>0">
+					<view class="dot" v-for="item in swiperList.length" :key="item" :class="{'dotActive':item==currentIndex}">
 
 					</view>
 				</view>
@@ -43,22 +43,6 @@
 				<image :src="imgUrl + item.iconUrl" mode="aspectFill" class="icon1"></image>
 				<text>{{item.name}}</text>
 			</view>
-			<!-- <view class="cate">
-				<image src="../../static/icon/cate2.png" mode="aspectFill" class="icon2"></image>
-				<text>成人</text>
-			</view>
-			<view class="cate">
-				<image src="../../static/icon/cate3.png" mode="aspectFill" class="icon3"></image>
-				<text>周边</text>
-			</view>
-			<view class="cate">
-				<image src="../../static/icon/cate4.png" mode="aspectFill" class="icon4"></image>
-				<text>国内</text>
-			</view>
-			<view class="cate">
-				<image src="../../static/icon/cate5.png" mode="aspectFill" class="icon5"></image>
-				<text>国际</text>
-			</view> -->
 		</view>
 		<view class="block">
 		</view>
@@ -66,10 +50,17 @@
 			<view class="hot" :class="{'titleActive':titleIndex==0}" @click="changeTitle(0)">热门活动</view>
 			<view :class="{'titleActive':titleIndex==1}" @click="changeTitle(1)">最新活动</view>
 		</view>
-		<view class="list">
+		<view class="list" v-if="titleIndex==0">
 			<block v-for="(item,index) in hotActiveList" :key="index">
-				<Activity :type="index" @click.native="goDetail(item)" :detail="item"></Activity>
+				<Activity @click.native="goDetail(item)" :detail="item"></Activity>
 			</block>
+			<uni-load-more :status="loadStatus"></uni-load-more>
+		</view>
+		<view class="list" v-if="titleIndex==1">
+			<block v-for="(item,index) in newActiveList" :key="index">
+				<Activity @click.native="goDetail(item)" :detail="item"></Activity>
+			</block>
+			<uni-load-more :status="loadStatus"></uni-load-more>
 		</view>
 		<!-- 		</view> -->
 		<view class="loginTip" v-if="loginStatus">
@@ -81,7 +72,6 @@
 				去登入
 			</view>
 		</view>
-		<uni-load-more :status="loadStatus"></uni-load-more>
 		<tab-bar :tabIndex="1"></tab-bar>
 	</view>
 </template>
@@ -103,10 +93,12 @@
 				imgUrl:'',
 				classList:[],
 				hotActiveList:[],
+				newActiveList:[],
 				pageNo1:1,
 				pageNo2:1,
 				pageSize:5,
-				loadStatus:'more',
+				loadStatus1:'noMore',
+				loadStatus2:'noMore',
 				loginStatus:false,
 				addressData:{},
 				top: 30,
@@ -129,6 +121,15 @@
 			this.height = info.height
 			//this.getAddress()
 			this.getAdvertList()
+		},
+		onShow() {
+			this.titleIndex=0
+			this.newActiveList=[]
+			this.loadStatus1='noMore'
+			this.loadStatus2='noMore'
+			this.pageNo1=1
+			this.pageNo2=1
+			this.hotActiveList=[]
 			setTimeout(()=>{
 				uni.getStorage({
 				    key: 'address',
@@ -139,18 +140,25 @@
 							this.getCates()
 						}
 				})
-				// this.addressData=getApp().globalData.addressData
-				// console.log(getApp().globalData.addressData)
-				// this.getActivityList1() //热门
 			},400)
 		},
 		onReachBottom(){
 			if(this.loadStatus=="noMore"){
 				return
 			}
-			this.getActivityList1()
+			if(this.titleIndex==0){
+				this.getActivityList1()
+			}else{
+				this.getActivityList2()
+			}
 		},
 		methods: {
+			//点击轮播跳转
+			linkPage(e){
+				if(e.linkType==1){//1活动 2课程 3链接
+					console.log(e.linkUrl)
+				}
+			},
 			//轮播
 			getAdvertList() {
 				this.$api.get('/api/static/advertList', {
@@ -158,7 +166,7 @@
 						type: 1
 					}
 				}).then((res) => {
-					//this.swiperList=res.data
+					this.swiperList=res.data
 					//console.log(res.data)
 				})
 			},
@@ -192,12 +200,38 @@
 						this.hotActiveList=this.hotActiveList.concat(res.data)
 						this.pageNo1++
 						if(res.data.length<this.pageSize){
-							this.loadStatus="noMore"
+							this.loadStatus1="noMore"
 						}else{
-							this.loadStatus='more'
+							this.loadStatus1='more'
 						}
 					}else{
-						this.loadStatus="noMore"
+						this.loadStatus1="noMore"
+					}
+				})
+			},
+			getActivityList2(){
+				this.loadStatus="loading"
+				this.$api.get('/api/act/getActivityList',{
+					params:{
+						pageNo:this.pageNo2,
+						pageSize:this.pageSize,
+						lat:this.addressData.lat,
+						lng:this.addressData.lng,
+						isNew:1
+					}
+				}).then((res) => {
+					//this.swiperList=res.data
+					console.log(res.data)
+					if(res.data.length>0){
+						this.newActiveList=this.newActiveList.concat(res.data)
+						this.pageNo2++
+						if(res.data.length<this.pageSize){
+							this.loadStatus2="noMore"
+						}else{
+							this.loadStatus2='more'
+						}
+					}else{
+						this.loadStatus2="noMore"
 					}
 				})
 			},
@@ -212,6 +246,12 @@
 					return
 				}
 				this.titleIndex = index
+				if(this.titleIndex==0&&this.hotActiveList.length<=0){
+					this.getActivityList1()
+				}
+				if(this.titleIndex==1&&this.newActiveList.length<=0){
+					this.getActivityList2()
+				}
 			},
 			goPosition() {
 				uni.navigateTo({

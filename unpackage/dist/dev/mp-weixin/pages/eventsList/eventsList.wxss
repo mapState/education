@@ -108,22 +108,24 @@
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  -webkit-justify-content: space-around;
-          justify-content: space-around;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
   width: 100%;
-  padding: 0 30rpx;
-  box-sizing: border-box;
   height: 95rpx;
   border-bottom: 1px solid #ddd;
 }
 .filter .item {
-  width: 25%;
+  width: 20%;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
@@ -136,8 +138,8 @@
   padding-right: 6rpx;
 }
 .filter .item .down {
-  width: 17rpx;
-  height: 9rpx;
+  width: 18rpx;
+  height: 10rpx;
 }
 .filter .item .price {
   width: 16rpx;

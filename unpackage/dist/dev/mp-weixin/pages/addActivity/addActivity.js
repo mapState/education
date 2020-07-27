@@ -137,10 +137,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 431));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-
-
-
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 431));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -227,25 +224,98 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
   data: function data() {
     return {
+      title: '',
       address: '',
-      currentDateTime: '' };
+      currentDateTime: '',
+      poster: '',
+      imgUrl: '',
+      classList: [],
+      classIndex: 0,
+      type: '',
+      resUrl: '',
+      typeName: '' };
 
   },
+  onLoad: function onLoad() {
+    this.imgUrl = this.$baseUrl;
+    this.getCates();
+  },
   methods: {
+    submit: function submit() {
+      return;
+      this.$api.post('/api/club/publish', {
+        address: this.address,
+        type: 2,
+        title: this.title,
+        dictId: this.type,
+        avatar: this.poster,
+        resUrl: this.resUrl }).
+      then(function (res) {
+        // uni.showToast({
+        // 	title:"发布成功",
+        // 	duration:500
+        // })
+        // setTimeout(()=>{
+        // 	uni.navigateBack({
+        // 		delta:1
+        // 	})
+        // },1200)
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    selectTypeId: function selectTypeId(id, text) {
+      this.type = id;
+      this.typeName = text;
+      this.$refs.catePost.close();
+    },
+    changeClassIndex: function changeClassIndex(index) {
+      this.classIndex = index;
+    },
+    getCates: function getCates() {var _this = this;
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: 1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+        } }).
+      then(function (res) {
+        console.log(res.data);
+        _this.classList = res.data;
+      });
+    },
     handleChange: function handleChange(type, e) {
       this[type] = e;
     },
     openPop: function openPop() {
       this.$refs.catePost.open();
     },
-    gotomapLocation: function gotomapLocation() {var _this = this; //选取位置
+    gotomapLocation: function gotomapLocation() {var _this2 = this; //选取位置
       wx.chooseLocation({
         success: function success(res) {
-          _this.address = res.address;
+          _this2.address = res.address;
           console.log(res);
         } });
 
+    },
+    addImg: function addImg() {var _this3 = this;
+      uni.chooseImage({
+        count: 1,
+        success: function success(chooseImageRes) {
+          var tempFilePaths = chooseImageRes.tempFilePaths;
+          console.log(tempFilePaths);
+          uni.uploadFile({
+            url: _this3.$uploadUrl,
+            filePath: tempFilePaths[0],
+            name: 'file',
+            success: function success(uploadFileRes) {
+              console.log(JSON.parse(uploadFileRes.data));
+              var res = JSON.parse(uploadFileRes.data);
+              _this3.poster = res.data;
+            } });
+
+        } });
+
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

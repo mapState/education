@@ -3,11 +3,15 @@
 		<view class="textarea">
 			<textarea placeholder-class="plClass" placeholder="这一刻的想法~" :maxlength="-1" v-model="content"/>
 		</view>
+		<view class="fileList">
+			<image :src="imgUrl+img" mode="aspectFill" v-for="(img,g) in imgList" :key="g" class="file"></image>
+			<video :src="imgUrl+video"  muted v-for="(video,v) in videoList" :key="v" class="file"></video>
+		</view>
 		<view class="addBtn">
-			<view class="item">
+			<view class="item" @click="addImg">
 				<image src="../../static/img/addImg.png" mode="aspectFill" class="addImg"></image>
 			</view>
-			<view class="item">
+			<view class="item" @click="addVideo">
 				<image src="../../static/img/addVideo.png" mode="aspectFill" class="addVideo"></image>
 			</view>
 		</view>
@@ -60,16 +64,24 @@
 		},
 		data() {
 			return {
+				imgUrl:'',
 				type:4,//类型1 成长经历 2活动 3课程 4帖子
 				content:'',
 				address:'',
 				dictId:'0',
 				classList:[],
-				claItem:''
+				claItem:'',
+				type:1,//类型1 成长经历 2活动 3课程 4帖子
+				content:'',
+				address:'',
+				imgList:[],
+				tmpImgList:[],
+				videoList:[]
 			};
 		},
 		onLoad() {
 			this.getClass(4)
+			this.imgUrl=this.$baseUrl
 		},
 		methods:{
 			getClass(type){
@@ -87,15 +99,23 @@
 				this.$refs.catePost.close()
 			},
 			submit(){
+				let arr=this.imgList.join()
 				this.$api.post('/api/club/publish',{
 					address:this.address,
 					type:this.type,
 					content:this.content,
-					dictId:this.dictId
+					dictId:this.dictId,
+					resUrl:arr
 				}).then((res)=>{
 					uni.showToast({
-						title:"发布成功"
+						title:"发布成功",
+						duration:500
 					})
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:1
+						})
+					},1200)
 				})
 			},
 			showCates(){
@@ -109,6 +129,51 @@
 					}
 				})
 			},
+			addImg(){
+				uni.chooseImage({
+						count: 3,
+				    success: (chooseImageRes) => {
+							const tempFilePaths = chooseImageRes.tempFilePaths;
+							console.log(tempFilePaths)
+							for(let i=0;i<tempFilePaths.length;i++){
+								console.log(i)
+								uni.uploadFile({
+										url: this.$uploadUrl, 
+										filePath: tempFilePaths[i],
+										name: 'file',
+										success: (uploadFileRes) => {
+											console.log(JSON.parse(uploadFileRes.data));
+											let res=JSON.parse(uploadFileRes.data)
+											this.$set(this.tmpImgList,i,res.data)
+											if(this.tmpImgList.length==tempFilePaths.length){
+												this.imgList=this.imgList.concat(this.tmpImgList)
+											}
+										}
+								});
+							}
+				    }
+				});
+			},
+			addVideo(){
+				uni.chooseVideo({
+						count: 1,
+				    success: (res) => {
+							const videoPath = res.tempFilePath;
+							const thumPath = res.thumbTempFilePath
+							console.log(res)
+							uni.uploadFile({
+									url: this.$uploadUrl, 
+									filePath:videoPath,
+									name: 'file',
+									success: (uploadFileRes) => {
+										console.log(JSON.parse(uploadFileRes.data));
+										let result=JSON.parse(uploadFileRes.data)
+										this.videoList.push(result.data)
+									}
+							});
+				    }
+				});
+			}
 		}
 	}
 </script>

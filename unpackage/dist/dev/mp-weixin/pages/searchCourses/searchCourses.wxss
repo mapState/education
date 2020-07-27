@@ -45,7 +45,6 @@
   box-sizing: border-box;
 }
 .search .plClass {
-  text-align: center;
   font-size: 28rpx;
   font-family: PingFang SC;
   font-weight: 400;

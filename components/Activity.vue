@@ -1,7 +1,7 @@
 <template>
 	<view class="item">
-		<image :src="imgUrl + detail.poster" mode="aspectFill"
-		 class="leftImg"></image>
+		<image :src="imgPath" mode="aspectFill"
+		 class="leftImg" v-if="detail.poster"></image>
 		<view class="right">
 			<view class="row">
 				<text class="t1">{{detail.title}}</text>
@@ -12,7 +12,7 @@
 				<text class="gray">{{detail.fake}}</text>
 				<image src="/static/icon/peo.png" mode="aspectFill" class="peoIcon"></image>
 				<text class="gray userNum">{{detail.groupNumber}}</text>
-				<text class="gray">3km</text>
+				<text class="gray">{{detail.distance||0}}km</text>
 			</view>
 			<view class="row">
 				<view class="time" v-if="detail.state==1">报名时间 : {{detail.signStartDate | changeTime}} - {{detail.signEndDate |changeTime}}</view>
@@ -53,6 +53,11 @@
 				default:{}
 			}
 		},
+		computed:{
+			imgPath(){
+				return this.imgUrl+this.detail.poster
+			}
+		},
 		filters:{
 			changeTime(time){
 				if(time){
@@ -64,9 +69,11 @@
 		},
 		mounted() {
 			this.imgUrl=this.$baseUrl
+			console.log(this.imgUrl)
 			this.getCates()
 		},
 		methods:{
+			//问题不大
 			//获取分类列表
 			getCates() {
 				this.$api.get('/api/static/dictList',{
@@ -89,9 +96,9 @@
 					res.data.forEach((item)=>{
 						if(item.id==pid){
 							tagList.push(item.name)
-							this.tagList=tagList
 						}
 					})
+					this.tagList=tagList
 				})
 			},
 		}
@@ -110,20 +117,19 @@
 			height: 230rpx;
 			border-radius: 10rpx;
 			margin-right: 20rpx;
+			flex-shrink: 0;
 		}
-
 		.right {
 			height: 230rpx;
-			flex: 1;
+			width:440rpx;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-around;
-
 			.btnBox {
 				justify-content: space-between;
 			}
-
 			.row {
+				width:100%;
 				display: flex;
 				align-items: center;
 
@@ -153,6 +159,7 @@
 					font-family: PingFang SC;
 					font-weight: 400;
 					color: rgba(102, 102, 102, 1);
+					vertical-align: middle;
 				}
 
 				.eyeIcon {
@@ -161,6 +168,7 @@
 				}
 
 				.peoIcon {
+					display: block;
 					width: 22rpx;
 					height: 22rpx;
 					margin-left: 30rpx;

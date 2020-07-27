@@ -16,53 +16,31 @@
 			</view>
 		</view>
 		<view class="filter">
-			<view class="item" @click="changeType(1)">
-				<text>全部</text>
-				<image src="../../static/icon/filter.png" mode="aspectFit" class="down"></image>
+			<view class="item" @click="changeType(i)" v-for="(item,i) in filterList" :key="i">
+				<text>{{item}}</text>
+				<template v-if="i==1">
+					<image src="../../static/icon/filter2.png" mode="aspectFit" class="price"></image>
+				</template>
+				<template v-else>
+					<image src="../../static/icon/filter-top.png" mode="aspectFit" class="down" v-if="filterType==i"></image>
+					<image src="../../static/icon/filter.png" mode="aspectFit" class="down" v-else></image>
+				</template>
 			</view>
-			<view class="item" @click="changeType(2)">
-				<text>价格</text>
-				<image src="../../static/icon/filter2.png" mode="aspectFit" class="price"></image>
-			</view>
-			<view class="item" @click="changeType(3)">
-				<text>距离</text>
-				<image src="../../static/icon/filter.png" mode="aspectFit" class="down"></image>
-			</view>
-			<view class="item" @click="changeType(4)">
-				<text>时间</text>
-				<image src="../../static/icon/filter.png" mode="aspectFit" class="down"></image>
-			</view>
-			<view class="item" @click="changeType(5)">
-				<text>状态</text>
-				<image src="../../static/icon/filter.png" mode="aspectFit" class="down"></image>
-			</view>
-			<view class="section1" v-if="filterType==1">
-				<view class="tag tagActive">
+			<view class="section1" v-if="filterType==0">
+				<view class="tag" @click="changeTagIndex(0)" :class="{'tagActive':tagIndex==0}">
 					全部
 				</view>
-				<view class="tag" v-for="item in 6" :key="item">
-					夏令营
+				<view class="tag" v-for="(item,i) in classList" :key="i" :class="{'tagActive':item.id==tagIndex}" @click="changeTagIndex(item.id)">
+					{{item.name}}
 				</view>
 			</view>
-			<view class="section3" v-if="filterType==3">
-				<view class="item">
-					<text class="active">全部项</text>
-					<image src="../../static/icon/cur.png" mode="aspectFill"></image>
-				</view>
-				<view class="item">
-					<text class="">周边</text>
-					<image src="../../static/icon/cur.png" mode="aspectFill" v-if="false"></image>
-				</view>
-				<view class="item">
-					<text class="">国内</text>
-					<image src="../../static/icon/cur.png" mode="aspectFill" v-if="false"></image>
-				</view>
-				<view class="item">
-					<text class="">国外</text>
-					<image src="../../static/icon/cur.png" mode="aspectFill" v-if="false"></image>
+			<view class="section3" v-if="filterType==2">
+				<view class="item" v-for="(item,i) in disList" :key="i" @click="changeDisIndex(i)">
+					<text class="" :class="{'active':i==disIndex}">{{item}}</text>
+					<image src="../../static/icon/cur.png" mode="aspectFill" v-if="i==disIndex"></image>
 				</view>
 			</view>
-			<view class="section4" v-if="filterType==4">
+			<view class="section4" v-if="filterType==3">
 				<view class="item">
 					<picker mode="date" :value="date1" :start="startDate" :end="endDate" @change="bindDateChange1">
 						<view class="inputs" v-if="showDate1">{{date1}}</view>
@@ -93,30 +71,14 @@
 						</view>
 					</picker>
 				</view>
-				<view class="btn">
+				<view class="btn" @click="selTime">
 					确 定
 				</view>
 			</view>
-			<view class="section3" v-if="filterType==5">
-				<view class="item">
-					<text class="active">全部</text>
-					<image src="../../static/icon/cur.png" mode="aspectFill"></image>
-				</view>
-				<view class="item">
-					<text class="">未开始</text>
-					<image src="../../static/icon/cur.png" mode="aspectFill" v-if="false"></image>
-				</view>
-				<view class="item">
-					<text class="">报名中</text>
-					<image src="../../static/icon/cur.png" mode="aspectFill" v-if="false"></image>
-				</view>
-				<view class="item">
-					<text class="">进行中</text>
-					<image src="../../static/icon/cur.png" mode="aspectFill" v-if="false"></image>
-				</view>
-				<view class="item">
-					<text class="">已结束</text>
-					<image src="../../static/icon/cur.png" mode="aspectFill" v-if="false"></image>
+			<view class="section3" v-if="filterType==4">
+				<view class="item" v-for="(item,i) in section3List" :key="i" @click="selStatus(i)">
+					<text class="" :class="{'active':status==i}">{{item}}</text>
+					<image src="../../static/icon/cur.png" mode="aspectFill" v-if="status==i"></image>
 				</view>
 			</view>
 		</view>
@@ -143,6 +105,12 @@
 				format: true
 			})
 			return {
+				tagIndex:0,
+				filterList:['全部','价格','距离','时间','状态'],
+				section3List:['全部','未开始','报名中','进行中','已结束'],
+				disList:['全部项','周边','国内','国外'],
+				disIndex:0,
+				status:0,
 				classList:[],
 				fClass:[],
 				fIndex:0,
@@ -159,9 +127,9 @@
 				typeId: 0, //子分类
 				distance: '', //距离
 				addressData: {},
-				loadStatus: 'more',
+				loadStatus: 'noMore',
 				focus: false,
-				filterType: 0,
+				filterType:-1,
 				showMask: false,
 				pageNo: 1,
 				pageSize: 5,
@@ -195,6 +163,45 @@
 			this.getActivityList()
 		},
 		methods: {
+			selTime(){
+				this.closeMask()
+				this.sortByTime()
+			},
+			changeDisIndex(index){
+				this.disIndex=index
+				if(index==0){
+					this.distance=''
+				}else{
+					this.distance=index
+				}
+				this.closeMask()
+				this.hotActiveList=[]
+				this.pageNo=1
+				this.sortByDistance()
+			},
+			changeTagIndex(index){
+				this.tagIndex=index
+				if(index==0){
+					this.typeId=''
+				}else{
+					this.typeId=index
+				}
+				this.closeMask()
+				this.hotActiveList=[]
+				this.pageNo=1
+				this.sortByTypeId()
+			},
+			selStatus(index){
+				this.status=index
+				this.state=index
+				if(index==0){
+					this.state=''
+				}
+				this.closeMask()
+				this.hotActiveList=[]
+				this.pageNo=1
+				this.sortByState()
+			},
 			//获取分类列表
 			getCates() {
 				this.$api.get('/api/static/dictList',{
@@ -248,7 +255,7 @@
 				day = day > 9 ? day : '0' + day;
 				return `${year}-${month}-${day}`;
 			},
-			getActivityList() {
+			sortByTime(){
 				this.loadStatus = "loading"
 				this.$api.get('/api/act/getActivityList', {
 					params: {
@@ -256,13 +263,129 @@
 						pageSize: this.pageSize,
 						lat: this.addressData.lat,
 						lng: this.addressData.lng,
-						enStart: this.date1 + ' 00:00:00',
-						enEnd: this.date2 + ' 00:00:00',
-						acStart: this.date3 + ' 00:00:00',
-						acEnd: this.date4 + ' 00:00:00',
-						isPrice: this.isPrice,
-						state: this.state,
+						enStart: this.showDate1?this.date1 + ' 00:00:00':'',
+						enEnd: this.showDate2?this.date1 + ' 00:00:00':'',
+						acStart:this.showDate3?this.date1 + ' 00:00:00':'',
+						acEnd: this.showDate4?this.date1 + ' 00:00:00':''
+					}
+				}).then((res) => {
+					if (res.data.length>0) {
+						this.hotActiveList = this.hotActiveList.concat(res.data)
+						this.pageNo++
+						if(res.data.length==this.pageSize){
+							this.loadStatus="more"
+						}else{
+							this.loadStatus = "noMore"
+						}
+					}else {
+						this.loadStatus = "noMore"
+					}
+				})
+			},
+			sortByDistance(){
+				this.loadStatus = "loading"
+				this.$api.get('/api/act/getActivityList', {
+					params: {
+						pageNo: this.pageNo,
+						pageSize: this.pageSize,
+						lat: this.addressData.lat,
+						lng: this.addressData.lng,
+						distance: this.distance
+					}
+				}).then((res) => {
+					if (res.data.length>0) {
+						this.hotActiveList = this.hotActiveList.concat(res.data)
+						this.pageNo++
+						if(res.data.length==this.pageSize){
+							this.loadStatus="more"
+						}else{
+							this.loadStatus = "noMore"
+						}
+					}else {
+						this.loadStatus = "noMore"
+					}
+				})
+			},
+			sortByState(){
+				this.loadStatus = "loading"
+				this.$api.get('/api/act/getActivityList', {
+					params: {
+						pageNo: this.pageNo,
+						pageSize: this.pageSize,
+						lat: this.addressData.lat,
+						lng: this.addressData.lng,
+						state: this.state
+					}
+				}).then((res) => {
+					if (res.data.length > 0) {
+						this.hotActiveList = this.hotActiveList.concat(res.data)
+						this.pageNo++
+						if(res.data.length==this.pageSize){
+							this.loadStatus="more"
+						}else{
+							this.loadStatus = "noMore"
+						}
+					}else {
+						this.loadStatus = "noMore"
+					}
+				})
+			},
+			sortByTypeId(){
+				this.loadStatus = "loading"
+				this.$api.get('/api/act/getActivityList', {
+					params: {
+						pageNo: this.pageNo,
+						pageSize: this.pageSize,
+						lat: this.addressData.lat,
+						lng: this.addressData.lng,
 						typeId: this.typeId
+					}
+				}).then((res) => {
+					if (res.data.length > 0) {
+						this.hotActiveList = this.hotActiveList.concat(res.data)
+						this.pageNo++
+						if(res.data.length==this.pageSize){
+							this.loadStatus="more"
+						}else{
+							this.loadStatus = "noMore"
+						}
+					}else {
+						this.loadStatus = "noMore"
+					}
+				})
+			},
+			sortByPrice(){
+				this.loadStatus = "loading"
+				this.$api.get('/api/act/getActivityList', {
+					params: {
+						pageNo: this.pageNo,
+						pageSize: this.pageSize,
+						lat: this.addressData.lat,
+						lng: this.addressData.lng,
+						isPrice: this.isPrice
+					}
+				}).then((res) => {
+					if (res.data.length > 0) {
+						this.hotActiveList = this.hotActiveList.concat(res.data)
+						this.pageNo++
+						if(res.data.length==this.pageSize){
+							this.loadStatus="more"
+						}else{
+							this.loadStatus = "noMore"
+						}
+					}else {
+						this.loadStatus = "noMore"
+					}
+				})
+			},
+			getActivityList() {
+				this.loadStatus = "loading"
+				this.$api.get('/api/act/getActivityList', {
+					params: {
+						pageNo: this.pageNo,
+						pageSize: this.pageSize,
+						lat: this.addressData.lat,
+						lng: this.addressData.lng
 					}
 				}).then((res) => {
 					//this.swiperList=res.data
@@ -284,13 +407,24 @@
 				})
 			},
 			changeType(index) {
-				if (index !== 2) {
+				if (index !== 1) {
+					if(index==3){
+						this.showDate1=false
+						this.showDate2=false
+						this.showDate3=false
+						this.showDate4=false
+					}
 					this.filterType = index
 					this.showMask = true
+				}else{
+					this.isPrice=this.isPrice==0?1:0
+					this.hotActiveList=[]
+					this.pageNo=1
+					this.sortByPrice()
 				}
 			},
 			closeMask() {
-				this.filterType = 0
+				this.filterType = -1
 				this.showMask = false
 			}
 		}

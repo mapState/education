@@ -232,44 +232,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {
   components: {
     Activity: Activity },
@@ -279,6 +241,12 @@ __webpack_require__.r(__webpack_exports__);
       format: true });
 
     return {
+      tagIndex: 0,
+      filterList: ['全部', '价格', '距离', '时间', '状态'],
+      section3List: ['全部', '未开始', '报名中', '进行中', '已结束'],
+      disList: ['全部项', '周边', '国内', '国外'],
+      disIndex: 0,
+      status: 0,
       classList: [],
       fClass: [],
       fIndex: 0,
@@ -295,9 +263,9 @@ __webpack_require__.r(__webpack_exports__);
       typeId: 0, //子分类
       distance: '', //距离
       addressData: {},
-      loadStatus: 'more',
+      loadStatus: 'noMore',
       focus: false,
-      filterType: 0,
+      filterType: -1,
       showMask: false,
       pageNo: 1,
       pageSize: 5,
@@ -331,6 +299,45 @@ __webpack_require__.r(__webpack_exports__);
     this.getActivityList();
   },
   methods: {
+    selTime: function selTime() {
+      this.closeMask();
+      this.sortByTime();
+    },
+    changeDisIndex: function changeDisIndex(index) {
+      this.disIndex = index;
+      if (index == 0) {
+        this.distance = '';
+      } else {
+        this.distance = index;
+      }
+      this.closeMask();
+      this.hotActiveList = [];
+      this.pageNo = 1;
+      this.sortByDistance();
+    },
+    changeTagIndex: function changeTagIndex(index) {
+      this.tagIndex = index;
+      if (index == 0) {
+        this.typeId = '';
+      } else {
+        this.typeId = index;
+      }
+      this.closeMask();
+      this.hotActiveList = [];
+      this.pageNo = 1;
+      this.sortByTypeId();
+    },
+    selStatus: function selStatus(index) {
+      this.status = index;
+      this.state = index;
+      if (index == 0) {
+        this.state = '';
+      }
+      this.closeMask();
+      this.hotActiveList = [];
+      this.pageNo = 1;
+      this.sortByState();
+    },
     //获取分类列表
     getCates: function getCates() {var _this2 = this;
       this.$api.get('/api/static/dictList', {
@@ -384,7 +391,7 @@ __webpack_require__.r(__webpack_exports__);
       day = day > 9 ? day : '0' + day;
       return "".concat(year, "-").concat(month, "-").concat(day);
     },
-    getActivityList: function getActivityList() {var _this3 = this;
+    sortByTime: function sortByTime() {var _this3 = this;
       this.loadStatus = "loading";
       this.$api.get('/api/act/getActivityList', {
         params: {
@@ -392,41 +399,168 @@ __webpack_require__.r(__webpack_exports__);
           pageSize: this.pageSize,
           lat: this.addressData.lat,
           lng: this.addressData.lng,
-          enStart: this.date1 + ' 00:00:00',
-          enEnd: this.date2 + ' 00:00:00',
-          acStart: this.date3 + ' 00:00:00',
-          acEnd: this.date4 + ' 00:00:00',
-          isPrice: this.isPrice,
-          state: this.state,
-          typeId: this.typeId } }).
+          enStart: this.showDate1 ? this.date1 + ' 00:00:00' : '',
+          enEnd: this.showDate2 ? this.date1 + ' 00:00:00' : '',
+          acStart: this.showDate3 ? this.date1 + ' 00:00:00' : '',
+          acEnd: this.showDate4 ? this.date1 + ' 00:00:00' : '' } }).
 
       then(function (res) {
-        //this.swiperList=res.data
-        console.log(res.data);
-        res.data.forEach(function (item) {
-          item.poster = _this3.$baseUrl + item.poster;
-        });
         if (res.data.length > 0) {
           _this3.hotActiveList = _this3.hotActiveList.concat(res.data);
           _this3.pageNo++;
-          if (res.data.length < _this3.pageSize) {
-            _this3.loadStatus = "noMore";
+          if (res.data.length == _this3.pageSize) {
+            _this3.loadStatus = "more";
           } else {
-            _this3.loadStatus = 'more';
+            _this3.loadStatus = "noMore";
           }
         } else {
           _this3.loadStatus = "noMore";
         }
       });
     },
+    sortByDistance: function sortByDistance() {var _this4 = this;
+      this.loadStatus = "loading";
+      this.$api.get('/api/act/getActivityList', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          lat: this.addressData.lat,
+          lng: this.addressData.lng,
+          distance: this.distance } }).
+
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this4.hotActiveList = _this4.hotActiveList.concat(res.data);
+          _this4.pageNo++;
+          if (res.data.length == _this4.pageSize) {
+            _this4.loadStatus = "more";
+          } else {
+            _this4.loadStatus = "noMore";
+          }
+        } else {
+          _this4.loadStatus = "noMore";
+        }
+      });
+    },
+    sortByState: function sortByState() {var _this5 = this;
+      this.loadStatus = "loading";
+      this.$api.get('/api/act/getActivityList', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          lat: this.addressData.lat,
+          lng: this.addressData.lng,
+          state: this.state } }).
+
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this5.hotActiveList = _this5.hotActiveList.concat(res.data);
+          _this5.pageNo++;
+          if (res.data.length == _this5.pageSize) {
+            _this5.loadStatus = "more";
+          } else {
+            _this5.loadStatus = "noMore";
+          }
+        } else {
+          _this5.loadStatus = "noMore";
+        }
+      });
+    },
+    sortByTypeId: function sortByTypeId() {var _this6 = this;
+      this.loadStatus = "loading";
+      this.$api.get('/api/act/getActivityList', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          lat: this.addressData.lat,
+          lng: this.addressData.lng,
+          typeId: this.typeId } }).
+
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this6.hotActiveList = _this6.hotActiveList.concat(res.data);
+          _this6.pageNo++;
+          if (res.data.length == _this6.pageSize) {
+            _this6.loadStatus = "more";
+          } else {
+            _this6.loadStatus = "noMore";
+          }
+        } else {
+          _this6.loadStatus = "noMore";
+        }
+      });
+    },
+    sortByPrice: function sortByPrice() {var _this7 = this;
+      this.loadStatus = "loading";
+      this.$api.get('/api/act/getActivityList', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          lat: this.addressData.lat,
+          lng: this.addressData.lng,
+          isPrice: this.isPrice } }).
+
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this7.hotActiveList = _this7.hotActiveList.concat(res.data);
+          _this7.pageNo++;
+          if (res.data.length == _this7.pageSize) {
+            _this7.loadStatus = "more";
+          } else {
+            _this7.loadStatus = "noMore";
+          }
+        } else {
+          _this7.loadStatus = "noMore";
+        }
+      });
+    },
+    getActivityList: function getActivityList() {var _this8 = this;
+      this.loadStatus = "loading";
+      this.$api.get('/api/act/getActivityList', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          lat: this.addressData.lat,
+          lng: this.addressData.lng } }).
+
+      then(function (res) {
+        //this.swiperList=res.data
+        console.log(res.data);
+        res.data.forEach(function (item) {
+          item.poster = _this8.$baseUrl + item.poster;
+        });
+        if (res.data.length > 0) {
+          _this8.hotActiveList = _this8.hotActiveList.concat(res.data);
+          _this8.pageNo++;
+          if (res.data.length < _this8.pageSize) {
+            _this8.loadStatus = "noMore";
+          } else {
+            _this8.loadStatus = 'more';
+          }
+        } else {
+          _this8.loadStatus = "noMore";
+        }
+      });
+    },
     changeType: function changeType(index) {
-      if (index !== 2) {
+      if (index !== 1) {
+        if (index == 3) {
+          this.showDate1 = false;
+          this.showDate2 = false;
+          this.showDate3 = false;
+          this.showDate4 = false;
+        }
         this.filterType = index;
         this.showMask = true;
+      } else {
+        this.isPrice = this.isPrice == 0 ? 1 : 0;
+        this.hotActiveList = [];
+        this.pageNo = 1;
+        this.sortByPrice();
       }
     },
     closeMask: function closeMask() {
-      this.filterType = 0;
+      this.filterType = -1;
       this.showMask = false;
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

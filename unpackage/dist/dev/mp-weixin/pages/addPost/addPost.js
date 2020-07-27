@@ -134,7 +134,11 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 431));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 431));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
 
 
 
@@ -194,18 +198,26 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     uniPopup: uniPopup },
 
-  data: function data() {
-    return {
+  data: function data() {var _ref;
+    return _ref = {
+      imgUrl: '',
       type: 4, //类型1 成长经历 2活动 3课程 4帖子
       content: '',
       address: '',
       dictId: '0',
       classList: [],
-      claItem: '' };
+      claItem: '' }, _defineProperty(_ref, "type",
+    1), _defineProperty(_ref, "content",
+    ''), _defineProperty(_ref, "address",
+    ''), _defineProperty(_ref, "imgList",
+    []), _defineProperty(_ref, "tmpImgList",
+    []), _defineProperty(_ref, "videoList",
+    []), _ref;
 
   },
   onLoad: function onLoad() {
     this.getClass(4);
+    this.imgUrl = this.$baseUrl;
   },
   methods: {
     getClass: function getClass(type) {var _this = this;
@@ -223,15 +235,23 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs.catePost.close();
     },
     submit: function submit() {
+      var arr = this.imgList.join();
       this.$api.post('/api/club/publish', {
         address: this.address,
         type: this.type,
         content: this.content,
-        dictId: this.dictId }).
+        dictId: this.dictId,
+        resUrl: arr }).
       then(function (res) {
         uni.showToast({
-          title: "发布成功" });
+          title: "发布成功",
+          duration: 500 });
 
+        setTimeout(function () {
+          uni.navigateBack({
+            delta: 1 });
+
+        }, 1200);
       });
     },
     showCates: function showCates() {
@@ -242,6 +262,51 @@ __webpack_require__.r(__webpack_exports__);
         success: function success(res) {
           _this2.address = res.address;
           console.log(res);
+        } });
+
+    },
+    addImg: function addImg() {var _this3 = this;
+      uni.chooseImage({
+        count: 3,
+        success: function success(chooseImageRes) {
+          var tempFilePaths = chooseImageRes.tempFilePaths;
+          console.log(tempFilePaths);var _loop = function _loop(
+          i) {
+            console.log(i);
+            uni.uploadFile({
+              url: _this3.$uploadUrl,
+              filePath: tempFilePaths[i],
+              name: 'file',
+              success: function success(uploadFileRes) {
+                console.log(JSON.parse(uploadFileRes.data));
+                var res = JSON.parse(uploadFileRes.data);
+                _this3.$set(_this3.tmpImgList, i, res.data);
+                if (_this3.tmpImgList.length == tempFilePaths.length) {
+                  _this3.imgList = _this3.imgList.concat(_this3.tmpImgList);
+                }
+              } });};for (var i = 0; i < tempFilePaths.length; i++) {_loop(i);
+
+          }
+        } });
+
+    },
+    addVideo: function addVideo() {var _this4 = this;
+      uni.chooseVideo({
+        count: 1,
+        success: function success(res) {
+          var videoPath = res.tempFilePath;
+          var thumPath = res.thumbTempFilePath;
+          console.log(res);
+          uni.uploadFile({
+            url: _this4.$uploadUrl,
+            filePath: videoPath,
+            name: 'file',
+            success: function success(uploadFileRes) {
+              console.log(JSON.parse(uploadFileRes.data));
+              var result = JSON.parse(uploadFileRes.data);
+              _this4.videoList.push(result.data);
+            } });
+
         } });
 
     } } };exports.default = _default;

@@ -1,7 +1,7 @@
 <template>
 	<view class="main">
 		<view class="activityBox">
-			<Activity></Activity>
+			<Activity :detail="detailData"></Activity>
 		</view>
 		<view class="titleBox">
 			<view class="top">
@@ -83,16 +83,34 @@
 
 <script>
 	import Activity from '@/components/Activity.vue';
+	let actId='';
 	export default {
 		components:{
 			Activity
 		},
 		data() {
 			return {
-				
+				pageSize:5,
+				pageNo:1
 			}
 		},
+		onLoad(params) {
+			this.detailData = getApp().globalData.activeData
+			actId=params.actId||''
+			this.getList()
+		},
 		methods: {
+			getList(){
+				this.$api.get('/api/team/list',{
+					params:{
+						actId,
+						pageNo:this.pageNo,
+						pageSize:this.pageSize
+					}
+				}).then((res)=>{
+					
+				})
+			},
 			goInfo(){
 				uni.navigateTo({
 					url:"/pages/headInfo/headInfo"

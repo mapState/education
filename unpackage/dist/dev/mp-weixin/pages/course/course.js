@@ -237,12 +237,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getCourseList: function getCourseList(types) {var _this2 = this;
-      this.$api.get('/api/lesson/list', {
-        params: {
-          pageNo: this.pageNo,
-          pageSize: this.pageSize,
-          types: types } }).
-
+      this.$api.post('/api/lesson/list', {
+        pageNo: this.pageNo,
+        pageSize: this.pageSize,
+        types: types }).
       then(function (res) {
         _this2.courseList = res.data;
       });

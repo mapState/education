@@ -1,18 +1,15 @@
 <template>
 	<view class="item" @click="goDetail">
-		<image :src="imgUrl + detail.poster" mode="aspectFill" class="img"></image>
+		<image :src="imgPath" mode="aspectFill" class="img"></image>
 		<view class="right">
 			<text class="t1">{{detail.title}}</text>
 			<view class="tags">
-				<view class="tag">
-					0-3岁
-				</view>
-				<view class="tag">
-					行为习惯
+				<view class="tag" v-for="(tag,t) in tagList" :key="t">
+					{{tag}}
 				</view>
 			</view>
 			<view class="price">
-				￥<text class="num">119</text> <text class="t1">已购10293</text>
+				￥<text class="num">{{detail.price}}</text> <text class="t1">已购{{detail.buyCount}}</text>
 				<view class="btn">
 					去订购
 				</view>
@@ -25,7 +22,8 @@
 	export default {
 		data() {
 			return {
-				imgUrl:''
+				imgUrl:'',
+				tagList:[]
 			};
 		},
 		props:{
@@ -34,8 +32,14 @@
 				default:{}
 			}
 		},
+		computed:{
+			imgPath(){
+				return this.imgUrl+this.detail.poster
+			}
+		},
 		mounted() {
 			this.imgUrl=this.$baseUrl
+			this.getCates()
 		},
 		methods:{
 			goDetail(){
@@ -43,7 +47,34 @@
 				uni.navigateTo({
 					url:"/pages/courseDetails/courseDetails"
 				})
-			}
+			},
+			getCates() {
+				this.$api.get('/api/static/dictList',{
+					params:{
+						type:2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+					}
+				}).then((res) => {
+					//this.swiperList=res.data
+					console.log(111111)
+					console.log(res.data)
+					//this.classList=res.data
+					let pid=''
+					let tagList=[]
+					res.data.forEach((item)=>{
+						if(item.id==this.detail.typeId){
+							tagList.push(item.name)
+							pid=item.pid
+						}
+					})
+					console.log(tagList)
+					res.data.forEach((item)=>{
+						if(item.id==pid){
+							tagList.push(item.name)
+						}
+					})
+					this.tagList=tagList
+				})
+			},
 		}
 	}
 </script>

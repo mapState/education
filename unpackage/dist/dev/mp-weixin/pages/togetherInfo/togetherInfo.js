@@ -130,7 +130,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 417));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 417));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 
@@ -215,16 +215,34 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var actId = '';var _default =
 {
   components: {
     Activity: Activity },
 
   data: function data() {
-    return {};
-
+    return {
+      pageSize: 5,
+      pageNo: 1 };
 
   },
+  onLoad: function onLoad(params) {
+    this.detailData = getApp().globalData.activeData;
+    actId = params.actId || '';
+    this.getList();
+  },
   methods: {
+    getList: function getList() {
+      this.$api.get('/api/team/list', {
+        params: {
+          actId: actId,
+          pageNo: this.pageNo,
+          pageSize: this.pageSize } }).
+
+      then(function (res) {
+
+      });
+    },
     goInfo: function goInfo() {
       uni.navigateTo({
         url: "/pages/headInfo/headInfo" });

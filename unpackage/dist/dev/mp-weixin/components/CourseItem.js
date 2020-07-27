@@ -134,14 +134,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 var _default =
 {
   data: function data() {
     return {
-      imgUrl: '' };
+      imgUrl: '',
+      tagList: [] };
 
   },
   props: {
@@ -150,8 +148,14 @@ var _default =
       default: {} } },
 
 
+  computed: {
+    imgPath: function imgPath() {
+      return this.imgUrl + this.detail.poster;
+    } },
+
   mounted: function mounted() {
     this.imgUrl = this.$baseUrl;
+    this.getCates();
   },
   methods: {
     goDetail: function goDetail() {
@@ -159,6 +163,33 @@ var _default =
       uni.navigateTo({
         url: "/pages/courseDetails/courseDetails" });
 
+    },
+    getCates: function getCates() {var _this = this;
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: 2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+        } }).
+      then(function (res) {
+        //this.swiperList=res.data
+        console.log(111111);
+        console.log(res.data);
+        //this.classList=res.data
+        var pid = '';
+        var tagList = [];
+        res.data.forEach(function (item) {
+          if (item.id == _this.detail.typeId) {
+            tagList.push(item.name);
+            pid = item.pid;
+          }
+        });
+        console.log(tagList);
+        res.data.forEach(function (item) {
+          if (item.id == pid) {
+            tagList.push(item.name);
+          }
+        });
+        _this.tagList = tagList;
+      });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

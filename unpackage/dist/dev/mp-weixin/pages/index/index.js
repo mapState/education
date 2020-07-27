@@ -214,16 +214,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
 var _qqmapWxJssdkMin = _interopRequireDefault(__webpack_require__(/*! ../../common/qqmap-wx-jssdk.min.js */ 8));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniLoadMore = function uniLoadMore() {__webpack_require__.e(/*! require.ensure | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then((function () {return resolve(__webpack_require__(/*! @/components/uni-load-more/uni-load-more.vue */ 410));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 417));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 424));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
@@ -239,10 +229,12 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
       imgUrl: '',
       classList: [],
       hotActiveList: [],
+      newActiveList: [],
       pageNo1: 1,
       pageNo2: 1,
       pageSize: 5,
-      loadStatus: 'more',
+      loadStatus1: 'noMore',
+      loadStatus2: 'noMore',
       loginStatus: false,
       addressData: {},
       top: 30,
@@ -258,13 +250,22 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
       jw: {} //经纬度
     };
   },
-  onLoad: function onLoad() {var _this = this;
+  onLoad: function onLoad() {
     this.imgUrl = this.$baseUrl;
     var info = uni.getMenuButtonBoundingClientRect();
     this.top = info.top;
     this.height = info.height;
     //this.getAddress()
     this.getAdvertList();
+  },
+  onShow: function onShow() {var _this = this;
+    this.titleIndex = 0;
+    this.newActiveList = [];
+    this.loadStatus1 = 'noMore';
+    this.loadStatus2 = 'noMore';
+    this.pageNo1 = 1;
+    this.pageNo2 = 1;
+    this.hotActiveList = [];
     setTimeout(function () {
       uni.getStorage({
         key: 'address',
@@ -275,31 +276,38 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
           _this.getCates();
         } });
 
-      // this.addressData=getApp().globalData.addressData
-      // console.log(getApp().globalData.addressData)
-      // this.getActivityList1() //热门
     }, 400);
   },
   onReachBottom: function onReachBottom() {
     if (this.loadStatus == "noMore") {
       return;
     }
-    this.getActivityList1();
+    if (this.titleIndex == 0) {
+      this.getActivityList1();
+    } else {
+      this.getActivityList2();
+    }
   },
   methods: {
+    //点击轮播跳转
+    linkPage: function linkPage(e) {
+      if (e.linkType == 1) {//1活动 2课程 3链接
+        console.log(e.linkUrl);
+      }
+    },
     //轮播
-    getAdvertList: function getAdvertList() {
+    getAdvertList: function getAdvertList() {var _this2 = this;
       this.$api.get('/api/static/advertList', {
         params: {
           type: 1 } }).
 
       then(function (res) {
-        //this.swiperList=res.data
+        _this2.swiperList = res.data;
         //console.log(res.data)
       });
     },
     //获取分类列表
-    getCates: function getCates() {var _this2 = this;
+    getCates: function getCates() {var _this3 = this;
       this.$api.get('/api/static/dictList', {
         params: {
           type: 1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
@@ -307,12 +315,12 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
       then(function (res) {
         //this.swiperList=res.data
         console.log(res.data);
-        _this2.classList = res.data;
-        _this2.getActivityList1(); //热门
+        _this3.classList = res.data;
+        _this3.getActivityList1(); //热门
       });
     },
     //活动列表
-    getActivityList1: function getActivityList1() {var _this3 = this;
+    getActivityList1: function getActivityList1() {var _this4 = this;
       this.loadStatus = "loading";
       this.$api.get('/api/act/getActivityList', {
         params: {
@@ -325,15 +333,41 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
         //this.swiperList=res.data
         console.log(res.data);
         if (res.data.length > 0) {
-          _this3.hotActiveList = _this3.hotActiveList.concat(res.data);
-          _this3.pageNo1++;
-          if (res.data.length < _this3.pageSize) {
-            _this3.loadStatus = "noMore";
+          _this4.hotActiveList = _this4.hotActiveList.concat(res.data);
+          _this4.pageNo1++;
+          if (res.data.length < _this4.pageSize) {
+            _this4.loadStatus1 = "noMore";
           } else {
-            _this3.loadStatus = 'more';
+            _this4.loadStatus1 = 'more';
           }
         } else {
-          _this3.loadStatus = "noMore";
+          _this4.loadStatus1 = "noMore";
+        }
+      });
+    },
+    getActivityList2: function getActivityList2() {var _this5 = this;
+      this.loadStatus = "loading";
+      this.$api.get('/api/act/getActivityList', {
+        params: {
+          pageNo: this.pageNo2,
+          pageSize: this.pageSize,
+          lat: this.addressData.lat,
+          lng: this.addressData.lng,
+          isNew: 1 } }).
+
+      then(function (res) {
+        //this.swiperList=res.data
+        console.log(res.data);
+        if (res.data.length > 0) {
+          _this5.newActiveList = _this5.newActiveList.concat(res.data);
+          _this5.pageNo2++;
+          if (res.data.length < _this5.pageSize) {
+            _this5.loadStatus2 = "noMore";
+          } else {
+            _this5.loadStatus2 = 'more';
+          }
+        } else {
+          _this5.loadStatus2 = "noMore";
         }
       });
     },
@@ -348,6 +382,12 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
         return;
       }
       this.titleIndex = index;
+      if (this.titleIndex == 0 && this.hotActiveList.length <= 0) {
+        this.getActivityList1();
+      }
+      if (this.titleIndex == 1 && this.newActiveList.length <= 0) {
+        this.getActivityList2();
+      }
     },
     goPosition: function goPosition() {
       uni.navigateTo({

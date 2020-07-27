@@ -68,16 +68,17 @@
 	top:77rpx;
 	background-color: #fff;
 	display: flex;
-	justify-content: space-around;
+	justify-content:space-between;
 	align-items: center;
 	width:100%;
-	padding:0 30rpx;
-	box-sizing: border-box;
+	//padding:0 30rpx;
+	//box-sizing: border-box;
 	height: 95rpx;
 	border-bottom: 1px solid #ddd;
 	.item{
-		width:25%;
+		width:20%;
 		display: flex;
+		justify-content: center;
 		align-items: center;
 		text{
 			font-size:30rpx;
@@ -87,8 +88,8 @@
 			padding-right:6rpx;
 		}
 		.down{
-			width:17rpx;
-			height:9rpx;
+			width:18rpx;
+			height:10rpx;
 		}
 		.price{
 			width:16rpx;

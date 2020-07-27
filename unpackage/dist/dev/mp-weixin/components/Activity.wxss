@@ -40,12 +40,12 @@
   height: 230rpx;
   border-radius: 10rpx;
   margin-right: 20rpx;
+  -webkit-flex-shrink: 0;
+          flex-shrink: 0;
 }
 .item .right {
   height: 230rpx;
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-          flex: 1;
+  width: 440rpx;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -62,6 +62,7 @@
           justify-content: space-between;
 }
 .item .right .row {
+  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -93,12 +94,14 @@
   font-family: PingFang SC;
   font-weight: 400;
   color: #666666;
+  vertical-align: middle;
 }
 .item .right .row .eyeIcon {
   width: 27rpx;
   height: 19rpx;
 }
 .item .right .row .peoIcon {
+  display: block;
   width: 22rpx;
   height: 22rpx;
   margin-left: 30rpx;

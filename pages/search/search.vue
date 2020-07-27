@@ -84,7 +84,11 @@
 					if(res.data.length>0){
 						this.list=this.list.concat(res.data)
 						this.pageNo++
-						this.loadStatus="more"
+						if(res.data.length==5){
+							this.loadStatus="more"
+						}else{
+							this.loadStatus="noMore"
+						}
 					}else{
 						this.loadStatus="noMore"
 					}
@@ -94,7 +98,7 @@
 				uni.showModal({
 				    title: '提示',
 				    content: '确定清除搜索历史?',
-				    success: function (res) {
+				    success: (res) =>{
 				        if (res.confirm) {
 				          uni.removeStorage({
 				              key: 'historyList',
