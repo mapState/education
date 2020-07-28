@@ -26,18 +26,13 @@
 		<view class="scroll-view" :style="{top:(top+32)+'px'}">
 			<scroll-view class="scroll-view_H" scroll-x="true">
 				<view class="list">
-					<text class="active" @click="goCourseList">全部</text>
-					<text>成长</text>
-					<text>家庭</text>
-					<text>育儿</text>
-					<text>宝妈</text>
-					<text>生活</text>
-					<text>学习</text>
-					<text>篮球</text>
+					<text class="" @click="goCourseList(0)" :class="{'active':classIndex==0}">全部</text>
+					<text v-for="item in classList" :key="item.id" @click="goCourseList(item.id)" :class="{'active':classIndex==item.id}">{{item.name}}</text>
 				</view>
 			</scroll-view>
 		</view>
-		<circle-item v-for="item in 2" :key="item"></circle-item>
+		<circle-item v-for="item in list" :key="item.id" :detail="item"></circle-item>
+		<uni-load-more :status="loadStatus"></uni-load-more>
 		<TabBar :tabIndex="3"></TabBar>
 	</view>
 </template>
@@ -58,20 +53,60 @@
 				tabIndex1:0,
 				pageNo:1,
 				pageSize:5,
+				dictIds:'',
+				classList:[],
+				classIndex:0,
+				list:[],
+				loadStatus:'noMore'
 			};
 		},
 		onLoad() {
 			this.top = uni.getMenuButtonBoundingClientRect().top
 			this.getCates()
+		},
+		onShow() {
+			this.pageNo=1
+			this.list=[]
+			this.getCircleList()
+		},
+		onReachBottom() {
 			this.getCircleList()
 		},
 		methods: {
+			goCourseList(index){
+				// if(index==this.classIndex){
+				// 	return
+				// }
+				this.classIndex=index
+				if(index==0){
+					this.dictIds=''
+				}else{
+					this.dictIds=index
+				}
+				this.pageNo=1
+				this.list=[]
+				this.getCircleList()
+			},
 			getCircleList(){
+				this.loadStatus="loading"
 				this.$api.get('/api/club/getMomentList',{
 					params:{
 						pageNo:this.pageNo,
 						pageSize:this.pageSize,
-						type:this.tabIndex1+1
+						type:this.tabIndex1+1,
+						dictIds:this.dictIds
+					}
+				}).then((res)=>{
+					if(res.data.length>0){
+						this.list=this.list.concat(res.data)
+						this.pageNo++
+						if(res.data.length==this.pageSize){
+							this.loadStatus='more'
+						}else{
+							this.loadStatus='noMore'
+						}
+					}else{
+						this.loadStatus='noMore'
 					}
 				})
 			},
@@ -83,6 +118,7 @@
 					}
 				}).then((res) => {
 					console.log(res.data)
+					this.classList=res.data
 				})
 			},
 			swiperChange(e) {
@@ -90,6 +126,8 @@
 			},
 			changeTabIndex1(index){
 				this.tabIndex1=index
+				this.list=[]
+				this.pageNo=1
 				this.getCircleList()
 			}
 		}

@@ -39,6 +39,9 @@
   font-weight: 400;
   color: #999999;
 }
+.upFileName {
+  width: 690rpx;
+}
 .fileList {
   width: 690rpx;
   padding: 0 30rpx;

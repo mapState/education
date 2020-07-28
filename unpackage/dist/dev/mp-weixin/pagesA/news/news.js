@@ -92,7 +92,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  uniLoadMore: function() {
+    return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 410))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -158,17 +162,68 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
+//
 var _default =
 {
   data: function data() {
     return {
       tabIndex: 0,
-      tabList: ['全部消息', '系统消息', '点赞消息', '评论消息'] };
+      tabList: ['全部消息', '系统消息', '点赞消息', '评论消息'],
+      pageNo: 1,
+      pageSize: 5,
+      list: [],
+      loadStatus: 'noMore',
+      type: '' };
 
   },
+  onLoad: function onLoad() {
+    this.getList();
+  },
+  onReachBottom: function onReachBottom() {
+    if (this.tabIndex == 0) {
+      this.type = '';
+    } else {
+      this.type = this.tabIndex - 1;
+    }
+    this.getList();
+  },
   methods: {
+    read: function read(data) {
+      data.status = 1;
+      this.$api.post('/api/message/save', {
+        data: data }).
+      then(function (res) {
+
+      });
+    },
+    getList: function getList() {var _this = this;
+      this.loadStatus = 'loading';
+      this.$api.get('/api/message/list', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          type: this.type } }).
+
+      then(function (res) {
+        console.log(res);
+        if (res.data.length > 0) {
+          _this.list = _this.list.concat(res.data);
+          _this.pageNo++;
+          if (res.data.length == _this.pageSize) {
+            _this.loadStatus = 'more';
+          } else {
+            _this.loadStatus = 'noMore';
+          }
+        } else {
+          _this.loadStatus = 'noMore';
+        }
+      });
+    },
     changeTabIndex: function changeTabIndex(index) {
       this.tabIndex = index;
+      this.pageNo = 1;
+      this.list = [];
+      this.getList();
     } } };exports.default = _default;
 
 /***/ }),

@@ -222,17 +222,22 @@ var actId = '';var _default =
 
   data: function data() {
     return {
-      pageSize: 5,
-      pageNo: 1 };
+      pageSize: 2,
+      pageNo: 1,
+      detailData: {},
+      list: [] };
 
   },
   onLoad: function onLoad(params) {
     this.detailData = getApp().globalData.activeData;
-    actId = params.actId || '';
+    actId = this.detailData.id;
     this.getList();
   },
   methods: {
-    getList: function getList() {
+    viewMore: function viewMore() {
+      this.getList();
+    },
+    getList: function getList() {var _this = this;
       this.$api.get('/api/team/list', {
         params: {
           actId: actId,
@@ -240,7 +245,10 @@ var actId = '';var _default =
           pageSize: this.pageSize } }).
 
       then(function (res) {
-
+        if (res.data.length > 0) {
+          _this.list = res.data;
+          _this.pageNo++;
+        }
       });
     },
     goInfo: function goInfo() {
@@ -250,7 +258,7 @@ var actId = '';var _default =
     },
     goJoinDetail: function goJoinDetail() {
       uni.navigateTo({
-        url: "/pages/joinDetail/joinDetail" });
+        url: "/pages/joinDetail/joinDetail?type=3" });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

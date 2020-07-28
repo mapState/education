@@ -1,8 +1,8 @@
 <template>
 	<view class="main">
 		<view class="textarea">
-			<textarea placeholder-class="plClass" placeholder="请输入活动标题..." :maxlength="-1" v-model="title"/>
-		</view>
+			<textarea placeholder-class="plClass" placeholder="请输入活动标题..." :maxlength="-1" v-model="title" />
+			</view>
 		<view class="fileList" v-if="poster">
 			<image :src="imgUrl+poster" mode="aspectFill" class="file"></image>
 		</view>
@@ -20,16 +20,14 @@
 			<text v-else>活动地点</text>
 			<image src="../../static/icon/right.png" mode="aspectFit" class="rightIcon"></image>
 		</view>
-		<view class="row">
+		<view class="row" @click="showPicker">
 			<view class="icon">
 				<image src="../../static/icon/time.png" mode="aspectFit" class="timeIcon"></image>
 			</view>
-			<e-picker mode="dateTime" :showValue="currentDateTime" @change="handleChange('currentDateTime',$event)">
-				<view class="time">
-					{{currentDateTime||'活动时间'}}
-				</view>
-				<image src="../../static/icon/right.png" mode="aspectFit" class="rightIcon"></image>
-			</e-picker>
+			<view class="time">
+				{{chooseDate||'活动时间'}}
+			</view>
+			<image src="../../static/icon/right.png" mode="aspectFit" class="rightIcon"></image>
 		</view>
 		<view class="row" @click="openPop">
 			<view class="icon">
@@ -45,8 +43,11 @@
 			<text>方案附件</text>
 			<text class="annexTip">文件格式：DOC、PDF、PPT</text>
 		</view>
+		<view class="upFileName">
+			{{upFileName}}
+		</view>
 		<view class="addBtn" style="border: none;margin-bottom: 300rpx;">
-			<view class="item">
+			<view class="item" @click="upFile">
 				<image src="../../static/icon/Upload.png" mode="aspectFill" class="uploadIcon"></image>
 			</view>
 		</view>
@@ -74,17 +75,36 @@
 				</view>
 			</view>
 		</uni-popup>
+		<rangeDatePick 
+					:show="isShow"
+					@showchange="showchange"
+					start="2020-07-01"
+					end="2021-04-01"
+					@change="bindChange"
+					@cancel="bindCancel"
+					themeColor="#4C83D6"
+					fields="day"
+				></rangeDatePick>
 	</view>
 </template>
 
 <script>
-	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import rangeDatePick from '@/components/pyh-rdtpicker/pyh-rdtpicker.vue';
+	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	export default {
 		components: {
-			uniPopup
+			uniPopup,
+			rangeDatePick
 		},
 		data() {
+			const currentDate = this.getDate({
+				 format: true
+			})
 			return {
+				nowDate:currentDate,//获取当前时间
+				isShow:false,
+				value:[],
+				chooseDate:"",
 				title:'',
 				address:'',
 				currentDateTime:'',
@@ -94,7 +114,11 @@
 				classIndex:0,
 				type:'',
 				resUrl:'',
-				typeName:''
+				typeName:'',
+				filepath:'',
+				startDate:'',
+				endDate:'',
+				upFileName:''
 			};
 		},
 		onLoad() {
@@ -102,27 +126,80 @@
 			this.getCates()
 		},
 		methods:{
+			showPicker(e){
+				this.isShow=true
+			},
+			showchange(){
+				this.isShow=!this.isShow;
+			},
+			bindChange(data){
+				console.log(data)
+				this.chooseDate=data[0]+"至"+data[1]
+				this.startDate=data[0] + ' 00:00:00',
+				this.endDate=data[1] + ' 00:00:00'
+			},
+			bindCancel(e){
+				console.log(e)
+			},
+			getDate(type) {
+				const date = new Date();
+				let year = date.getFullYear();
+				let month = date.getMonth() + 1;
+				let day = date.getDate();
+				month = month > 9 ? month : '0' + month;
+				day = day > 9 ? day : '0' + day;
+				return `${year}-${month}-${day}`;
+			},
+			upFile(){
+				wx.chooseMessageFile({
+				  count: 1,
+				  type: 'file',
+				  success: (res)=>{
+				    const tempFilePaths = res.tempFiles
+						console.log(tempFilePaths)
+						this.upFileName=tempFilePaths[0].name
+						uni.uploadFile({
+								url: this.$uploadUrl, 
+								filePath: tempFilePaths[0].path,
+								name: 'file',
+								success: (uploadFileRes) => {
+									console.log(JSON.parse(uploadFileRes.data));
+									let res=JSON.parse(uploadFileRes.data)
+									this.filepath=res.data
+								}
+						});
+				  }
+				})
+			},
 			submit(){
-				return
-				this.$api.post('/api/club/publish',{
+				this.$api.post('/api/act/publishActivity',{
 					address:this.address,
-					type:2,
 					title:this.title,
-					dictId:this.type,
-					avatar:this.poster,
-					resUrl:this.resUrl
+					typeId:this.type,
+					poster:this.poster,
+					userId:uni.getStorageSync('userInfo').id,
+					filepath:this.filepath,
+					endDate:this.endDate,
+					startDate:this.startDate
 				}).then((res)=>{
-					// uni.showToast({
-					// 	title:"发布成功",
-					// 	duration:500
-					// })
-					// setTimeout(()=>{
-					// 	uni.navigateBack({
-					// 		delta:1
-					// 	})
-					// },1200)
+					uni.showToast({
+						title:"发布成功",
+						duration:800,
+						icon:'none'
+					})
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:1
+						})
+					},1500)
 				}).catch((err)=>{
 					console.log(err)
+					if(err.code==10400){
+						uni.showToast({
+							title:"请认真填写",
+							icon:'none'
+						})
+					}
 				})
 			},
 			selectTypeId(id,text){

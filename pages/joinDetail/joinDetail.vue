@@ -1,7 +1,7 @@
 <template>
 	<view class="main">
 		<view class="acList">
-			<Activity :type="3"></Activity>
+			<Activity :detail="activeData"></Activity>
 		</view>
 		<view class="block">
 		</view>
@@ -76,7 +76,7 @@
 			
 		</view>
 		<view class="payBox">
-			<view class="price">支付参团价：<text>200</text></view>
+			<view class="price">支付{{buyType==1?'开团':(buyType==2?'单人':'参团')}}价：<text>200</text></view>
 			<view class="btn" @click="goSuccess">
 				支付
 			</view>
@@ -92,8 +92,13 @@
 		},
 		data() {
 			return {
-
+				activeData:{},
+				buyType:3,//1开团 2单独购买 3参团
 			};
+		},
+		onLoad(params) {
+			this.activeData=getApp().globalData.activeData
+			this.buyType=params.type||3
 		},
 		methods:{
 			goSuccess(){

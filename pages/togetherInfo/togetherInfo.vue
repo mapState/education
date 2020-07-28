@@ -19,24 +19,24 @@
 					<image src="../../static/icon/us2.png" mode="aspectFit" class="userIcon"></image>
 					<text>团剩余数</text>
 				</view>
-				<view class="col again">
+				<view class="col again" @click="viewMore">
 					<image src="../../static/icon/cil.png" mode="aspectFit" class="cilIcon"></image>
 					<text>换一批</text>
 				</view>
 			</view>
 		</view>
-		<view class="plItem" v-for="item in 2" :key="item">
+		<view class="plItem" v-for="item in list" :key="item.id">
 			<view class="top">
 				<view class="left">
 					<view class="avatarBox" @click="goInfo">
-						<image src="../../static/1.jpg" mode="aspectFill" class="avatar"></image>
+						<image :src="item.memberList[0].avatar" mode="aspectFill" class="avatar"></image>
 						<view class="ids">
 							<image src="/static/img/Identity.png" mode="aspectFit" class="idimg"></image>
 							<text>团长</text>
 						</view>
 					</view>
 					<view class="nameBox">
-						<text>张雨绮</text>
+						<text>{{item.avatar}}</text>
 						<view class="tag">
 							营长
 						</view>
@@ -47,7 +47,7 @@
 					<text class="wz">杭州市江干区九堡</text>
 				</view>
 			</view>
-			<view class="people">
+			<view class="people" v-for="(other,index) in item.memberList" :key="index">
 				<view class="left">
 					<view class="item">
 						<image src="../../static/1.jpg" mode="aspectFill" class="peoImg"></image>
@@ -70,7 +70,7 @@
 						<text class="name">空位</text>
 					</view>
 				</view>
-				<view class="cy" v-if="item==0" @click="goJoinDetail">
+				<view class="cy" v-if="item.memberList.length<5" @click="goJoinDetail">
 					参与
 				</view>
 				<view class="man" v-else>
@@ -90,16 +90,21 @@
 		},
 		data() {
 			return {
-				pageSize:5,
-				pageNo:1
+				pageSize:2,
+				pageNo:1,
+				detailData:{},
+				list:[]
 			}
 		},
 		onLoad(params) {
 			this.detailData = getApp().globalData.activeData
-			actId=params.actId||''
+			actId=this.detailData.id
 			this.getList()
 		},
 		methods: {
+			viewMore(){
+				this.getList()
+			},
 			getList(){
 				this.$api.get('/api/team/list',{
 					params:{
@@ -108,7 +113,10 @@
 						pageSize:this.pageSize
 					}
 				}).then((res)=>{
-					
+					if(res.data.length>0){
+						this.list=res.data
+						this.pageNo++
+					}
 				})
 			},
 			goInfo(){
@@ -118,7 +126,7 @@
 			},
 			goJoinDetail(){
 				uni.navigateTo({
-					url:"/pages/joinDetail/joinDetail"
+					url:"/pages/joinDetail/joinDetail?type=3"
 				})
 			}
 		}

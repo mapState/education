@@ -92,11 +92,11 @@
 				allList:[],
 				effList:[],
 				lostList:[],
-				tagList:[]
+				tagList:[],
+				classList:[]
 			};
 		},
 		onLoad() {
-			this.getListAll()
 			this.getCates()
 		},
 		onReachBottom(){
@@ -115,21 +115,8 @@
 						type:2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
 					}
 				}).then((res) => {
-					let pid=''
-					let tagList=[]
-					res.data.forEach((item)=>{
-						if(item.id==this.detail.typeId){
-							tagList.push(item.name)
-							pid=item.pid
-						}
-					})
-					console.log(tagList)
-					res.data.forEach((item)=>{
-						if(item.id==pid){
-							tagList.push(item.name)
-						}
-					})
-					this.tagList=tagList
+					this.classList=res.data
+					this.getListAll()
 				})
 			},
 			changeTabIndex(index){
@@ -153,6 +140,23 @@
 					}
 				}).then((res)=>{
 					if(res.data.length>0){
+						res.data.forEach((course)=>{
+							let pid=''
+							let tagList=[]
+							this.classList.forEach((item)=>{
+								if(item.id==course.typeId){
+									tagList.push(item.name)
+									pid=item.pid
+								}
+							})
+							this.classList.forEach((item)=>{
+								if(item.id==pid){
+									tagList.push(item.name)
+								}
+							})
+							course.tagList=tagList
+						})
+
 						this.allList=this.allList.concat(res.data)
 						this.pageNo1++
 					}else{
@@ -170,6 +174,22 @@
 					}
 				}).then((res)=>{
 					if(res.data.length>0){
+						res.data.forEach((course)=>{
+							let pid=''
+							let tagList=[]
+							this.classList.forEach((item)=>{
+								if(item.id==course.typeId){
+									tagList.push(item.name)
+									pid=item.pid
+								}
+							})
+							this.classList.forEach((item)=>{
+								if(item.id==pid){
+									tagList.push(item.name)
+								}
+							})
+							course.tagList=tagList
+						})
 						this.effList=this.effList.concat(res.data)
 						this.loadStatus2="more"
 						this.pageNo2++
@@ -188,6 +208,22 @@
 					}
 				}).then((res)=>{
 					if(res.data.length>0){
+						res.data.forEach((course)=>{
+							let pid=''
+							let tagList=[]
+							this.classList.forEach((item)=>{
+								if(item.id==course.typeId){
+									tagList.push(item.name)
+									pid=item.pid
+								}
+							})
+							this.classList.forEach((item)=>{
+								if(item.id==pid){
+									tagList.push(item.name)
+								}
+							})
+							course.tagList=tagList
+						})
 						this.lostList=this.lostList.concat(res.data)
 						this.loadStatus3="more"
 						this.pageNo3++

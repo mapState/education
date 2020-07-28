@@ -182,6 +182,7 @@
 	position: fixed;
 	width:100%;
 	height: 100%;
+	z-index: 11;
 	left:0;
 	top:0;
 	background-color: rgba(0,0,0,.6);
@@ -193,6 +194,7 @@
 	bottom:98rpx;
 	width:100%;
 	height:301rpx;
+	z-index: 90;
 	background:rgba(255,255,255,1);
 	display: flex;
 	align-items: center;

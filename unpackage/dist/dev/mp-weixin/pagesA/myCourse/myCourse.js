@@ -228,11 +228,11 @@ var _default =
       allList: [],
       effList: [],
       lostList: [],
-      tagList: [] };
+      tagList: [],
+      classList: [] };
 
   },
   onLoad: function onLoad() {
-    this.getListAll();
     this.getCates();
   },
   onReachBottom: function onReachBottom() {
@@ -251,21 +251,8 @@ var _default =
           type: 2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
         } }).
       then(function (res) {
-        var pid = '';
-        var tagList = [];
-        res.data.forEach(function (item) {
-          if (item.id == _this.detail.typeId) {
-            tagList.push(item.name);
-            pid = item.pid;
-          }
-        });
-        console.log(tagList);
-        res.data.forEach(function (item) {
-          if (item.id == pid) {
-            tagList.push(item.name);
-          }
-        });
-        _this.tagList = tagList;
+        _this.classList = res.data;
+        _this.getListAll();
       });
     },
     changeTabIndex: function changeTabIndex(index) {
@@ -289,6 +276,23 @@ var _default =
 
       then(function (res) {
         if (res.data.length > 0) {
+          res.data.forEach(function (course) {
+            var pid = '';
+            var tagList = [];
+            _this2.classList.forEach(function (item) {
+              if (item.id == course.typeId) {
+                tagList.push(item.name);
+                pid = item.pid;
+              }
+            });
+            _this2.classList.forEach(function (item) {
+              if (item.id == pid) {
+                tagList.push(item.name);
+              }
+            });
+            course.tagList = tagList;
+          });
+
           _this2.allList = _this2.allList.concat(res.data);
           _this2.pageNo1++;
         } else {
@@ -306,6 +310,22 @@ var _default =
         } }).
       then(function (res) {
         if (res.data.length > 0) {
+          res.data.forEach(function (course) {
+            var pid = '';
+            var tagList = [];
+            _this3.classList.forEach(function (item) {
+              if (item.id == course.typeId) {
+                tagList.push(item.name);
+                pid = item.pid;
+              }
+            });
+            _this3.classList.forEach(function (item) {
+              if (item.id == pid) {
+                tagList.push(item.name);
+              }
+            });
+            course.tagList = tagList;
+          });
           _this3.effList = _this3.effList.concat(res.data);
           _this3.loadStatus2 = "more";
           _this3.pageNo2++;
@@ -324,6 +344,22 @@ var _default =
         } }).
       then(function (res) {
         if (res.data.length > 0) {
+          res.data.forEach(function (course) {
+            var pid = '';
+            var tagList = [];
+            _this4.classList.forEach(function (item) {
+              if (item.id == course.typeId) {
+                tagList.push(item.name);
+                pid = item.pid;
+              }
+            });
+            _this4.classList.forEach(function (item) {
+              if (item.id == pid) {
+                tagList.push(item.name);
+              }
+            });
+            course.tagList = tagList;
+          });
           _this4.lostList = _this4.lostList.concat(res.data);
           _this4.loadStatus3 = "more";
           _this4.pageNo3++;

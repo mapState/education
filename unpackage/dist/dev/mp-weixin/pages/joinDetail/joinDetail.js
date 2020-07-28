@@ -223,9 +223,14 @@ __webpack_require__.r(__webpack_exports__);
     Activity: Activity },
 
   data: function data() {
-    return {};
-
-
+    return {
+      activeData: {},
+      buyType: 3 //1开团 2单独购买 3参团
+    };
+  },
+  onLoad: function onLoad(params) {
+    this.activeData = getApp().globalData.activeData;
+    this.buyType = params.type || 3;
   },
   methods: {
     goSuccess: function goSuccess() {

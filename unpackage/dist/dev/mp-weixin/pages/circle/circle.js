@@ -92,7 +92,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  uniLoadMore: function() {
+    return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 410))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -130,12 +134,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 424));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var circleItem = function circleItem() {__webpack_require__.e(/*! require.ensure | components/circleItem */ "components/circleItem").then((function () {return resolve(__webpack_require__(/*! @/components/circleItem.vue */ 460));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-
-
-
-
-
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var TabBar = function TabBar() {__webpack_require__.e(/*! require.ensure | components/TabBar */ "components/TabBar").then((function () {return resolve(__webpack_require__(/*! @/components/TabBar.vue */ 424));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var circleItem = function circleItem() {__webpack_require__.e(/*! require.ensure | components/circleItem */ "components/circleItem").then((function () {return resolve(__webpack_require__(/*! @/components/circleItem.vue */ 461));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -189,32 +188,73 @@ __webpack_require__.r(__webpack_exports__);
       tabList1: ['热门', '精选', '最新', '官方'],
       tabIndex1: 0,
       pageNo: 1,
-      pageSize: 5 };
+      pageSize: 5,
+      dictIds: '',
+      classList: [],
+      classIndex: 0,
+      list: [],
+      loadStatus: 'noMore' };
 
   },
   onLoad: function onLoad() {
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.getCates();
+  },
+  onShow: function onShow() {
+    this.pageNo = 1;
+    this.list = [];
+    this.getCircleList();
+  },
+  onReachBottom: function onReachBottom() {
     this.getCircleList();
   },
   methods: {
-    getCircleList: function getCircleList() {
+    goCourseList: function goCourseList(index) {
+      // if(index==this.classIndex){
+      // 	return
+      // }
+      this.classIndex = index;
+      if (index == 0) {
+        this.dictIds = '';
+      } else {
+        this.dictIds = index;
+      }
+      this.pageNo = 1;
+      this.list = [];
+      this.getCircleList();
+    },
+    getCircleList: function getCircleList() {var _this = this;
+      this.loadStatus = "loading";
       this.$api.get('/api/club/getMomentList', {
         params: {
           pageNo: this.pageNo,
           pageSize: this.pageSize,
-          type: this.tabIndex1 + 1 } });
+          type: this.tabIndex1 + 1,
+          dictIds: this.dictIds } }).
 
-
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this.list = _this.list.concat(res.data);
+          _this.pageNo++;
+          if (res.data.length == _this.pageSize) {
+            _this.loadStatus = 'more';
+          } else {
+            _this.loadStatus = 'noMore';
+          }
+        } else {
+          _this.loadStatus = 'noMore';
+        }
+      });
     },
     //获取分类列表
-    getCates: function getCates() {
+    getCates: function getCates() {var _this2 = this;
       this.$api.get('/api/static/dictList', {
         params: {
           type: 4 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
         } }).
       then(function (res) {
         console.log(res.data);
+        _this2.classList = res.data;
       });
     },
     swiperChange: function swiperChange(e) {
@@ -222,6 +262,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     changeTabIndex1: function changeTabIndex1(index) {
       this.tabIndex1 = index;
+      this.list = [];
+      this.pageNo = 1;
       this.getCircleList();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

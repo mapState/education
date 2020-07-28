@@ -510,8 +510,18 @@
 				this.$refs.popup.open()
 			},
 			OpenGroup() {
-				this.$refs.popup.close()
-				this.$refs.popup1.open()
+				//this.kTeam()
+				this.$api.get('/api/user/getUserInfo').then((res)=>{
+					this.$refs.popup.close()
+					if(true){
+						//开团 填写信息 type 1开团 2单独购买 3参团
+						uni.navigateTo({
+							url:"/pages/joinDetail/joinDetail?type=1"
+						})
+					}else{
+						this.$refs.popup1.open()
+					}
+				})
 			},
 			viewAll() {
 				uni.navigateTo({

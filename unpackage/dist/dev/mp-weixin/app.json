@@ -1,93 +1,92 @@
 {
-    "pages": [
-        "pages/index/index",
-        "pages/position/position",
-        "pages/search/search",
-        "pages/eventsList/eventsList",
-        "pages/activityDetails/activityDetails",
-        "pages/comment/comment",
-        "pages/togetherInfo/togetherInfo",
-        "pages/headInfo/headInfo",
-        "pages/joinDetail/joinDetail",
-        "pages/successful/successful",
-        "pages/course/course",
-        "pages/searchCourses/searchCourses",
-        "pages/courseList/courseList",
-        "pages/courseDetails/courseDetails",
-        "pages/courseBuy/courseBuy",
-        "pages/courseBuySuccess/courseBuySuccess",
-        "pages/addPost/addPost",
-        "pages/experience/experience",
-        "pages/addActivity/addActivity",
-        "pages/circle/circle",
-        "pages/circleDetail/circleDetail",
-        "pages/mine/mine",
-        "pages/integral/integral",
-        "pages/commission/commission",
-        "pages/withdraw/withdraw",
-        "pages/withdraw/Introduction/Introduction"
-    ],
-    "subPackages": [
-        {
-            "root": "pagesA",
-            "pages": [
-                "myCollect/myCollect",
-                "mytTeam/mytTeam",
-                "memberSchool/memberSchool",
-                "multimediaCourse/multimediaCourse",
-                "test/test",
-                "news/news",
-                "myCourse/myCourse",
-                "learningList/learningList",
-                "studyDetails/studyDetails",
-                "courseEvaluation/courseEvaluation",
-                "mySignUp/mySignUp",
-                "myGrowth/myGrowth",
-                "myPost/myPost",
-                "addActivity/addActivity",
-                "myActivity/myActivity",
-                "classEquity/classEquity",
-                "makeMoney/makeMoney",
-                "other/other",
-                "aboutUs/aboutUs",
-                "childInfo/childInfo",
-                "privacyAgreement/privacyAgreement",
-                "issue/issue"
-            ]
-        },
-        {
-            "root": "pagesB",
-            "pages": [
-                "detail/detail"
-            ]
-        }
-    ],
-    "window": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "",
-        "navigationBarBackgroundColor": "#FDD30F",
-        "backgroundColor": "#FDD30F",
-        "pageOrientation": "auto"
+  "pages": [
+    "pages/index/index",
+    "pages/position/position",
+    "pages/search/search",
+    "pages/eventsList/eventsList",
+    "pages/activityDetails/activityDetails",
+    "pages/comment/comment",
+    "pages/togetherInfo/togetherInfo",
+    "pages/headInfo/headInfo",
+    "pages/joinDetail/joinDetail",
+    "pages/successful/successful",
+    "pages/course/course",
+    "pages/searchCourses/searchCourses",
+    "pages/courseList/courseList",
+    "pages/courseDetails/courseDetails",
+    "pages/courseBuy/courseBuy",
+    "pages/courseBuySuccess/courseBuySuccess",
+    "pages/addPost/addPost",
+    "pages/experience/experience",
+    "pages/addActivity/addActivity",
+    "pages/circle/circle",
+    "pages/circleDetail/circleDetail",
+    "pages/mine/mine",
+    "pages/integral/integral",
+    "pages/commission/commission",
+    "pages/withdraw/withdraw",
+    "pages/withdraw/Introduction/Introduction"
+  ],
+  "subPackages": [
+    {
+      "root": "pagesA",
+      "pages": [
+        "myCollect/myCollect",
+        "mytTeam/mytTeam",
+        "memberSchool/memberSchool",
+        "multimediaCourse/multimediaCourse",
+        "test/test",
+        "news/news",
+        "myCourse/myCourse",
+        "learningList/learningList",
+        "studyDetails/studyDetails",
+        "courseEvaluation/courseEvaluation",
+        "mySignUp/mySignUp",
+        "myGrowth/myGrowth",
+        "myPost/myPost",
+        "addActivity/addActivity",
+        "myActivity/myActivity",
+        "classEquity/classEquity",
+        "makeMoney/makeMoney",
+        "other/other",
+        "aboutUs/aboutUs",
+        "childInfo/childInfo",
+        "privacyAgreement/privacyAgreement",
+        "issue/issue"
+      ]
     },
-    "preloadRule": {
-        "pages/index/index": {
-            "network": "all",
-            "packages": [
-                "pagesA"
-            ]
-        },
-        "pagesA/myCollect/myCollect": {
-            "network": "all",
-            "packages": [
-                "__APP__"
-            ]
-        }
+    {
+      "root": "pagesB",
+      "pages": [
+        "detail/detail"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "",
+    "navigationBarBackgroundColor": "#FDD30F",
+    "backgroundColor": "#FDD30F",
+    "pageOrientation": "auto"
+  },
+  "preloadRule": {
+    "pages/index/index": {
+      "network": "all",
+      "packages": [
+        "pagesA"
+      ]
     },
-    "permission": {
-        "scope.userLocation": {
-            "desc": "获取当前位置"
-        }
-    },
-    "usingComponents": {},
-    "sitemapLocation": "sitemap86.json"
+    "pagesA/myCollect/myCollect": {
+      "network": "all",
+      "packages": [
+        "__APP__"
+      ]
+    }
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取当前位置"
+    }
+  },
+  "usingComponents": {}
 }

@@ -678,9 +678,17 @@ __webpack_require__.r(__webpack_exports__);
     showGroupPop: function showGroupPop() {
       this.$refs.popup.open();
     },
-    OpenGroup: function OpenGroup() {
-      this.$refs.popup.close();
-      this.$refs.popup1.open();
+    OpenGroup: function OpenGroup() {var _this5 = this;
+      //this.kTeam()
+      this.$api.get('/api/user/getUserInfo').then(function (res) {
+        _this5.$refs.popup.close();
+        if (true) {
+          //开团 填写信息 type 1开团 2单独购买 3参团
+          uni.navigateTo({
+            url: "/pages/joinDetail/joinDetail?type=1" });
+
+        } else {}
+      });
     },
     viewAll: function viewAll() {
       uni.navigateTo({
@@ -691,7 +699,7 @@ __webpack_require__.r(__webpack_exports__);
     closePoser: function closePoser() {
       this.$refs.poster.close();
     },
-    getPoster: function getPoster() {var _this5 = this;
+    getPoster: function getPoster() {var _this6 = this;
       this.$refs.sharePop.close();
       uni.showLoading({
         title: '海报生成中...',
@@ -706,9 +714,9 @@ __webpack_require__.r(__webpack_exports__);
         src: this.poserImg,
         success: function success(res) {
           context.fillStyle = "#FFFFFF";
-          context.fillRect(0, 0, _this5.width, _this5.height);
+          context.fillRect(0, 0, _this6.width, _this6.height);
           // context.drawImage(this.bgPath, 0, 0, this.width, this.height);
-          context.drawImage(res.path, 0, 0, _this5.width, 530);
+          context.drawImage(res.path, 0, 0, _this6.width, 530);
           context.setFontSize(28);
           context.setFillStyle('#000000');
           context.setTextAlign('center');
@@ -716,7 +724,7 @@ __webpack_require__.r(__webpack_exports__);
           if (text.length > 20) {
             text = text.substr(0, 20) + '...';
           }
-          context.fillText(text, _this5.width / 2, 600);
+          context.fillText(text, _this6.width / 2, 600);
           var tip = '长按识别，立即参加';
           context.setFontSize(28);
           context.fillText(tip, 320, 760);
@@ -739,7 +747,7 @@ __webpack_require__.r(__webpack_exports__);
             success: function success(res1) {
               context.drawImage(that.codePath, 33, 650, 132, 132);
               wx.getImageInfo({
-                src: _this5.poserImg,
+                src: _this6.poserImg,
                 success: function success(avatar) {
                   console.log(avatar);
                   var avatarurl_width = 62; //绘制的头像宽度
@@ -757,16 +765,16 @@ __webpack_require__.r(__webpack_exports__);
                       canvasId: 'myCanvas',
                       x: 0, //指定的画布区域的左上角横坐标	
                       y: 0, //指定的画布区域的左上角纵坐标	
-                      width: _this5.width, //指定的画布区域的宽度
-                      height: _this5.height, //指定的画布区域的高度
-                      destWidth: _this5.width, //输出的图片的宽度 
-                      destHeight: _this5.height, //输出的图片的高度
+                      width: _this6.width, //指定的画布区域的宽度
+                      height: _this6.height, //指定的画布区域的高度
+                      destWidth: _this6.width, //输出的图片的宽度 
+                      destHeight: _this6.height, //输出的图片的高度
                       success: function success(res) {
                         var tempFilePath = res.tempFilePath;
-                        _this5.tmpImg = tempFilePath;
+                        _this6.tmpImg = tempFilePath;
                         console.log(tempFilePath);
                         uni.hideLoading();
-                        _this5.$refs.poster.open();
+                        _this6.$refs.poster.open();
                       },
                       fail: function fail(res) {
                         console.log(res);
