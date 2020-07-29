@@ -28,8 +28,8 @@
 			</scroll-view>
 		</view>
 		<view class="cates">
-			<view class="cate" v-for="(item,index) in classList[ageIndex].dictVoList" :key="index">
-				<image :src="$baseUrl+item.iconUrl" mode="aspectFit" class="icon1"></image>
+			<view class="cate" v-for="(item,index) in classList[ageIndex].dictVoList" :key="index" @click="changeCates(item)">
+				<image :src="imgUrl+item.iconUrl" mode="aspectFit" class="icon1"></image>
 				<text>{{item.name}}</text>
 			</view>
 		</view>
@@ -43,7 +43,7 @@
 			<view class="left">
 				<text></text>
 				<view class="">
-					行为习惯
+					{{cates.name}}
 				</view>
 			</view>
 			<view class="more">
@@ -55,6 +55,7 @@
 			<block v-for="(item,index) in courseList" :key="item.id">
 				<course-item :detail="item"></course-item>
 			</block>
+			<uni-load-more :status="loadStatus"></uni-load-more>
 		</view>
 	<tab-bar :tabIndex="2"></tab-bar>
 	</view>
@@ -70,6 +71,7 @@
 		},
 		data() {
 			return {
+				loadStatus:'noMore',
 				top: 24,
 				currentIndex: 0,
 				height:32,
@@ -77,17 +79,34 @@
 				pageNo:1,
 				ageIndex:0,
 				classList:[],
-				courseList:[]
+				courseList:[],
+				cates:{},
+				imgUrl:''
 			};
 		},
 		onLoad() {
 			this.top = uni.getMenuButtonBoundingClientRect().top
 			this.height=uni.getMenuButtonBoundingClientRect().height
+			this.imgUrl=this.$baseUrl
 			console.log(this.height)
 			this.getAdvertList()
+			
+		},
+		onShow() {
+			this.pageNo=1
+			this.courseList=[]
 			this.getCates()
 		},
+		onReachBottom() {
+			this.getCourseList()
+		},
 		methods: {
+			changeCates(data){
+				this.cates=data
+				this.pageNo=1
+				this.courseList=[]
+				this.getCourseList()
+			},
 			changeAgeIndex(index){
 				this.ageIndex=index
 			},
@@ -100,18 +119,47 @@
 				}).then((res) => {
 					console.log(res.data)
 					this.classList=res.data
-					let types=res.data['0'].dictVoList['0'].id
-					this.getCourseList(types)
+					if(this.classList.length>0){
+						if(this.classList[0].dictVoList.length>0){
+							this.cates=this.classList[0].dictVoList[0]
+						}else{
+							this.cates=this.classList[0]
+						}
+					}
+					this.getCourseList()
 				})
 			},
-			getCourseList(types){
-				this.$api.post('/api/lesson/list',{
-					pageNo:this.pageNo,
-					pageSize:this.pageSize,
-					types
-				}).then((res)=>{
-					this.courseList=res.data
-				})
+			getCourseList(){
+				let types=[]
+				let id = this.cates.id
+				if(id){
+					types.push(id)
+				}
+				uni.request({
+				    url: this.$rqUrl+'/api/lesson/list',
+						method:"POST",
+						 header: {
+						  'token': uni.getStorageSync('token')
+						},
+				    data: {
+				      pageNo:this.pageNo,
+				      pageSize:this.pageSize,
+				      types
+				    },
+				    success: (res) => {
+				       if(res.data.data.length>0){
+								 this.courseList=res.data.data
+								 this.pageNo++
+								 if(res.data.data.length==this.pageSize){
+									 this.loadStatus="more"
+								 }else{
+									 this.loadStatus="noMore"
+								 }
+							 }else{
+								 this.loadStatus="noMore"
+							 }
+				    }
+				});
 			},
 			//轮播
 			getAdvertList() {

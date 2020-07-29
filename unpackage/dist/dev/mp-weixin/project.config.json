@@ -1,55 +1,136 @@
 {
-  "description": "项目配置文件。",
-  "packOptions": {
-    "ignore": []
-  },
-  "setting": {
-    "urlCheck": false,
-    "minified": false,
-    "es6": false,
-    "postcss": true
-  },
-  "compileType": "miniprogram",
-  "libVersion": "",
-  "appid": "wxe9577ab87a43fd4c",
-  "projectname": "testwx",
-  "condition": {
-    "search": {
-      "current": -1,
-      "list": []
-    },
-    "conversation": {
-      "current": -1,
-      "list": []
-    },
-    "game": {
-      "current": -1,
-      "list": []
-    },
-    "miniprogram": {
-      "current": 1,
-      "list": [
-        {
-          "name": "position",
-          "id": 0,
-          "pathName": "pages/position/position"
-        },
-        {
-          "name": "course",
-          "id": 1,
-          "pathName": "pages/course/course"
-        },
-        {
-          "name": "courseDetails",
-          "id": 2,
-          "pathName": "pages/courseDetails/courseDetails"
-        },
-        {
-          "name": "circleDetail",
-          "id": 3,
-          "pathName": "pages/circleDetail/circleDetail"
-        }
-      ]
-    }
-  }
+	"description": "项目配置文件。",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": false,
+		"minified": false,
+		"es6": false,
+		"postcss": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "",
+	"appid": "wxe9577ab87a43fd4c",
+	"projectname": "testwx",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 1,
+			"list": [
+				{
+					"id": 0,
+					"name": "position",
+					"pathName": "pages/position/position",
+					"query": ""
+				},
+				{
+					"id": 1,
+					"name": "course",
+					"pathName": "pages/course/course",
+					"query": ""
+				},
+				{
+					"id": 2,
+					"name": "courseDetails",
+					"pathName": "pages/courseDetails/courseDetails",
+					"query": ""
+				},
+				{
+					"id": 3,
+					"name": "circleDetail",
+					"pathName": "pages/circleDetail/circleDetail",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "pagesA/studyDetails/studyDetails",
+					"pathName": "pagesA/studyDetails/studyDetails",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/mySignUp/mySignUp",
+					"pathName": "pagesA/mySignUp/mySignUp",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/myGrowth/myGrowth",
+					"pathName": "pagesA/myGrowth/myGrowth",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/learningList/learningList",
+					"pathName": "pagesA/learningList/learningList",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/myPost/myPost",
+					"pathName": "pagesA/myPost/myPost",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/classEquity/classEquity",
+					"pathName": "pagesA/classEquity/classEquity",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/test/test",
+					"pathName": "pagesA/test/test",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/studyDetails/studyDetails",
+					"pathName": "pagesA/studyDetails/studyDetails",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/learningList/learningList",
+					"pathName": "pagesA/learningList/learningList",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pagesA/memberSchool/memberSchool",
+					"pathName": "pagesA/memberSchool/memberSchool",
+					"scene": null
+				}
+			]
+		}
+	}
 }

@@ -211,6 +211,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 440));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
@@ -246,7 +255,8 @@ var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_requi
     0), _defineProperty(_ref, "playWay",
     1), _defineProperty(_ref, "playState",
     1), _defineProperty(_ref, "nowIndex",
-    0), _ref;
+    0), _defineProperty(_ref, "courseList",
+    []), _ref;
 
   },
   computed: {
@@ -289,10 +299,22 @@ var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_requi
 
   onLoad: function onLoad() {
     bgAudioMannager = uni.getBackgroundAudioManager();
+    this.getRecomed();
     //如果要默认播放的话，把以下注释取消
     //this.bgAudioInnit();
   },
   methods: {
+    //推荐课程
+    getRecomed: function getRecomed() {var _this = this;
+      this.$api.get('/api/lesson/getBookListByLessonId', {
+        params: {
+          lessonId: this.detail.id,
+          type: 2 } }).
+
+      then(function (res) {
+        _this.courseList = res.data;
+      });
+    },
     goDetail: function goDetail() {
       uni.navigateTo({
         url: "/pages/courseDetails/courseDetails?type=1" });
@@ -319,7 +341,7 @@ var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_requi
       this.currentTime = e.detail.value;
       bgAudioMannager.seek(this.currentTime);
     },
-    bgAudioInnit: function bgAudioInnit() {var _this = this;
+    bgAudioInnit: function bgAudioInnit() {var _this2 = this;
       var that = this;
       bgAudioMannager.title = that.songList[that.nowIndex].name;
       bgAudioMannager.singer = that.songList[that.nowIndex].author;
@@ -336,7 +358,7 @@ var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_requi
         that.next();
       });
       bgAudioMannager.onTimeUpdate(function () {
-        _this.currentTime = Math.floor(bgAudioMannager.currentTime);
+        _this2.currentTime = Math.floor(bgAudioMannager.currentTime);
       });
       bgAudioMannager.onPrev(function () {
         that.last();
@@ -369,8 +391,6 @@ var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_requi
 
     },
     pause: function pause() {
-      var that = this;
-
       bgAudioMannager.pause();
     },
     playFunc: function playFunc() {
@@ -386,7 +406,7 @@ var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_requi
 
     },
     next: function next() {
-
+      this.playState = 1;
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

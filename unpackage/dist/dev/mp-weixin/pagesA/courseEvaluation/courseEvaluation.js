@@ -130,7 +130,10 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 440));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 440));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
 
 
 
@@ -165,10 +168,61 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     CourseItem: CourseItem },
 
   data: function data() {
-    return {};
+    return {
+      imgUrl: '',
+      detail: {},
+      content: '',
+      imgList: [],
+      tmpImgList: [] };
 
+  },
+  onLoad: function onLoad() {
+    this.detail = getApp().globalData.learnDetail;
+    this.imgUrl = this.$baseUrl;
+  },
+  methods: {
+    addImg: function addImg() {var _this = this;
+      uni.chooseImage({
+        count: 3,
+        success: function success(chooseImageRes) {
+          var tempFilePaths = chooseImageRes.tempFilePaths;
+          console.log(tempFilePaths);var _loop = function _loop(
+          i) {
+            console.log(i);
+            uni.uploadFile({
+              url: _this.$uploadUrl,
+              filePath: tempFilePaths[i],
+              name: 'file',
+              success: function success(uploadFileRes) {
+                console.log(JSON.parse(uploadFileRes.data));
+                var res = JSON.parse(uploadFileRes.data);
+                _this.$set(_this.tmpImgList, i, res.data);
+                if (_this.tmpImgList.length == tempFilePaths.length) {
+                  _this.imgList = _this.imgList.concat(_this.tmpImgList);
+                }
+              } });};for (var i = 0; i < tempFilePaths.length; i++) {_loop(i);
 
-  } };exports.default = _default;
+          }
+        } });
+
+    },
+    pl: function pl() {
+      var imgUrl = this.imgList.join();
+      this.$api.get('/api/comment/save', {
+        params: {
+          tableId: 1,
+          type: 2,
+          content: this.content,
+          userId: uni.getStorageSync('userInfo').id,
+          imgUrl: imgUrl } }).
+
+      then(function (res) {
+        uni.showToast({
+          title: "评价成功" });
+
+      });
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

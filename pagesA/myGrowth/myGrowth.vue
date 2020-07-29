@@ -64,6 +64,7 @@
 				</view>
 			</view>
 		</view>
+		<uni-load-more :status="loadStatus"></uni-load-more>
 	</view>
 </template>
 
@@ -71,13 +72,40 @@
 	export default {
 		data() {
 			return {
-
+				list:[],
+				loadStatus:'noMore',
+				pageNo:1,
+				pageSize:5
 			};
+		},
+		onLoad() {
+			this.getList()
 		},
 		methods:{
 			goPage(){
 				uni.navigateTo({
 					url:"/pages/experience/experience"
+				})
+			},
+			getList(){
+				this.$api.get('/api/club/getMomentByUserId',{
+					params:{
+						pageNo:this.pageNo,
+						pageSize:this.pageSize,
+						userId:uni.getStorageSync('userInfo').id
+					}
+				}).then((res)=>{
+					if(res.data.length>0){
+						this.list=this.list.concat(res.data)
+						this.pageNo++
+						if(res.data.length==this.pageSize){
+							this.loadStatus="more"
+						}else{
+							this.loadStatus="noMore"
+						}
+					}else{
+						this.loadStatus="noMore"
+					}
 				})
 			}
 		}

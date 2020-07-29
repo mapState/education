@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "发布活动",
+  "usingComponents": {
+    "uni-popup": "/components/uni-popup/uni-popup",
+    "range-date-pick": "/components/pyh-rdtpicker/pyh-rdtpicker"
+  }
+}

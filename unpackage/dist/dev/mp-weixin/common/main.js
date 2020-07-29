@@ -156,11 +156,14 @@ var addressData = {};var _default =
     addressData: {
       lat: '',
       lng: '',
-      city: '' } },
+      city: '' },
 
+    learnDetail: {},
+    level: [] },
 
   onLaunch: function onLaunch() {
     console.log('App Launch');
+    this.getLevel();
   },
   onShow: function onShow() {
     //this.getUserInfo()
@@ -201,6 +204,13 @@ var addressData = {};var _default =
     getUserInfo: function getUserInfo() {
       this.$api.get('/api/user/getUserInfo').then(function (res) {
         console.log(res);
+      });
+    },
+    getLevel: function getLevel() {
+      this.$api.get('/api/static/userLevel').then(function (res) {
+        if (res.data.length > 0) {
+          getApp().globalData.level = res.data;
+        }
       });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

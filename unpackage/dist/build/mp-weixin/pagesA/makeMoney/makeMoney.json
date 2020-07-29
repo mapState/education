@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "推广赚钱",
+  "usingComponents": {
+    "uni-popup": "/components/uni-popup/uni-popup"
+  }
+}

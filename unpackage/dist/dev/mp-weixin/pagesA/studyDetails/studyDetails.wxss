@@ -257,14 +257,47 @@ page {
   position: relative;
   margin-top: 100rpx;
 }
-.section2 .music-box .bfIcon {
+.section2 .music-box .bfBox {
+  width: 30rpx;
+  height: 30rpx;
   position: absolute;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.section2 .music-box .bfBox .bfIcon {
   width: 21rpx;
   height: 29rpx;
+}
+.section2 .music-box .ztIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 23rpx;
+  height: 31rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.section2 .music-box .ztIcon view {
+  width: 6rpx;
+  height: 100%;
+  background-color: #fff;
 }
 .section2 .music-box .circleImg {
   display: block;
@@ -387,5 +420,9 @@ page {
   right: 32rpx;
   width: 110rpx;
   height: 110rpx;
+}
+.video {
+  width: 691rpx;
+  height: 395rpx;
 }
 

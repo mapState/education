@@ -9,10 +9,13 @@
 				lat:'',
 				lng:'',
 				city:''
-			}
+			},
+			learnDetail:{},
+			level:[]
 		},
 		onLaunch: function() {
 			console.log('App Launch')
+			this.getLevel()
 		},
 		onShow: function() {
 			//this.getUserInfo()
@@ -53,6 +56,13 @@
 			getUserInfo(){
 				this.$api.get('/api/user/getUserInfo').then((res)=>{
 					console.log(res)
+				})
+			},
+			getLevel(){
+				this.$api.get('/api/static/userLevel').then((res)=>{
+					if(res.data.length>0){
+						getApp().globalData.level=res.data
+					}
 				})
 			}
 		}

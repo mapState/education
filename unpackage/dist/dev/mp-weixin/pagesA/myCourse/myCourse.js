@@ -134,91 +134,44 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var myCourse = function myCourse() {__webpack_require__.e(/*! require.ensure | components/myCourse */ "components/myCourse").then((function () {return resolve(__webpack_require__(/*! @/components/myCourse.vue */ 468));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
+  components: {
+    myCourse: myCourse },
+
   data: function data() {
     return {
       tabIndex: 0,
-      tabList: ['全部', '有效(1)', '失效(10)'],
+      tabList: ['全部', '有效', '失效'],
       pageNo1: 1,
       loadStatus1: 'more',
       pageNo2: 1,
@@ -233,7 +186,7 @@ var _default =
 
   },
   onLoad: function onLoad() {
-    this.getCates();
+    this.getListAll();
   },
   onReachBottom: function onReachBottom() {
     if (this.tabIndex == 0) {
@@ -245,16 +198,6 @@ var _default =
     }
   },
   methods: {
-    getCates: function getCates() {var _this = this;
-      this.$api.get('/api/static/dictList', {
-        params: {
-          type: 2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
-        } }).
-      then(function (res) {
-        _this.classList = res.data;
-        _this.getListAll();
-      });
-    },
     changeTabIndex: function changeTabIndex(index) {
       this.tabIndex = index;
       if (index == 0 && this.allList.length == 0) {
@@ -267,7 +210,7 @@ var _default =
         this.getListLost();
       }
     },
-    getListAll: function getListAll() {var _this2 = this;
+    getListAll: function getListAll() {var _this = this;
       this.loadStatus1 = "loading";
       this.$api.get('/api/lesson/getLessonByUser', {
         params: {
@@ -279,13 +222,13 @@ var _default =
           res.data.forEach(function (course) {
             var pid = '';
             var tagList = [];
-            _this2.classList.forEach(function (item) {
+            _this.classList.forEach(function (item) {
               if (item.id == course.typeId) {
                 tagList.push(item.name);
                 pid = item.pid;
               }
             });
-            _this2.classList.forEach(function (item) {
+            _this.classList.forEach(function (item) {
               if (item.id == pid) {
                 tagList.push(item.name);
               }
@@ -293,14 +236,14 @@ var _default =
             course.tagList = tagList;
           });
 
-          _this2.allList = _this2.allList.concat(res.data);
-          _this2.pageNo1++;
+          _this.allList = _this.allList.concat(res.data);
+          _this.pageNo1++;
         } else {
-          _this2.loadStatus1 = "noMore";
+          _this.loadStatus1 = "noMore";
         }
       });
     },
-    getListEff: function getListEff() {var _this3 = this;
+    getListEff: function getListEff() {var _this2 = this;
       this.loadStatus2 = "loading";
       this.$api.get('/api/lesson/getLessonByUser', {
         params: {
@@ -313,28 +256,28 @@ var _default =
           res.data.forEach(function (course) {
             var pid = '';
             var tagList = [];
-            _this3.classList.forEach(function (item) {
+            _this2.classList.forEach(function (item) {
               if (item.id == course.typeId) {
                 tagList.push(item.name);
                 pid = item.pid;
               }
             });
-            _this3.classList.forEach(function (item) {
+            _this2.classList.forEach(function (item) {
               if (item.id == pid) {
                 tagList.push(item.name);
               }
             });
             course.tagList = tagList;
           });
-          _this3.effList = _this3.effList.concat(res.data);
-          _this3.loadStatus2 = "more";
-          _this3.pageNo2++;
+          _this2.effList = _this2.effList.concat(res.data);
+          _this2.loadStatus2 = "more";
+          _this2.pageNo2++;
         } else {
-          _this3.loadStatus2 = "noMore";
+          _this2.loadStatus2 = "noMore";
         }
       });
     },
-    getListLost: function getListLost() {var _this4 = this;
+    getListLost: function getListLost() {var _this3 = this;
       this.loadStatus3 = "loading";
       this.$api.get('/api/lesson/getLessonByUser', {
         params: {
@@ -347,24 +290,24 @@ var _default =
           res.data.forEach(function (course) {
             var pid = '';
             var tagList = [];
-            _this4.classList.forEach(function (item) {
+            _this3.classList.forEach(function (item) {
               if (item.id == course.typeId) {
                 tagList.push(item.name);
                 pid = item.pid;
               }
             });
-            _this4.classList.forEach(function (item) {
+            _this3.classList.forEach(function (item) {
               if (item.id == pid) {
                 tagList.push(item.name);
               }
             });
             course.tagList = tagList;
           });
-          _this4.lostList = _this4.lostList.concat(res.data);
-          _this4.loadStatus3 = "more";
-          _this4.pageNo3++;
+          _this3.lostList = _this3.lostList.concat(res.data);
+          _this3.loadStatus3 = "more";
+          _this3.pageNo3++;
         } else {
-          _this4.loadStatus3 = "noMore";
+          _this3.loadStatus3 = "noMore";
         }
       });
     } } };exports.default = _default;

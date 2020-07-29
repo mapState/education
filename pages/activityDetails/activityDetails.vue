@@ -166,7 +166,7 @@
 						</block>
 					</view>
 				</view>
-				<view class="ks3" v-if="detailData.state==3">
+				<view class="ks3" v-if="detailData.state==3&&!buyStatus">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
@@ -177,7 +177,8 @@
 						<text>收藏</text>
 					</view>
 				</view>
-				<view class="tabbar" v-if="detailData.state==2">
+				
+				<view class="tabbar" v-if="detailData.state==2&&!buyStatus">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
@@ -196,19 +197,30 @@
 
 						</view>
 					</view>
-					<view class="btns" v-if="type==4">
-						<view class="buy">
+				</view>
+				<view class="tabbar" v-if="detailData.state==2||detailData.state==4&&buyStatus">
+					<view class="item kfa">
+						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
+						<text>客服</text>
+					</view>
+					<view class="item" @click="doCollect">
+						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc" v-if="detailData.isStore"></image>
+						<image src="../../static/icon/heart.png" mode="aspectFit" class="sc" v-else></image>
+						<text>收藏</text>
+					</view>
+					<view class="btns" v-if="detailData.state==4">
+						<view class="buy" @click="downFile">
 							下载附件
 						</view>
 						<view class="group" @click="goCommet">
 							我要评论
 						</view>
 					</view>
-					<view class="bmBtn" v-if="type==1">
+					<view class="bmBtn" v-if="detailData.state==2">
 						<view class="btn1">
 							申请退款
 						</view>
-						<view class="btn2">
+						<view class="btn2" @click="downFile">
 							下载附件
 						</view>
 						<view class="btn3" @click="$refs.showMyGroup.open()">
@@ -216,7 +228,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="tabbar" v-if="detailData.state==1">
+				<view class="tabbar" v-if="detailData.state==1&&!buyStatus">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
@@ -346,13 +358,14 @@
 				toIndex: '',
 				letterDetails: [],
 				currentLetter: "Details",
-				type: 0, //我的报名  1 报名中 3进行中 4已结束
+				type: 0, //我的报名  (1未开始2报名中 3进行中 4已结束)
 				showFixed:true,
 				status:0,//1报名中 2未开始 3进行中 4已结束
 				//classList:[],
 				tagList:[],
 				giveList:[],//赠送福利
-				oldEve:[]
+				oldEve:[],
+				buyStatus:false,
 			};
 		},
 		filters:{
@@ -367,6 +380,7 @@
 			this.imgUrl=this.$baseUrl
 			this.top = uni.getMenuButtonBoundingClientRect().top
 			this.detailData = getApp().globalData.activeData
+			this.buyStatus=params.buyStatus?true:false
 			this.getLaveTime()
 			this.getCates()
 			//this.getGiveCourse()//赠送的课程
@@ -382,6 +396,18 @@
 			}
 		},
 		methods: {
+			downFile(){
+				uni.downloadFile({
+				    url: this.imgUrl+this.detailData.filepath,
+				    success: (res) => {
+				        if (res.statusCode === 200) {
+				          uni.showToast({
+				          	title:"下载成功"
+				          })
+				        }
+				    }
+				});
+			},
 			doCollect(){
 				let status=this.detailData.isStore==1?0:1
 				this.collected(status)

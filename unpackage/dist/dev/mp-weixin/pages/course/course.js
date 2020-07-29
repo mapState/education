@@ -92,7 +92,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  uniLoadMore: function() {
+    return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 410))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -195,6 +199,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 {
   components: {
     TabBar: TabBar,
@@ -202,6 +207,7 @@ __webpack_require__.r(__webpack_exports__);
 
   data: function data() {
     return {
+      loadStatus: 'noMore',
       top: 24,
       currentIndex: 0,
       height: 32,
@@ -209,17 +215,34 @@ __webpack_require__.r(__webpack_exports__);
       pageNo: 1,
       ageIndex: 0,
       classList: [],
-      courseList: [] };
+      courseList: [],
+      cates: {},
+      imgUrl: '' };
 
   },
   onLoad: function onLoad() {
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.height = uni.getMenuButtonBoundingClientRect().height;
+    this.imgUrl = this.$baseUrl;
     console.log(this.height);
     this.getAdvertList();
+
+  },
+  onShow: function onShow() {
+    this.pageNo = 1;
+    this.courseList = [];
     this.getCates();
   },
+  onReachBottom: function onReachBottom() {
+    this.getCourseList();
+  },
   methods: {
+    changeCates: function changeCates(data) {
+      this.cates = data;
+      this.pageNo = 1;
+      this.courseList = [];
+      this.getCourseList();
+    },
     changeAgeIndex: function changeAgeIndex(index) {
       this.ageIndex = index;
     },
@@ -232,18 +255,47 @@ __webpack_require__.r(__webpack_exports__);
       then(function (res) {
         console.log(res.data);
         _this.classList = res.data;
-        var types = res.data['0'].dictVoList['0'].id;
-        _this.getCourseList(types);
+        if (_this.classList.length > 0) {
+          if (_this.classList[0].dictVoList.length > 0) {
+            _this.cates = _this.classList[0].dictVoList[0];
+          } else {
+            _this.cates = _this.classList[0];
+          }
+        }
+        _this.getCourseList();
       });
     },
-    getCourseList: function getCourseList(types) {var _this2 = this;
-      this.$api.post('/api/lesson/list', {
-        pageNo: this.pageNo,
-        pageSize: this.pageSize,
-        types: types }).
-      then(function (res) {
-        _this2.courseList = res.data;
-      });
+    getCourseList: function getCourseList() {var _this2 = this;
+      var types = [];
+      var id = this.cates.id;
+      if (id) {
+        types.push(id);
+      }
+      uni.request({
+        url: this.$rqUrl + '/api/lesson/list',
+        method: "POST",
+        header: {
+          'token': uni.getStorageSync('token') },
+
+        data: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          types: types },
+
+        success: function success(res) {
+          if (res.data.data.length > 0) {
+            _this2.courseList = res.data.data;
+            _this2.pageNo++;
+            if (res.data.data.length == _this2.pageSize) {
+              _this2.loadStatus = "more";
+            } else {
+              _this2.loadStatus = "noMore";
+            }
+          } else {
+            _this2.loadStatus = "noMore";
+          }
+        } });
+
     },
     //轮播
     getAdvertList: function getAdvertList() {

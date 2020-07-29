@@ -20,20 +20,20 @@
 			
 		</view>
 		<view class="tabs">
-			<view class="tab tab1" :class="{'active':tabIndex==0}" @click="tabIndex=0">
+			<view class="tab tab1" :class="{'active':tabIndex==0}" @click="changeTabIndex(0)">
 				阅读推广师
 			</view>
-			<view class="tab" :class="{'active':tabIndex==1}" @click="tabIndex=1">
+			<view class="tab" :class="{'active':tabIndex==1}" @click="changeTabIndex(1)">
 				营长
 			</view>
-			<view class="tab tab3" :class="{'active':tabIndex==2}" @click="tabIndex=2">
+			<view class="tab tab3" :class="{'active':tabIndex==2}" @click="changeTabIndex(2)">
 				总营长
 			</view>
-			<view class="tab" :class="{'active':tabIndex==3}" @click="tabIndex=3">
+			<view class="tab" :class="{'active':tabIndex==3}" @click="changeTabIndex(3)">
 				合伙人
 			</view>
 		</view>
-		<view class="list" v-for="item in 3" :key="item">
+		<view class="list" v-for="item in courseList" :key="item.id">
 			<view class="item" @click.stop="goDetail">
 				<image src="https://hbimg.huabanimg.com/a0ca655c84991202c83bfb8110ee4480873d5899299ba-6voOiU_fw658/format/webp" mode="aspectFill" class="img"></image>
 				<view class="right">
@@ -48,7 +48,7 @@
 				</view>
 			</view>
 		</view>
-		
+		<uni-load-more :status="loadStatus"></uni-load-more>
 		<uni-popup ref="tipPop" type="center">
 			<view class="tipBox">
 				<view class="title">
@@ -79,10 +79,53 @@
 		},
 		data() {
 			return {
-				tabIndex:0
+				tabIndex:0,
+				pageNo:1,
+				pageSize:5,
+				levelId:3,
+				loadStatus:'noMore',
+				courseList:[]
 			};
 		},
+		onReachBottom() {
+			this.getList()
+		},
+		onLoad() {
+			this.getList()
+		},
 		methods:{
+			changeTabIndex(index){
+				if(this.tabIndex==index){
+					return
+				}
+				this.levelId=index+3
+				this.courseList=[]
+				this.pageNo=1
+				this.getList()
+				
+			},
+			getList(){
+				this.loadStatus="loading"
+				this.$api.get('/api/learn/lessonList',{
+					params:{
+						pageNo:this.pageNo,
+						pageSize:this.pageSize,
+						levelId:this.levelId
+					}
+				}).then((res)=>{
+						if(res.data.length>0){
+								 this.courseList=res.data
+								 this.pageNo++
+								 if(res.data.length==this.pageSize){
+									 this.loadStatus="more"
+								 }else{
+									 this.loadStatus="noMore"
+								 }
+					 }else{
+						 this.loadStatus="noMore"
+					 }
+				})
+			},
 			goDetail(){
 				uni.navigateTo({
 					url:"/pagesA/multimediaCourse/multimediaCourse"

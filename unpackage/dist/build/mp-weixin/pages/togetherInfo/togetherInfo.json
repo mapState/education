@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "拼团信息",
+  "usingComponents": {
+    "activity": "/components/Activity"
+  }
+}

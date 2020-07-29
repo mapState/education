@@ -1,0 +1,8 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "uni-popup": "/components/uni-popup/uni-popup",
+    "activity": "/components/Activity",
+    "comment-item": "/components/CommentItem"
+  }
+}

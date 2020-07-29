@@ -92,7 +92,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  uniLoadMore: function() {
+    return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 410))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -147,6 +151,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 {
   components: {
     Activity: Activity },
@@ -154,26 +159,59 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       tabIndex: 0,
-      tabList: ['全部', '报名中', '进行中', '已结束'] };
+      tabList: ['全部', '报名中', '进行中', '已结束'],
+      list: [],
+      pageNo: 1,
+      pageSize: 5,
+      loadStatus: "noMore" };
 
   },
+  onLoad: function onLoad() {
+    this.getList();
+  },
   methods: {
+    getList: function getList() {var _this = this;
+      var state = '';
+      if (this.tabIndex == 0) {
+        state = '';
+      } else if (this.tabIndex == 1) {
+        state = 2;
+      } else if (this.tabIndex == 2) {
+        state = 3;
+      } else if (this.tabIndex == 3) {
+        state = 4;
+      }
+      this.loadStatus = "loading";
+      this.$api.get('/api/act/getActivityByUser', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          state: state } }).
+
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this.list = _this.list.concat(res.data);
+          _this.pageNo++;
+          if (res.data.length == _this.pageSize) {
+            _this.loadStatus = "more";
+          } else {
+            _this.loadStatus = "noMore";
+          }
+        } else {
+          _this.loadStatus = "noMore";
+        }
+      });
+    },
     changeTabIndex: function changeTabIndex(index) {
       this.tabIndex = index;
+      this.list = [];
+      this.pageNo = 1;
+      this.getList();
     },
-    goPage: function goPage(index) {
-      var type = 0;
-      if (index == 0) {
-        type = 1;
-      } else if (index == 1) {
-        type = 2;
-      } else if (index == 2) {
-        type = 3;
-      } else if (index == 3) {
-        type = 4;
-      }
+    goPage: function goPage(data) {
+      getApp().globalData.activeData = data;
       uni.navigateTo({
-        url: "/pages/activityDetails/activityDetails?type=" + type });
+        url: "/pages/activityDetails/activityDetails?buyStatus=1" });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

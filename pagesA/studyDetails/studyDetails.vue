@@ -46,14 +46,22 @@
 				推荐学习
 			</view>
 			<view class="list">
-				<course-item v-for="item in 2" :key="item"></course-item>
+				<course-item v-for="item in courseList" :key="item.id" :detail="item"></course-item>
 			</view>
 		</view>
 		<view class="section2" v-if="tabIndex==1">
 			<view class="music-box">
 				<image src="../static/img/musicBg1.png" mode="aspectFill" class="circleImg"></image>
 				<image src="../static/img/musicbg-2.png" mode="aspectFill" class="roImg" :class="{'running':playState==0}"></image>
-				<image src="../static/icon/bf.png" mode="aspectFit" class="bfIcon" @click="bf"></image>
+				<view class="bfBox" @click="bf" v-if="playState==1">
+					<image src="../static/icon/bf.png" mode="aspectFit" class="bfIcon"></image>
+				</view>
+				<view class="ztIcon" @click="bf" v-else>
+					<view class="">
+					</view>
+					<view class="">
+					</view>
+				</view>
 			</view>
 			<view class="audio-wrapper">
 				<view class="audio-number">{{nowtime}}</view>
@@ -69,6 +77,7 @@
 			<view class="detail">
 				首先，心理压力比较具体和直接，它涉及的问题比较广泛如果你想在装修过程中省心一些，那就请你费一些银子吧。省心的办法不是没有，只是看你肯不肯选罢了。找一家声誉好的大型装修公司全包。一般来说全包的价格从每平米建筑面积500元至1000元，再贵的也有，这要看你怎么设计，怎么用料。大公司就这样好，他为了保证自己的信誉不受损害，一定会认真地对待每个客户。所以在用料和做工上你完全可以放心。你所做的就是准备好付银子和验收。
 			</view>
+			<video src="http://cdn.pike8.top/android_file_492_1587054614490_7717.mp4" class="video"></video>
 		</view>
 		<view class="section3" v-if="tabIndex==3">
 			<view class="detail">
@@ -115,6 +124,7 @@
 				playWay: 1,//循环or列表
 				playState: 1,//播放状态 0播放1暂停
 				nowIndex: 0,
+				courseList:[]
 			};
 		},
 		computed: {
@@ -157,10 +167,22 @@
 		},
 		onLoad() {
 			bgAudioMannager = uni.getBackgroundAudioManager();
+			this.getRecomed()
 			//如果要默认播放的话，把以下注释取消
 			//this.bgAudioInnit();
 		},
 		methods: {
+			//推荐课程
+			getRecomed(){
+				this.$api.get('/api/lesson/getBookListByLessonId',{
+					params:{
+						lessonId:this.detail.id,
+						type:2
+					}
+				}).then((res)=>{
+					this.courseList=res.data
+				})
+			},
 			goDetail(){
 				uni.navigateTo({
 					url:"/pages/courseDetails/courseDetails?type=1"
@@ -237,8 +259,6 @@
 			
 			},
 			pause() {
-				var that = this
-			
 				bgAudioMannager.pause()
 			},
 			playFunc() {
@@ -254,7 +274,7 @@
 				
 			},
 			next(){
-				
+				this.playState=1
 			}
 		}
 	}

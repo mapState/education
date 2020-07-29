@@ -327,6 +327,7 @@ __webpack_require__.r(__webpack_exports__);
         num2: 10 }],
 
       selIndex: 0,
+      money: '',
       menuList: [] };
 
   },
@@ -337,6 +338,12 @@ __webpack_require__.r(__webpack_exports__);
     this.getMenuList();
   },
   methods: {
+    goTest: function goTest() {
+      this.$refs.popup.close();
+      uni.navigateTo({
+        url: "/pagesA/test/test" });
+
+    },
     //获取经验套餐列表
     getMenuList: function getMenuList() {var _this = this;
       this.$api.get('/api/static/getMenuList').then(function (res) {
@@ -359,12 +366,66 @@ __webpack_require__.r(__webpack_exports__);
     swiperChange: function swiperChange(e) {
       this.swiperIndex = e.detail.current;
     },
-    selItem: function selItem(index) {
+    selItem: function selItem(index, money) {
       if (index == this.selIndex) {
         this.selIndex = 0;
+        this.money = '';
       } else {
         this.selIndex = index;
+        this.money = money;
       }
+    },
+    wxPay: function wxPay(pray_id) {var _this2 = this;
+      return;
+      uni.showLoading({
+        title: '加载中',
+        mask: true });
+
+      wx.login({
+        success: function success(res) {
+          if (res.code) {
+            _this2.$api.post('/api/wechat/pay', {
+              dojo_id: _this2.detail.id,
+              pray_id: pray_id,
+              prayer_id: uni.getStorageSync('paryData').id }).
+            then(function (info) {
+              console.log(info);
+              wx.requestPayment({
+                'appId': info.appId,
+                'timeStamp': info.timeStamp,
+                'nonceStr': info.nonceStr,
+                'package': info.package,
+                'signType': info.signType,
+                'paySign': info.paySign,
+                'success': function success(res2) {
+                  console.log(res2);
+                  console.log("支付成功");
+                  uni.showToast({
+                    title: "支付成功",
+                    duration: 1200 });
+
+                  _this2.status = 1;
+                  _this2.imgUrl = _this2.detail.pray_image;
+                },
+                'fail': function fail(err1) {
+                  console.log("支付失败");
+                  uni.showToast({
+                    title: '支付失败',
+                    icon: 'none',
+                    duration: 1200 });
+
+                },
+                'complete': function complete(err2) {
+                  uni.hideLoading();
+                } });
+
+            });
+
+          } else {
+            console.log('登录失败！' + res.errMsg);
+          }
+        } });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

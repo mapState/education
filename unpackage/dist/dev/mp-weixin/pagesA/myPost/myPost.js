@@ -210,23 +210,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 {
   components: {
     Activity: Activity },
 
   data: function data() {
     return {
+      passTab: ['全部', '未开始', '报名中', '进行中', '已结束'],
+      passIndex: 0,
       tabIndex: 0,
       tabList: ['审核中', '审核失败', '审核通过'],
       loadStatus1: 'more',
@@ -238,15 +229,43 @@ __webpack_require__.r(__webpack_exports__);
       pageSize: 5,
       list1: [],
       list2: [],
-      list3: [] };
-
+      list3: [],
+      classList: [],
+      state: '' //活动状态(1未开始2报名中 3进行中 4已结束)
+    };
   },
   onLoad: function onLoad() {
-    this.getList1();
+    this.getCates();
+  },
+  onReachBottom: function onReachBottom() {
+    if (this.tabIndex == 0) {
+      this.getList1();
+    } else if (this.tabIndex == 1) {
+      this.getList2();
+    } else if (this.tabIndex == 2) {
+      this.getList3();
+    }
   },
   methods: {
+    selTab: function selTab(index) {
+      this.passIndex = index;
+      this.pageNo3 = 1;
+      this.list3 = [];
+      this.getList3();
+    },
+    //获取分类列表
+    getCates: function getCates() {var _this = this;
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: 1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+        } }).
+      then(function (res) {
+        _this.classList = res.data;
+        _this.getList1();
+      });
+    },
     //审核中
-    getList1: function getList1() {var _this = this;
+    getList1: function getList1() {var _this2 = this;
       this.loadStatus1 = "loading";
       this.$api.get('/api/act/getPublishActivityByUser', {
         params: {
@@ -256,15 +275,26 @@ __webpack_require__.r(__webpack_exports__);
         } }).
       then(function (res) {
         if (res.data.length > 0) {
-          _this.list1 = _this.list1.concat(res.data);
-          _this.pageNo1++;
-          _this.loadStatus1 = "more";
+          res.data.forEach(function (item) {
+            _this2.classList.forEach(function (cls) {
+              if (item.typeId == cls.id) {
+                item.tag = cls.name;
+              }
+            });
+          });
+          _this2.list1 = _this2.list1.concat(res.data);
+          _this2.pageNo1++;
+          if (res.data.length == _this2.pageSize) {
+            _this2.loadStatus2 = "more";
+          } else {
+            _this2.loadStatus2 = "noMore";
+          }
         } else {
-          _this.loadStatus1 = "noMore";
+          _this2.loadStatus1 = "noMore";
         }
       });
     },
-    getList2: function getList2() {var _this2 = this;
+    getList2: function getList2() {var _this3 = this;
       this.loadStatus2 = "loading";
       this.$api.get('/api/act/getPublishActivityByUser', {
         params: {
@@ -274,29 +304,56 @@ __webpack_require__.r(__webpack_exports__);
         } }).
       then(function (res) {
         if (res.data.length > 0) {
-          _this2.list2 = _this2.list2.concat(res.data);
-          _this2.pageNo2++;
-          _this2.loadStatus2 = "more";
+          res.data.forEach(function (item) {
+            _this3.classList.forEach(function (cls) {
+              if (item.typeId == cls.id) {
+                item.tag = cls.name;
+              }
+            });
+          });
+          _this3.list2 = _this3.list2.concat(res.data);
+          _this3.pageNo2++;
+          if (res.data.length == _this3.pageSize) {
+            _this3.loadStatus2 = "more";
+          } else {
+            _this3.loadStatus2 = "noMore";
+          }
         } else {
-          _this2.loadStatus2 = "noMore";
+          _this3.loadStatus2 = "noMore";
         }
       });
     },
-    getList3: function getList3() {var _this3 = this;
+    getList3: function getList3() {var _this4 = this;
       this.loadStatus3 = "loading";
+      var state = this.passIndex;
+      if (state == 0) {
+        state = '';
+      }
       this.$api.get('/api/act/getPublishActivityByUser', {
         params: {
           pageNo: this.pageNo3,
           pageSize: this.pageSize,
-          passStatus: 3 //审核状态 (0为平台创建,1未审核 2审核拒绝 3审核成功)
-        } }).
+          passStatus: 3, //审核状态 (0为平台创建,1未审核 2审核拒绝 3审核成功)
+          state: state } }).
+
       then(function (res) {
         if (res.data.length > 0) {
-          _this3.list3 = _this3.list3.concat(res.data);
-          _this3.pageNo3++;
-          _this3.loadStatus3 = "more";
+          // res.data.forEach((item)=>{
+          // 	this.classList.forEach((cls)=>{
+          // 		if(item.typeId==cls.id){
+          // 			item.tag=cls.name
+          // 		}
+          // 	})
+          // })
+          _this4.list3 = _this4.list3.concat(res.data);
+          _this4.pageNo3++;
+          if (res.data.length == _this4.pageSize) {
+            _this4.loadStatus3 = "more";
+          } else {
+            _this4.loadStatus3 = "noMore";
+          }
         } else {
-          _this3.loadStatus3 = "noMore";
+          _this4.loadStatus3 = "noMore";
         }
       });
     },

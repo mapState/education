@@ -93,6 +93,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
+  uniLoadMore: function() {
+    return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 410))
+  },
   uniPopup: function() {
     return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 431))
   }
@@ -101,23 +104,6 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  if (!_vm._isMounted) {
-    _vm.e0 = function($event) {
-      _vm.tabIndex = 0
-    }
-
-    _vm.e1 = function($event) {
-      _vm.tabIndex = 1
-    }
-
-    _vm.e2 = function($event) {
-      _vm.tabIndex = 2
-    }
-
-    _vm.e3 = function($event) {
-      _vm.tabIndex = 3
-    }
-  }
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -232,10 +218,53 @@ __webpack_require__.r(__webpack_exports__);
 
   data: function data() {
     return {
-      tabIndex: 0 };
+      tabIndex: 0,
+      pageNo: 1,
+      pageSize: 5,
+      levelId: 3,
+      loadStatus: 'noMore',
+      courseList: [] };
 
   },
+  onReachBottom: function onReachBottom() {
+    this.getList();
+  },
+  onLoad: function onLoad() {
+    this.getList();
+  },
   methods: {
+    changeTabIndex: function changeTabIndex(index) {
+      if (this.tabIndex == index) {
+        return;
+      }
+      this.levelId = index + 3;
+      this.courseList = [];
+      this.pageNo = 1;
+      this.getList();
+
+    },
+    getList: function getList() {var _this = this;
+      this.loadStatus = "loading";
+      this.$api.get('/api/learn/lessonList', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          levelId: this.levelId } }).
+
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this.courseList = res.data;
+          _this.pageNo++;
+          if (res.data.length == _this.pageSize) {
+            _this.loadStatus = "more";
+          } else {
+            _this.loadStatus = "noMore";
+          }
+        } else {
+          _this.loadStatus = "noMore";
+        }
+      });
+    },
     goDetail: function goDetail() {
       uni.navigateTo({
         url: "/pagesA/multimediaCourse/multimediaCourse" });

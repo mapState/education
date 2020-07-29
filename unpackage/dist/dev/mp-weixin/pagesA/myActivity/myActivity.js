@@ -92,7 +92,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  uniLoadMore: function() {
+    return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 410))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -183,26 +187,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 var _default =
 {
   data: function data() {
     return {
-      imgList: [
-      'https://hbimg.huabanimg.com/388d9f7f46ca2367215019e2cc657a120232f1a090ab6d-VROHhO_fw658/format/webp',
-      'https://hbimg.huabanimg.com/6949b1b94886ea5688ded50a31f2bc24d2ed3aaa2c94e-dJ0QDC_fw658/format/webp'],
-
+      imgUrl: '',
       pageNo: 1,
       pageSize: 5,
-      userId: '' };
+      userId: '',
+      loadStatus: 'noMore',
+      list: [],
+      classList: [] };
 
   },
   onLoad: function onLoad() {
+    this.imgUrl = this.$baseUrl;
     this.userId = uni.getStorageSync("userInfo").id;
+    this.getCates();
+  },
+  onReachBottom: function onReachBottom() {
     this.getList();
   },
+  filters: {
+    getLevel: function getLevel(id) {
+      var levleList = getApp().globalData.level;
+      var levelName = '游客';
+      levleList.forEach(function (item) {
+        if (item.id == id) {
+          levelName = item.name;
+        }
+      });
+      return levelName;
+    } },
+
   methods: {
-    getList: function getList() {
+    //获取分类列表
+    getCates: function getCates() {var _this = this;
+      this.$api.get('/api/static/dictList', {
+        params: {
+          type: 4 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+        } }).
+      then(function (res) {
+        _this.classList = res.data;
+        _this.getList();
+      });
+    },
+    getList: function getList() {var _this2 = this;
+      this.loadStatus = "loading";
       this.$api.get('/api/club/getMomentByMyself', {
         params: {
           pageSize: this.pageSize,
@@ -211,6 +242,37 @@ var _default =
 
       then(function (res) {
         console.log(res);
+        if (res.data.length > 0) {
+          res.data.forEach(function (item) {
+            var imgList = item.resUrl;
+            if (imgList) {
+              item.imgList = imgList.split(',');
+            } else {
+              item.imgList = [];
+            }
+            _this2.classList.forEach(function (cls) {
+              if (item.dictId == cls.id) {
+                item.tag = cls.name;
+              }
+            });
+          });
+          _this2.list = _this2.list.concat(res.data);
+          _this2.pageNo++;
+          if (res.data.length == _this2.pageSize) {
+            _this2.loadStatus = "more";
+          } else {
+            tihs.loadStatus = "noMore";
+          }
+        } else {
+          tihs.loadStatus = "noMore";
+        }
+      }).catch(function (err) {
+        if (err.code == 10903) {
+          uni.showToast({
+            title: "该用户已设置权限",
+            icon: 'none' });
+
+        }
       });
     },
     previewImage: function previewImage() {

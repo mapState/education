@@ -101,6 +101,14 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.__map(_vm.testList[_vm.index - 1].optionList, function(op, o) {
+    var g0 = _vm.selOptionIds.includes(op.id)
+    return {
+      $orig: _vm.__get_orig(op),
+      g0: g0
+    }
+  })
+
   if (!_vm._isMounted) {
     _vm.e0 = function($event) {
       return _vm.$refs.popupCode.open()
@@ -110,6 +118,15 @@ var render = function() {
       return _vm.$refs.popupCode.close()
     }
   }
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -143,7 +160,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 431));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 431));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
 
 
 
@@ -229,36 +248,104 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
   data: function data() {
     return {
-      selIndex: -1,
+      selOptionIds: [],
+      defineOption: [],
       index: 1,
-      isAnswer: true };
+      isAnswer: true,
+      levelId: 1,
+      testList: [],
+      downTime: 180,
+      timer: null };
 
   },
   onLoad: function onLoad() {
     this.getList();
+    this.countdown();
   },
   methods: {
-    getList: function getList() {
-      this.$api.get('/api/learn/questionList').then(function (res) {
+    countdown: function countdown() {var _this = this;
+      this.timer = setInterval(function () {
+        if (_this.downTime <= 0) {
+          clearInterval(_this.timer);
+        } else {
+          _this.downTime--;
+        }
+      }, 1000);
+    },
+    submitAnswer: function submitAnswer() {var _this2 = this;
+      uni.request({
+        url: this.$uploadUrl + '/api/learn/answer',
+        method: "POST",
+        data: {
+          evelId: this.levelId,
+          list: this.defineOption },
+
+        header: {
+          'token': uni.getStorageSync('token') },
+
+        success: function success(res) {
+          _this2.isAnswer = false;
+        } });
+
+
+    },
+    getList: function getList() {var _this3 = this;
+      this.$api.get('/api/learn/questionList', {
+        params: {
+          levelId: this.levelId } }).
+
+      then(function (res) {
         console.log(res);
+        if (res.data.length > 0) {
+          var count = 0;
+          res.data.forEach(function (item) {
+            item.optionList.forEach(function (op) {
+              if (op.isTrue == 1) {
+                count++;
+              }
+            });
+            if (count > 1) {
+              item.isMc = true;
+            } else {
+              item.isMc = false;
+            }
+          });
+          _this3.testList = res.data;
+        }
       });
     },
-    selOption: function selOption(index) {
-      console.log(index);
-      this.selIndex = index;
+    selOption: function selOption(isMc, id) {
+      var index = this.selOptionIds.indexOf(id);
+      if (isMc) {//多选
+        if (index == -1) {
+          this.selOptionIds.push(id);
+        } else {
+          this.selOptionIds.splice(index, 1);
+        }
+      } else {
+        this.selOptionIds = [];
+        this.selOptionIds.push(id);
+      }
     },
     prev: function prev() {
       if (this.index > 1) {
+        this.selOptionIds = [];
+        if (this.defineOption[index - 2].answer) {
+          this.selOptionIds = this.defineOption[index - 2].answer.split(',');
+        }
         this.index--;
       }
     },
     next: function next() {
-      if (this.index < 30) {
+      if (this.index < this.testList.length) {
+        var obj = {};
+        var answer = this.selOptionIds.join(',');
+        obj.questionId = this.testList[this.index - 1].id;
+        obj.answer = answer;
+        this.defineOption.push(obj);
+        this.selOptionIds = [];
         this.index++;
       }
-    },
-    submit: function submit() {
-      this.isAnswer = false;
     },
     showBook: function showBook() {
       this.$refs.popup.open();
@@ -266,6 +353,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     closePop: function closePop() {
       this.$refs.popup.close();
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

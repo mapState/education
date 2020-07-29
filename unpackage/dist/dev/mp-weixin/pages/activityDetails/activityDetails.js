@@ -492,6 +492,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 {
   components: {
     uniPopup: uniPopup,
@@ -515,13 +527,14 @@ __webpack_require__.r(__webpack_exports__);
       toIndex: '',
       letterDetails: [],
       currentLetter: "Details",
-      type: 0, //我的报名  1 报名中 3进行中 4已结束
+      type: 0, //我的报名  (1未开始2报名中 3进行中 4已结束)
       showFixed: true,
       status: 0, //1报名中 2未开始 3进行中 4已结束
       //classList:[],
       tagList: [],
       giveList: [], //赠送福利
-      oldEve: [] };
+      oldEve: [],
+      buyStatus: false };
 
   },
   filters: {
@@ -536,6 +549,7 @@ __webpack_require__.r(__webpack_exports__);
     this.imgUrl = this.$baseUrl;
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.detailData = getApp().globalData.activeData;
+    this.buyStatus = params.buyStatus ? true : false;
     this.getLaveTime();
     this.getCates();
     //this.getGiveCourse()//赠送的课程
@@ -551,6 +565,18 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
+    downFile: function downFile() {
+      uni.downloadFile({
+        url: this.imgUrl + this.detailData.filepath,
+        success: function success(res) {
+          if (res.statusCode === 200) {
+            uni.showToast({
+              title: "下载成功" });
+
+          }
+        } });
+
+    },
     doCollect: function doCollect() {
       var status = this.detailData.isStore == 1 ? 0 : 1;
       this.collected(status);

@@ -44,7 +44,7 @@
 				</view> -->
 			</view>
 			<view class="progress-box">
-				<progress percent="50" show-info stroke-width="3" activeColor="#FDD30F" backgroundColor="#FEF0AD" :show-info="false"/>
+				<progress percent="50" show-info stroke-width="3" activeColor="#FDD30F" backgroundColor="#FEF0AD" :show-info="false" />
 			</view>
 			<view class="bottom">
 				<view class="current">
@@ -63,7 +63,7 @@
 			</view>
 		</view>
 		<view class="block">
-			
+
 		</view>
 		<view class="titleBox">
 			<text></text>
@@ -72,11 +72,11 @@
 			</view>
 		</view>
 		<view class="empiricList">
-			<view class="item" v-for="(item,index) in menuList" :key="item" @click="selItem(item.id)" :class="{'active':selIndex==item.id}">
+			<view class="item" v-for="(item,index) in menuList" :key="item" @click="selItem(item.id,item.money)" :class="{'active':selIndex==item.id}">
 				<image src="../static/icon/buyem.png" mode="aspectFit" class="selImg" v-if="selIndex==item.id"></image>
 				<view class="em">{{item.expValue}}经验</view>
 				<view class="line">
-					
+
 				</view>
 				<view class="price">
 					￥{{item.money}}
@@ -90,7 +90,7 @@
 			<view class="list">
 				<view class="item" v-for="item in 4" :key="item">
 					<view class="iconBox">
-						
+
 					</view>
 					<text class="text">会员标识</text>
 				</view>
@@ -103,18 +103,18 @@
 			<view class="list">
 				<view class="item" v-for="item in 4" :key="item">
 					<view class="iconBox">
-						
+
 					</view>
 					<text class="text">会员标识</text>
 				</view>
 			</view>
 		</view>
-		<view class="payBox">
+		<view class="payBox" v-if="money!=''">
 			<view class="payText">
 				<text class="t1">支付：</text>
-				<text class="t2">10元</text>
+				<text class="t2">{{money}}元</text>
 			</view>
-			<view class="btn">
+			<view class="btn" @click="wxPay">
 				经验支付
 			</view>
 		</view>
@@ -129,7 +129,7 @@
 					<view class="item" @click="$refs.popup.close()">
 						取消
 					</view>
-					<view class="item up">
+					<view class="item up" @click="goTest">
 						去考试
 					</view>
 				</view>
@@ -146,7 +146,7 @@
 		},
 		data() {
 			return {
-				imgUrl:'',
+				imgUrl: '',
 				top: 24,
 				swiperIndex: 0,
 				//gradeList:[],
@@ -168,40 +168,47 @@
 					desc: '该等级介绍了在活动报名期间，可以根据等级获取权益',
 					num1: 10,
 					num2: 10
-				},{
+				}, {
 					bgImg: '../static/img/grade4.png',
 					name: '阅读推广师',
 					desc: '该等级介绍了在活动报名期间，可以根据等级获取权益',
 					num1: 10,
 					num2: 10
-				},{
+				}, {
 					bgImg: '../static/img/grade5.png',
 					name: '合伙人',
 					desc: '该等级介绍了在活动报名期间，可以根据等级获取权益',
 					num1: 10,
 					num2: 10
 				}],
-				selIndex:0,
-				menuList:[]
+				selIndex: 0,
+				money: '',
+				menuList: []
 			};
 		},
 		onLoad() {
-			this.imgUrl=this.$baseUrl
+			this.imgUrl = this.$baseUrl
 			this.top = uni.getMenuButtonBoundingClientRect().top
 			this.getUserLevel()
 			this.getMenuList()
 		},
 		methods: {
+			goTest(){
+				this.$refs.popup.close()
+				uni.navigateTo({
+					url:"/pagesA/test/test"
+				})
+			},
 			//获取经验套餐列表
-			getMenuList(){
-				this.$api.get('/api/static/getMenuList').then((res)=>{
+			getMenuList() {
+				this.$api.get('/api/static/getMenuList').then((res) => {
 					console.log(res.data)
-					this.menuList=res.data
+					this.menuList = res.data
 				})
 			},
 			//获取用户等级
-			getUserLevel(){
-				this.$api.get('/api/static/userLevel').then((res)=>{
+			getUserLevel() {
+				this.$api.get('/api/static/userLevel').then((res) => {
 					console.log(res.data)
 					//this.gradeList=res.data
 				})
@@ -214,12 +221,66 @@
 			swiperChange(e) {
 				this.swiperIndex = e.detail.current;
 			},
-			selItem(index){
-				if(index==this.selIndex){
-					this.selIndex=0
-				}else{
-					this.selIndex=index
+			selItem(index, money) {
+				if (index == this.selIndex) {
+					this.selIndex = 0
+					this.money = ''
+				} else {
+					this.selIndex = index
+					this.money = money
 				}
+			},
+			wxPay(pray_id) {
+				return
+				uni.showLoading({
+					title: '加载中',
+					mask: true
+				});
+				wx.login({
+					success: (res) => {
+						if (res.code) {
+							this.$api.post('/api/wechat/pay', {
+								dojo_id: this.detail.id,
+								pray_id,
+								prayer_id: uni.getStorageSync('paryData').id
+							}).then((info) => {
+								console.log(info)
+								wx.requestPayment({
+									'appId': info.appId,
+									'timeStamp': info.timeStamp,
+									'nonceStr': info.nonceStr,
+									'package': info.package,
+									'signType': info.signType,
+									'paySign': info.paySign,
+									'success': (res2) => {
+										console.log(res2)
+										console.log("支付成功")
+										uni.showToast({
+											title: "支付成功",
+											duration: 1200
+										})
+										this.status = 1
+										this.imgUrl = this.detail.pray_image
+									},
+									'fail': function(err1) {
+										console.log("支付失败")
+										uni.showToast({
+											title: '支付失败',
+											icon: 'none',
+											duration: 1200
+										})
+									},
+									'complete': function(err2) {
+										uni.hideLoading();
+									}
+								})
+							})
+
+						} else {
+							console.log('登录失败！' + res.errMsg)
+						}
+					}
+				})
 			}
 		}
 	}

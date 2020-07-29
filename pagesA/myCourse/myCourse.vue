@@ -6,83 +6,36 @@
 			</view>
 		</view>
 		<view class="list" v-if="tabIndex==0">
-			<view class="item" v-for="item in allList" :key="item.id">
-				<view class="courseImg">
-					<text v-if="item==0" class="yx">有效</text>
-					<text v-if="item==1" class="yx sx">失效</text>
-					<image src="https://hbimg.huabanimg.com/a0ca655c84991202c83bfb8110ee4480873d5899299ba-6voOiU_fw658/format/webp" mode="aspectFill" class="img"></image>
-				</view>
-				<view class="right">
-					<text class="t1">0-3岁小孩习惯培养课程大礼包，从小培养计划</text>
-					<view class="tags">
-						<view class="tag">
-							0-3岁
-						</view>
-						<view class="tag">
-							行为习惯
-						</view>
-					</view>
-					<view class="time">
-						到时时间：2020-06-26 20:30
-					</view>
-				</view>
-			</view>
+			<block v-for="item in allList" :key="item.id">
+				<myCourse :detail="item"></myCourse>
+			</block>
 			<uni-load-more :status="loadStatus1"></uni-load-more>
 		</view>
 		<view class="list" v-if="tabIndex==1">
-			<view class="item" v-for="item in effList" :key="item.id">
-				<view class="courseImg">
-					<text v-if="item.status==1" class="yx">有效</text>
-					<text v-else class="yx sx">失效</text>
-					<image src="https://hbimg.huabanimg.com/a0ca655c84991202c83bfb8110ee4480873d5899299ba-6voOiU_fw658/format/webp" mode="aspectFill" class="img"></image>
-				</view>
-				<view class="right">
-					<text class="t1">{{item.title}}</text>
-					<view class="tags">
-						<view class="tag">
-							0-3岁
-						</view>
-					</view>
-					<view class="time">
-						到期时间：2020-06-26 20:30
-					</view>
-				</view>
-			</view>
+			<block v-for="item in allList" :key="item.id">
+				<myCourse :detail="item"></myCourse>
+			</block>
 			<uni-load-more :status="loadStatus2"></uni-load-more>
 		</view>
 		<view class="list" v-if="tabIndex==2">
-			<view class="item" v-for="item in lostList" :key="item.id">
-				<view class="courseImg">
-					<text v-if="item==0" class="yx">有效</text>
-					<text v-if="item==1" class="yx sx">失效</text>
-					<image src="https://hbimg.huabanimg.com/a0ca655c84991202c83bfb8110ee4480873d5899299ba-6voOiU_fw658/format/webp" mode="aspectFill" class="img"></image>
-				</view>
-				<view class="right">
-					<text class="t1">0-3岁小孩习惯培养课程大礼包，从小培养计划</text>
-					<view class="tags">
-						<view class="tag">
-							0-3岁
-						</view>
-						<view class="tag">
-							行为习惯
-						</view>
-					</view>
-					<view class="time">
-						到时时间：2020-06-26 20:30
-					</view>
-				</view>
-			</view>
+			<block v-for="item in allList" :key="item.id">
+				<myCourse :detail="item"></myCourse>
+			</block>
 			<uni-load-more :status="loadStatus3"></uni-load-more>
 		</view>
 	</view>
 </template>
 
 <script>
+	import myCourse from '@/components/myCourse.vue';
 	export default {
+		components:{
+			myCourse
+		},
 		data() {
 			return {
 				tabIndex:0,
-				tabList:['全部','有效(1)','失效(10)'],
+				tabList:['全部','有效','失效'],
 				pageNo1:1,
 				loadStatus1:'more',
 				pageNo2:1,
@@ -97,7 +50,7 @@
 			};
 		},
 		onLoad() {
-			this.getCates()
+			this.getListAll()
 		},
 		onReachBottom(){
 			if(this.tabIndex==0){
@@ -109,16 +62,6 @@
 			}
 		},
 		methods:{
-			getCates() {
-				this.$api.get('/api/static/dictList',{
-					params:{
-						type:2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
-					}
-				}).then((res) => {
-					this.classList=res.data
-					this.getListAll()
-				})
-			},
 			changeTabIndex(index){
 				this.tabIndex=index
 				if(index==0&&this.allList.length==0){

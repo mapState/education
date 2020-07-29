@@ -216,7 +216,8 @@ __webpack_require__.r(__webpack_exports__);
         type: this.type,
         content: this.content,
         isProtect: this.isProtect,
-        resUrl: arr }).
+        resUrl: arr,
+        userId: uni.getStorageSync('userInfo').id }).
       then(function (res) {
         uni.showToast({
           title: "发布成功",
