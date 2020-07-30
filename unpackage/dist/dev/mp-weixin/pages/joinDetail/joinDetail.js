@@ -218,24 +218,150 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 {
   components: {
     Activity: Activity },
 
   data: function data() {
     return {
+      array: ['女', '男'],
       activeData: {},
-      buyType: 3 //1开团 2单独购买 3参团
-    };
+      buyType: 2, //1开团 2单独购买 3参团
+      address: '',
+      age: '',
+      name: '',
+      phone: '',
+      sex: 0 };
+
   },
   onLoad: function onLoad(params) {
     this.activeData = getApp().globalData.activeData;
-    this.buyType = params.type || 3;
+    this.buyType = params.type ? params.type : 2;
   },
   methods: {
+    bindPickerChange: function bindPickerChange(e) {
+      this.sex = e.target.value;
+    },
     goSuccess: function goSuccess() {
-      uni.navigateTo({
-        url: "/pages/successful/successful" });
+      if (this.name == '' || this.phone == '' || this.address == '' || this.age == '') {
+        uni.showToast({
+          title: "内容不能为空",
+          icon: 'none' });
+
+        return;
+      }
+      // buyType 1单独购买活动 2活动开团 3活动参团 4课程 5经验
+      var buyType = '';
+      var ktType = '';
+      if (this.buyType == 1) {
+        buyType = 2;
+      } else if (this.buyType == 2) {
+        buyType = 1;
+      } else if (this.buyType == 3) {
+        buyType = 3;
+      }
+      if (this.buyType == 3) {//组队购买
+        //this.joinGroup(1)  //activityTeamId
+      } else {
+        if (this.buyType == 1) {
+          this.sendInfo1(buyType, 1);
+        } else {
+          this.sendInfo1(buyType, 2);
+        }
+
+      }
+
+    },
+    //组队开团
+    joinGroup: function joinGroup(activityTeamId) {var _this = this;
+      this.$api.post('/api/team/join', {
+        activityTeamId: activityTeamId,
+        userId: uni.getStorageSync('userInfo').id,
+        activityId: this.activeData.id,
+        address: this.address,
+        age: this.age,
+        name: this.name,
+        phone: this.phone,
+        sex: this.sex }).
+      then(function (kt) {
+        _this.wxPay(3, kt.data.id);
+      });
+    },
+    //开团 1拼团 2单独购买
+    sendInfo1: function sendInfo1(buyType, type) {var _this2 = this;
+      this.$api.post('/api/team/start', {
+        userId: uni.getStorageSync('userInfo').id,
+        type: type,
+        activityId: this.activeData.id,
+        teamMember: {
+          activityId: this.activeData.id,
+          address: this.address,
+          age: this.age,
+          name: this.name,
+          phone: this.phone,
+          sex: this.sex } }).
+
+      then(function (kt) {
+        _this2.wxPay(buyType, kt.data.id);
+      });
+    },
+    wxPay: function wxPay(orderType, tableId) {var _this3 = this;
+      uni.showLoading({
+        title: '加载中',
+        mask: true });
+
+      wx.login({
+        success: function success(res) {
+          if (res.code) {
+            _this3.$api.post('/api/order/wxPay', {
+              tableId: tableId,
+              userId: uni.getStorageSync('userInfo').id,
+              payType: 1,
+              prayer_id: uni.getStorageSync('paryData').id,
+              orderType: orderType //类型 1单独购买活动 2活动开团 3活动参团 4课程 5经验
+            }).then(function (s) {
+              var info = s.data;
+              wx.requestPayment({
+                'appId': info.appid,
+                'timeStamp': info.timestamp,
+                'nonceStr': info.noncestr,
+                'package': info.package,
+                'signType': 'MD5',
+                'paySign': info.sign,
+                success: function success(res2) {
+                  uni.showToast({
+                    title: "支付成功",
+                    duration: 900 });
+
+                  setTimeout(function () {
+                    uni.redirectTo({
+                      url: "/pages/successful/successful" });
+
+                  }, 1500);
+                },
+                fail: function fail(err1) {
+                  console.log(err1);
+                  console.log("支付失败");
+                  uni.showToast({
+                    title: '支付失败',
+                    icon: 'none',
+                    duration: 1200 });
+
+                },
+                complete: function complete(err2) {
+                  uni.hideLoading();
+                } });
+
+            });
+
+          } else {
+            console.log('登录失败！' + res.errMsg);
+          }
+        } });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

@@ -130,7 +130,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 440));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 440));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -173,13 +173,44 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
   data: function data() {
     return {
-      tabIndex: 0 };
+      tabIndex: 0,
+      list1: [],
+      list2: [],
+      imgUrl: '' };
 
   },
+  onLoad: function onLoad() {
+    this.imgUrl = this.$baseUrl;
+    this.detail = getApp().globalData.courseData;
+    this.getList1();
+    this.getList2();
+  },
   methods: {
+    goCourse: function goCourse() {
+      uni.redirectTo({
+        url: "/pagesA/studyDetails/studyDetails" });
+
+    },
     changeTabIndex: function changeTabIndex(index) {
       this.tabIndex = index;
+    },
+    getList1: function getList1() {var _this = this;
+      this.$api.get('/api/lesson/getBookListByLessonId', {
+        lessonId: this.detail.id,
+        type: 2 }).
+      then(function (res) {
+        _this.list1 = res.data;
+      });
+    },
+    getList2: function getList2() {var _this2 = this;
+      this.$api.get('/api/lesson/getBookListByLessonId', {
+        lessonId: this.detail.id,
+        type: 3 }).
+      then(function (res) {
+        _this2.list2 = res.data;
+      });
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

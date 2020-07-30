@@ -258,7 +258,8 @@ __webpack_require__.r(__webpack_exports__);
       timer: null };
 
   },
-  onLoad: function onLoad() {
+  onLoad: function onLoad(params) {
+    this.levelId = params.levelId ? params.levelId : 2;
     this.getList();
     this.countdown();
   },

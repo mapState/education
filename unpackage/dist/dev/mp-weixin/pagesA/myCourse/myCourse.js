@@ -238,6 +238,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
           _this.allList = _this.allList.concat(res.data);
           _this.pageNo1++;
+          _this.loadStatus1 = "more";
         } else {
           _this.loadStatus1 = "noMore";
         }

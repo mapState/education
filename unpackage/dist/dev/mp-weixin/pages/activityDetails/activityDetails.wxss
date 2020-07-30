@@ -892,6 +892,9 @@ page {
   width: 690rpx;
   padding-left: 30rpx;
   padding-right: 30rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
           justify-content: space-between;
@@ -900,12 +903,16 @@ page {
           align-items: center;
   padding-top: 30rpx;
   padding-bottom: 30rpx;
-}
-.giftList .title:nth-child(1) {
   font-size: 30rpx;
   font-family: PingFang SC;
   font-weight: 400;
   color: red;
+}
+.giftList .title text:nth-child(1) {
+  font-size: 30rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: black;
 }
 .giftList .list {
   width: 100%;

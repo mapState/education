@@ -191,6 +191,13 @@ __webpack_require__.r(__webpack_exports__);
     this.getList();
   },
   methods: {
+    goDetail: function goDetail(data) {
+      getApp().globalData.activeData = data;
+      console.log(getApp().globalData.activeData);
+      uni.navigateTo({
+        url: "/pages/activityDetails/activityDetails" });
+
+    },
     search: function search(e) {
       var key = e.detail.value;
       console.log(key);

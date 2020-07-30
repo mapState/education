@@ -42,10 +42,10 @@
 					</view>
 					<view class="price">
 						<view class="col">
-							￥<text class="t1">{{detailData.personalPrice}}</text><text class="t2">单人价</text>
+							￥<text class="t1">{{detailData.personalPrice/100}}</text><text class="t2">单人价</text>
 						</view>
 						<view class="col ct">
-							￥<text class="t1">{{detailData.groupPrice}}</text><text class="t2">参团价</text>
+							￥<text class="t1">{{detailData.groupPrice/100}}</text><text class="t2">参团价</text>
 						</view>
 						<view class="col">
 							<image src="../../static/icon/eye.png" mode="aspectFit" class="eye"></image>
@@ -70,7 +70,7 @@
 						<view class="item">
 							<text class="t1">主办方</text>
 							<text class="t2">{{detailData.organizer}}</text>
-							<image src="../../static/icon/tel.png" mode="aspectFit" class="tel"></image>
+							<image src="../../static/icon/tel.png" mode="aspectFit" class="tel" @click="getPhone"></image>
 						</view>
 					</view>
 					<view class="time1">
@@ -90,9 +90,9 @@
 					<view class="time1">
 						<view class="left">
 							<text class="t1">剩余名额</text>
-							<view class="over">10<text>/300</text></view>
+							<view class="over">{{detailData.groupNumber-detailData.joinCount}}<text>/{{detailData.groupNumber}}</text></view>
 						</view>
-						<text class="t3">已报名290</text>
+						<text class="t3">已报名{{detailData.joinCount}}</text>
 					</view>
 				</view>
 				<view class="block">
@@ -115,7 +115,7 @@
 					</view>
 					<view class="giftList">
 						<view class="title">
-							<text>0-3岁小孩习惯培养课程大礼包</text>
+							<text>赠送绘本课程</text>
 							<text>价值300元</text>
 						</view>
 						<view class="list">
@@ -150,7 +150,7 @@
 							<view class="plBox">
 								<view class="top">
 									<text>评论</text>
-									<view class="" @click="viewAll">
+									<view class="" @click="viewAll(it)">
 										<text>查看全部</text>
 										<image src="/static/icon/right.png" mode="aspectFit"></image>
 									</view>
@@ -166,7 +166,7 @@
 						</block>
 					</view>
 				</view>
-				<view class="ks3" v-if="detailData.state==3&&!buyStatus">
+				<view class="ks3" v-if="detailData.state==3&&buyStatus==0">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
@@ -178,7 +178,7 @@
 					</view>
 				</view>
 				
-				<view class="tabbar" v-if="detailData.state==2&&!buyStatus">
+				<view class="tabbar" v-if="detailData.state==2&&buyStatus==0">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
@@ -189,7 +189,7 @@
 						<text>收藏</text>
 					</view>
 					<view class="btns">
-						<view class="buy">
+						<view class="buy" @click="aloneBuy">
 							单独购买
 						</view>
 						<view class="group" @click="showGroupPop">
@@ -198,7 +198,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="tabbar" v-if="detailData.state==2||detailData.state==4&&buyStatus">
+				<view class="tabbar" v-if="buyStatus==1">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
@@ -228,7 +228,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="tabbar" v-if="detailData.state==1&&!buyStatus">
+				<view class="tabbar" v-if="detailData.state==1&&buyStatus==0">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
@@ -365,7 +365,7 @@
 				tagList:[],
 				giveList:[],//赠送福利
 				oldEve:[],
-				buyStatus:false,
+				buyStatus:0,
 			};
 		},
 		filters:{
@@ -380,10 +380,10 @@
 			this.imgUrl=this.$baseUrl
 			this.top = uni.getMenuButtonBoundingClientRect().top
 			this.detailData = getApp().globalData.activeData
-			this.buyStatus=params.buyStatus?true:false
+			this.buyStatus=params.buyStatus?1:0
 			this.getLaveTime()
 			this.getCates()
-			//this.getGiveCourse()//赠送的课程
+			this.getGiveCourse()//赠送的课程
 			this.getOldEve()//往期评价
 		},
 		onShareAppMessage(res) {
@@ -396,6 +396,20 @@
 			}
 		},
 		methods: {
+			//1开团 2单独购买 3参团
+			//单独购买
+			aloneBuy(){
+				uni.navigateTo({
+					url:"/pages/joinDetail/joinDetail?type=2"
+				})
+			},
+			getPhone(){
+				if(this.detailData.organizerPhone){
+					uni.makePhoneCall({
+					    phoneNumber:this.detailData.organizerPhone
+					});
+				}
+			},
 			downFile(){
 				uni.downloadFile({
 				    url: this.imgUrl+this.detailData.filepath,
@@ -432,15 +446,17 @@
 					this.oldEve=res.data
 				})
 			},
-			// getGiveCourse(){
-			// 	this.$api.get('/api/act/getLessonByActivityId',{
-			// 		params:{
-			// 			activityId:this.detailData.id
-			// 		}
-			// 	}).then((res)=>{
-			// 		this.giveList=res.data
-			// 	})
-			// },
+			getGiveCourse(){
+				this.$api.get('/api/act/getLessonByActivityId',{
+					params:{
+						activityId:this.detailData.id
+					}
+				}).then((res)=>{
+					if(res.data.length>0){
+						this.giveList=res.data
+					}
+				})
+			},
 			//获取分类列表
 			getCates() {
 				this.$api.get('/api/static/dictList',{
@@ -549,7 +565,8 @@
 					}
 				})
 			},
-			viewAll() {
+			viewAll(data) {
+				getApp().globalData.oldActiveData=data
 				uni.navigateTo({
 					url: "/pages/comment/comment"
 				})

@@ -6,7 +6,7 @@
 			<view class="btn left">
 				分享课程
 			</view>
-			<view class="btn">
+			<view class="btn" @click="goCourse">
 				查看课程
 			</view>
 		</view>
@@ -22,12 +22,12 @@
 			</view>
 		</view>
 		<view class="courseList" v-if="tabIndex==0">
-			<CourseItem v-for="item in 2" :key="item"></CourseItem>
+			<CourseItem v-for="item in list1" :key="item.id" :detail="item"></CourseItem>
 		</view>
 		<view class="bookList" v-if="tabIndex==1">
-			<view class="item" v-for="item in 8" :key="item">
-				<image src="../../static/1.jpg" mode="aspectFill"></image>
-				<text>我要做个...</text>
+			<view class="item" v-for="item in list2" :key="item.id">
+				<image :src="imgUrl+item.poster" mode="aspectFill"></image>
+				<text>{{item.title}}</text>
 			</view>
 		</view>
 	</view>
@@ -41,12 +41,42 @@
 		},
 		data() {
 			return {
-				tabIndex:0
+				tabIndex:0,
+				list1:[],
+				list2:[],
+				imgUrl:''
 			}
 		},
+		onLoad() {
+			this.imgUrl=this.$baseUrl
+			this.detail = getApp().globalData.courseData
+			this.getList1()
+			this.getList2()
+		},
 		methods: {
+			goCourse(){
+				uni.redirectTo({
+					url:"/pagesA/studyDetails/studyDetails"
+				})
+			},
 			changeTabIndex(index){
 				this.tabIndex=index
+			},
+			getList1(){
+				this.$api.get('/api/lesson/getBookListByLessonId',{
+					lessonId:this.detail.id,
+					type:2
+				}).then((res)=>{
+					this.list1=res.data
+				})
+			},
+			getList2(){
+				this.$api.get('/api/lesson/getBookListByLessonId',{
+					lessonId:this.detail.id,
+					type:3
+				}).then((res)=>{
+					this.list2=res.data
+				})
 			}
 		}
 	}

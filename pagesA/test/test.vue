@@ -96,7 +96,8 @@
 				timer:null
 			};
 		},
-		onLoad() {
+		onLoad(params) {
+			this.levelId=params.levelId?params.levelId:2
 			this.getList()
 			this.countdown()
 		},

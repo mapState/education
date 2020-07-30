@@ -18,7 +18,8 @@
 					<view class="right">
 						<view class="row">
 							<text class="name">{{userInfo.name}}</text>
-							<text class="up">去升级？</text>
+							<text class="up" @click="goTest" v-if="true">去考试？</text>
+							<text class="up" @click="goUp" v-else >去升级？</text>
 						</view>
 						<view class="line">
 							<text></text>
@@ -111,10 +112,27 @@
 				success: (res) => {
 					this.userInfo = res.data
 					this.isLogin = true
+					this.getMyInfo()
+				},
+				fail:(err)=>{
+					this.isLogin = false
 				}
 			});
 		},
 		methods: {
+			getMyInfo(){
+				this.$api.get('/api/user/getUserInfo').then((res)=>{
+					
+				})
+			},
+			goUp(){
+				
+			},
+			goTest(){
+				uni.navigateTo({
+					url:"/pagesA/test/test"
+				})
+			},
 			getPhoneNumber(e) {
 				var that = this;
 				console.log(e)
@@ -214,6 +232,13 @@
 				})
 			},
 			goPage(index) {
+				if(!this.isLogin){
+					uni.showToast({
+						title:"请先登录",
+						icon:'none'
+					})
+					return
+				}
 				switch (index) {
 					case 0:
 						uni.navigateTo({

@@ -5,13 +5,34 @@
 	},
 	"setting": {
 		"urlCheck": false,
-		"minified": false,
 		"es6": false,
-		"postcss": true
+		"enhance": false,
+		"postcss": true,
+		"preloadBackgroundData": false,
+		"minified": false,
+		"newFeature": false,
+		"coverView": true,
+		"nodeModules": false,
+		"autoAudits": false,
+		"showShadowRootInWxmlPanel": true,
+		"scopeDataCheck": false,
+		"uglifyFileName": false,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"compileHotReLoad": false,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		},
+		"useIsolateContext": true,
+		"useCompilerModule": true,
+		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
 	"libVersion": "",
-	"appid": "wxe9577ab87a43fd4c",
+	"appid": "wxf7720026d44ede6c",
 	"projectname": "testwx",
 	"condition": {
 		"search": {
@@ -63,71 +84,15 @@
 				},
 				{
 					"id": -1,
-					"name": "pagesA/studyDetails/studyDetails",
-					"pathName": "pagesA/studyDetails/studyDetails",
+					"name": "pages/commission/commission",
+					"pathName": "pages/commission/commission",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "pagesA/mySignUp/mySignUp",
-					"pathName": "pagesA/mySignUp/mySignUp",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/myGrowth/myGrowth",
-					"pathName": "pagesA/myGrowth/myGrowth",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/learningList/learningList",
-					"pathName": "pagesA/learningList/learningList",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/myPost/myPost",
-					"pathName": "pagesA/myPost/myPost",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/classEquity/classEquity",
-					"pathName": "pagesA/classEquity/classEquity",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/test/test",
-					"pathName": "pagesA/test/test",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/studyDetails/studyDetails",
-					"pathName": "pagesA/studyDetails/studyDetails",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/learningList/learningList",
-					"pathName": "pagesA/learningList/learningList",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pagesA/memberSchool/memberSchool",
-					"pathName": "pagesA/memberSchool/memberSchool",
+					"name": "pages/courseList/courseList",
+					"pathName": "pages/courseList/courseList",
 					"scene": null
 				}
 			]

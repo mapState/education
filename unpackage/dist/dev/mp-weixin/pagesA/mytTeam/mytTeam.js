@@ -92,7 +92,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  uniLoadMore: function() {
+    return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 410))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -186,15 +190,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
     return {
       top: 24,
-      tabIndex: 0 };
+      tabIndex: 0,
+      imgUrl: '',
+      list1: [],
+      list2: [],
+      loadStatus1: 'noMore',
+      loadStatus2: 'noMore' };
 
   },
   onLoad: function onLoad() {
+    this.imgUrl = this.$baseUrl;
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.getList1();
   },
@@ -209,15 +236,23 @@ var _default =
 
     },
     //我的团队1
-    getList1: function getList1() {
+    getList1: function getList1() {var _this = this;
       this.$api.get('/api/view/firstTeam').then(function (res) {
-        console.log(res.data);
+        if (res.data.length) {
+          _this.list1 = res.data;
+        } else {
+          _this.loadStatus1 = "noMore";
+        }
       });
     },
     //我的二级团队
-    getList2: function getList2() {
+    getList2: function getList2() {var _this2 = this;
       this.$api.get('/api/view/secondTeam').then(function (res) {
-        console.log(res.data);
+        if (res.data.length) {
+          _this2.list2 = res.data;
+        } else {
+          _this2.loadStatus1 = "noMore";
+        }
       });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

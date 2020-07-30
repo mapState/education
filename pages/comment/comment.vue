@@ -107,7 +107,7 @@
 		onLoad() {
 			this.imgUrl=this.$baseUrl
 			this.getCates()
-			this.detail=getApp().globalData.activeData
+			this.detail=getApp().globalData.oldActiveData
 			this.getList()
 		},
 		onReachBottom() {

@@ -199,7 +199,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 {
   components: {
     TabBar: TabBar,
@@ -217,14 +216,14 @@ __webpack_require__.r(__webpack_exports__);
       classList: [],
       courseList: [],
       cates: {},
-      imgUrl: '' };
+      imgUrl: '',
+      swiperList: [] };
 
   },
   onLoad: function onLoad() {
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.height = uni.getMenuButtonBoundingClientRect().height;
     this.imgUrl = this.$baseUrl;
-    console.log(this.height);
     this.getAdvertList();
 
   },
@@ -237,6 +236,28 @@ __webpack_require__.r(__webpack_exports__);
     this.getCourseList();
   },
   methods: {
+    //点击轮播跳转
+    linkPage: function linkPage(e) {
+      if (e.linkType == 1) {//1活动 2课程 3链接
+        console.log(e.linkUrl);
+      }
+    },
+    //轮播
+    getAdvertList: function getAdvertList() {var _this = this;
+      this.$api.get('/api/static/advertList', {
+        params: {
+          type: 3 //	类型 1首页 2圈子 3课程
+        } }).
+      then(function (res) {
+        _this.swiperList = res.data;
+        //console.log(res.data)
+      });
+    },
+    goMore: function goMore() {
+      uni.navigateTo({
+        url: "/pages/courseList/courseList" });
+
+    },
     changeCates: function changeCates(data) {
       this.cates = data;
       this.pageNo = 1;
@@ -247,25 +268,31 @@ __webpack_require__.r(__webpack_exports__);
       this.ageIndex = index;
     },
     //获取分类列表
-    getCates: function getCates() {var _this = this;
+    getCates: function getCates() {var _this2 = this;
       this.$api.get('/api/static/dictList', {
         params: {
           type: 2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
         } }).
       then(function (res) {
-        console.log(res.data);
-        _this.classList = res.data;
-        if (_this.classList.length > 0) {
-          if (_this.classList[0].dictVoList.length > 0) {
-            _this.cates = _this.classList[0].dictVoList[0];
+        //console.log(res.data)
+        var classList = [];
+        if (res.data.length > 0) {
+          res.data.forEach(function (item) {
+            if (item.pid == 0) {
+              classList.push(item);
+            }
+          });
+          _this2.classList = classList; //一级分类
+          if (_this2.classList[0].dictVoList.length > 0) {
+            _this2.cates = _this2.classList[0].dictVoList[0];
           } else {
-            _this.cates = _this.classList[0];
+            _this2.cates = _this2.classList[0];
           }
         }
-        _this.getCourseList();
+        _this2.getCourseList();
       });
     },
-    getCourseList: function getCourseList() {var _this2 = this;
+    getCourseList: function getCourseList() {var _this3 = this;
       var types = [];
       var id = this.cates.id;
       if (id) {
@@ -284,29 +311,18 @@ __webpack_require__.r(__webpack_exports__);
 
         success: function success(res) {
           if (res.data.data.length > 0) {
-            _this2.courseList = res.data.data;
-            _this2.pageNo++;
-            if (res.data.data.length == _this2.pageSize) {
-              _this2.loadStatus = "more";
+            _this3.courseList = res.data.data;
+            _this3.pageNo++;
+            if (res.data.data.length == _this3.pageSize) {
+              _this3.loadStatus = "more";
             } else {
-              _this2.loadStatus = "noMore";
+              _this3.loadStatus = "noMore";
             }
           } else {
-            _this2.loadStatus = "noMore";
+            _this3.loadStatus = "noMore";
           }
         } });
 
-    },
-    //轮播
-    getAdvertList: function getAdvertList() {
-      this.$api.get('/api/static/advertList', {
-        params: {
-          type: 3 } }).
-
-      then(function (res) {
-        //this.swiperList=res.data
-        console.log(res.data);
-      });
     },
     swiperChange: function swiperChange(e) {
       this.currentIndex = e.detail.current;

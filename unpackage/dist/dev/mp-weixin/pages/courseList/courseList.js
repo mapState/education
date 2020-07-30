@@ -206,6 +206,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 {
   components: {
     CourseItem: CourseItem },
@@ -225,14 +227,22 @@ __webpack_require__.r(__webpack_exports__);
       pageNo: 1,
       pageSize: 5,
       sex: '',
-      types: [] };
+      types: [],
+      fClass: [],
+      fIndex: 0 };
 
   },
   onLoad: function onLoad() {
     this.getList();
     this.getCates();
   },
+  onReachBottom: function onReachBottom() {
+    this.getList();
+  },
   methods: {
+    bindPickerChange: function bindPickerChange(e) {
+      this.fIndex = e.target.value;
+    },
     selSex: function selSex(index) {
       this.sexIndex = index;
       if (index == -1) {
@@ -249,6 +259,7 @@ __webpack_require__.r(__webpack_exports__);
       this.getList();
     },
     selTypeId: function selTypeId(index) {
+      this.types = [];
       this.tagIndex = index;
       this.closeMask();
       if (index == 0) {
@@ -270,8 +281,18 @@ __webpack_require__.r(__webpack_exports__);
           type: 2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
         } }).
       then(function (res) {
-        console.log(res.data);
-        _this.classList = res.data;
+        if (res.data.length > 0) {
+          var fClass = [];
+          var classList = [];
+          res.data.forEach(function (item) {
+            if (item.pid == 0) {
+              fClass.push(item.name);
+              classList.push(item);
+            }
+          });
+          _this.classList = classList;
+          _this.fClass = fClass;
+        }
       });
     },
     goSearch: function goSearch() {
@@ -292,7 +313,7 @@ __webpack_require__.r(__webpack_exports__);
           types: this.types },
 
         success: function success(res) {
-          console.log(res.data);
+          //console.log(res.data)
           if (res.data.data.length > 0) {
             _this2.list = _this2.list.concat(res.data.data);
             _this2.pageNo++;
@@ -328,9 +349,15 @@ __webpack_require__.r(__webpack_exports__);
     },
     changeType: function changeType(index) {
       if (index !== 2) {
+        if (this.filterType == index) {
+          this.showMask = false;
+          this.filterType = -1;
+          return;
+        }
         this.filterType = index;
         this.showMask = true;
       } else {
+        this.showMask = false;
         this.language = this.language == 1 ? 2 : 1;
         this.pageNo = 1;
         this.keyword = '';

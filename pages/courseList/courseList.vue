@@ -2,8 +2,10 @@
 	<view class="main">
 		<view class="search">
 			<view class="left">
-				<text>0-3岁</text>
-				<image src="../../static/icon/down.png" mode="aspectFill"></image>
+				<picker @change="bindPickerChange" :value="index" :range="fClass">
+					<text class="">{{fClass[fIndex]}}</text>
+					<image src="../../static/icon/down.png" mode="aspectFill"></image>
+				</picker>
 			</view>
 			<!-- <view class="inputBox">
 				<input class="input" placeholder="搜索课程" placeholder-class="plClass" />
@@ -37,7 +39,7 @@
 				<view class="tag" @click="selTypeId(0)" :class="{'tagActive':tagIndex==0}">
 					全部分类
 				</view>
-				<view class="tag" v-for="item in classList" :key="item.id" :class="{'tagActive':tagIndex==item.id}" @click="selTypeId(item.id)">
+				<view class="tag" v-for="item in classList[fIndex].dictVoList" :key="item.id" :class="{'tagActive':tagIndex==item.id}" @click="selTypeId(item.id)">
 					{{item.name}}
 				</view>
 			</view>
@@ -89,14 +91,22 @@
 				pageNo: 1,
 				pageSize: 5,
 				sex: '',
-				types: []
+				types: [],
+				fClass:[],
+				fIndex:0
 			}
 		},
 		onLoad() {
 			this.getList()
 			this.getCates()
 		},
+		onReachBottom() {
+			this.getList()
+		},
 		methods: {
+			bindPickerChange(e) {
+				this.fIndex = e.target.value
+			},
 			selSex(index) {
 				this.sexIndex = index
 				if (index == -1) {
@@ -113,6 +123,7 @@
 				this.getList()
 			},
 			selTypeId(index) {
+				this.types = []
 				this.tagIndex = index
 				this.closeMask()
 				if (index == 0) {
@@ -134,8 +145,18 @@
 						type: 2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
 					}
 				}).then((res) => {
-					console.log(res.data)
-					this.classList = res.data
+					if(res.data.length>0){
+						let fClass=[]
+						let classList=[]
+						res.data.forEach((item)=>{
+							if(item.pid==0){
+								fClass.push(item.name)
+								classList.push(item)
+							}
+						})
+						this.classList=classList
+						this.fClass=fClass
+					}
 				})
 			},
 			goSearch() {
@@ -156,7 +177,7 @@
 						types:this.types
 					},
 					success:(res)=>{
-						console.log(res.data)
+						//console.log(res.data)
 						if (res.data.data.length > 0) {
 								this.list = this.list.concat(res.data.data)
 								this.pageNo++
@@ -192,9 +213,15 @@
 			},
 			changeType(index) {
 				if (index !== 2) {
+					if(this.filterType == index){
+						this.showMask = false
+						this.filterType=-1
+						return
+					}
 					this.filterType = index
 					this.showMask = true
 				} else {
+					this.showMask = false
 					this.language = this.language == 1 ? 2 : 1
 					this.pageNo = 1
 					this.keyword = ''

@@ -217,7 +217,7 @@ var _default =
         } }).
       then(function (res) {
         //this.swiperList=res.data
-        console.log(res.data);
+        //console.log(res.data)
         //this.classList=res.data
         var pid = '';
         var tagList = [];
@@ -227,12 +227,12 @@ var _default =
             pid = item.pid;
           }
         });
-        console.log(tagList);
-        res.data.forEach(function (item) {
-          if (item.id == pid) {
-            tagList.push(item.name);
-          }
-        });
+        //console.log(tagList)
+        // res.data.forEach((item)=>{
+        // 	if(item.id==pid){
+        // 		tagList.push(item.name)
+        // 	}
+        // })
         _this.tagList = tagList;
       });
     } } };exports.default = _default;

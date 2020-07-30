@@ -171,7 +171,7 @@ var _default =
         } }).
       then(function (res) {
         //this.swiperList=res.data
-        console.log(111111);
+        //console.log(111111)
         console.log(res.data);
         //this.classList=res.data
         var pid = '';
@@ -182,7 +182,7 @@ var _default =
             pid = item.pid;
           }
         });
-        console.log(tagList);
+        //console.log(tagList)
         res.data.forEach(function (item) {
           if (item.id == pid) {
             tagList.push(item.name);

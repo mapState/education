@@ -71,7 +71,7 @@
 				dictId:'0',
 				classList:[],
 				claItem:'',
-				type:1,//类型1 成长经历 2活动 3课程 4帖子
+				type:4,//类型1 成长经历 2活动 3课程 4帖子
 				content:'',
 				address:'',
 				imgList:[],
@@ -105,7 +105,8 @@
 					type:this.type,
 					content:this.content,
 					dictId:this.dictId,
-					resUrl:arr
+					resUrl:arr,
+					userId:uni.getStorageSync('userInfo').id
 				}).then((res)=>{
 					uni.showToast({
 						title:"发布成功",

@@ -28,7 +28,7 @@
 			<view class="swiperBox">
 				<swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" @change="swiperChange">
 					<swiper-item v-for="(item,index) in swiperList" :key="index" @click="linkPage(item)">
-						<image :src="item.imageUrl" mode="aspectFill" class="itemImg"></image>
+						<image :src="imgUrl+item.imageUrl" mode="aspectFill" class="itemImg"></image>
 					</swiper-item>
 				</swiper>
 				<view class="dots" v-if="swiperList.length>0">
@@ -63,12 +63,12 @@
 			<uni-load-more :status="loadStatus"></uni-load-more>
 		</view>
 		<!-- 		</view> -->
-		<view class="loginTip" v-if="loginStatus">
+		<view class="loginTip" v-if="loginStatus==0">
 			<view class="left">
 				<image src="/static/icon/tioIcon.png" mode="aspectFill" class="leftIcon"></image>
 				<text>您当前未登入，请登入</text>
 			</view>
-			<view class="btn">
+			<view class="btn" @click="goMine">
 				去登入
 			</view>
 		</view>
@@ -99,7 +99,7 @@
 				pageSize:5,
 				loadStatus1:'noMore',
 				loadStatus2:'noMore',
-				loginStatus:false,
+				loginStatus:1,
 				addressData:{},
 				top: 30,
 				height: 32,
@@ -107,10 +107,7 @@
 				currentIndex: 0,
 				titleIndex: 0,
 				showAddTip: false,
-				swiperList: ['https://hbimg.huabanimg.com/fafd309bf78db3cc72d851453501cfc74eb45ef150c23-xr5gos_fw658/format/webp',
-					'https://hbimg.huabanimg.com/5532df46d645484f3009553eef71931fbfb056d86bc71-qB3y3k_fw658/format/webp',
-					'https://hbimg.huabanimg.com/3a3b1760646c6ef34213e43874422267d7bd86102cbf6-nKqPxr_fw658/format/webp'
-				],
+				swiperList: [],
 				jw:{},//经纬度
 			}
 		},
@@ -123,6 +120,8 @@
 			this.getAdvertList()
 		},
 		onShow() {
+			let token=uni.getStorageSync('token')
+			this.loginStatus=token?1:0
 			this.titleIndex=0
 			this.newActiveList=[]
 			this.loadStatus1='noMore'
@@ -153,6 +152,11 @@
 			}
 		},
 		methods: {
+			goMine(){
+				uni.reLaunch({
+				    url: '/pages/mine/mine'
+				});
+			},
 			//点击轮播跳转
 			linkPage(e){
 				if(e.linkType==1){//1活动 2课程 3链接
@@ -179,7 +183,13 @@
 				}).then((res) => {
 					//this.swiperList=res.data
 					console.log(res.data)
-					this.classList=res.data
+					let classList=[]
+					res.data.forEach((item)=>{
+						if(item.pid==0){
+							classList.push(item)
+						}
+					})
+					this.classList=classList
 					this.getActivityList1() //热门
 				})
 			},
@@ -265,7 +275,7 @@
 			},
 			goEventsList(index) {
 				uni.navigateTo({
-					url: "/pages/eventsList/eventsList?fIndex="+index
+					url: "/pages/eventsList/eventsList?oneIndex="+index
 				})
 			},
 			goDetail(data) {

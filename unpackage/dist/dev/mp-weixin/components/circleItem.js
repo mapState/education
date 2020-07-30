@@ -181,13 +181,10 @@ var _default =
 
 
   computed: {
-    imgList: function imgList() {var _this = this;
+    imgList: function imgList() {
       var arry = [];
       if (this.detail.resUrl) {
         arry = this.detail.resUrl.split(',');
-        arry.forEach(function (item) {
-          item = _this.imgUrl + item;
-        });
       }
       return arry;
     } },
@@ -197,22 +194,22 @@ var _default =
     this.getCates();
   },
   methods: {
-    clickLike: function clickLike() {var _this2 = this;
+    clickLike: function clickLike() {var _this = this;
       this.$api.post('/api/user/like', {
         tableId: this.detail.id,
         type: 1,
         userId: uni.getStorageSync('userInfo').id }).
       then(function (res) {
-        _this2.isLike = res.data.state;
+        _this.isLike = res.data.state;
         if (res.data.state == 1) {
-          _this2.likeCount++;
+          _this.likeCount++;
         } else {
-          _this2.likeCount--;
+          _this.likeCount--;
         }
       });
     },
     //获取分类列表
-    getCates: function getCates() {var _this3 = this;
+    getCates: function getCates() {var _this2 = this;
       this.$api.get('/api/static/dictList', {
         params: {
           type: 4 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
@@ -220,15 +217,20 @@ var _default =
       then(function (res) {
         console.log(res.data);
         res.data.forEach(function (item) {
-          if (item.id == _this3.detail.dictId) {
-            _this3.tag = item.name;
+          if (item.id == _this2.detail.dictId) {
+            _this2.tag = item.name;
           }
         });
       });
     },
-    previewImage: function previewImage() {
+    previewImage: function previewImage() {var _this3 = this;
+      var arry = [];
+      this.imgList.forEach(function (item) {
+        var s = _this3.imgUrl + item;
+        arry.push(s);
+      });
       uni.previewImage({
-        urls: this.imgList });
+        urls: arry });
 
     },
     goDetail: function goDetail() {

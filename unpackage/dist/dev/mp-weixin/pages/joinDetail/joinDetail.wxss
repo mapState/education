@@ -161,6 +161,9 @@
   -webkit-flex: 1;
           flex: 1;
 }
+.form .row .sexInput {
+  width: 540rpx;
+}
 .form .row .plClass {
   font-size: 30rpx;
   font-family: PingFang SC;

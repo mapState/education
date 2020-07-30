@@ -12,16 +12,17 @@
 					<text class="time">{{detail.createDate}}</text>
 				</view>
 			</view>
-			<view class="right">
-				<image src="/static/icon/heart.png" mode="aspectFit" class="heartIcon"></image>
-				<text>{{detail.likeCount}}</text>
+			<view class="right" @click="dz">
+				<image src="/static/icon/liked.png" mode="aspectFit" class="heartIcon" v-if="isLike==1"></image>
+				<image src="/static/icon/heart.png" mode="aspectFit" class="heartIcon" v-else></image>
+				<text>{{likeCount}}</text>
 			</view>
 		</view>
 		<view class="detail">
 			{{detail.content}}
 		</view>
 		<view class="imgs">
-			<image src="https://hbimg.huabanimg.com/08e3ee716b1c1335c8bbf6940074384d59f354fd72516-yrddEo_fw658/format/webp" mode="aspectFill" v-for="item in 3" :key="item"></image>
+			<image :src="imgUrl+img" mode="aspectFill" v-for="(img,i) in imageUrl" :key="i"></image>
 		</view>
 	</view>
 </template>
@@ -30,13 +31,43 @@
 	export default {
 		data() {
 			return {
-				
+				imgUrl:'',
+				isLike:this.detail.isLike,
+				likeCount:this.detail.likeCount
 			};
 		},
 		props:{
 			detail:{
 				type:Object,
 				default:{}
+			}
+		},
+		computed:{
+			imageUrl(){
+				if(this.detail.imageUrl){
+					return this.detail.imageUrl.split(',')
+				}
+				return []
+			}
+		},
+		mounted() {
+			this.imgUrl=this.$baseUrl
+		},
+		methods:{
+			dz(){
+				this.$api.post('/api/user/like',{
+					type:2,
+					userId:uni.getStorageSync('userInfo').id,
+					tableId:this.detail.id
+				}).then((res)=>{
+					if(res.data.state==1){
+						this.isLike=1
+						this.likeCount++
+					}else{
+						this.isLike=0
+						this.likeCount--
+					}
+				})
 			}
 		}
 	}

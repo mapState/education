@@ -207,7 +207,7 @@ __webpack_require__.r(__webpack_exports__);
       dictId: '0',
       classList: [],
       claItem: '' }, _defineProperty(_ref, "type",
-    1), _defineProperty(_ref, "content",
+    4), _defineProperty(_ref, "content",
     ''), _defineProperty(_ref, "address",
     ''), _defineProperty(_ref, "imgList",
     []), _defineProperty(_ref, "tmpImgList",
@@ -241,7 +241,8 @@ __webpack_require__.r(__webpack_exports__);
         type: this.type,
         content: this.content,
         dictId: this.dictId,
-        resUrl: arr }).
+        resUrl: arr,
+        userId: uni.getStorageSync('userInfo').id }).
       then(function (res) {
         uni.showToast({
           title: "发布成功",

@@ -102,6 +102,7 @@
 
 						this.allList=this.allList.concat(res.data)
 						this.pageNo1++
+						this.loadStatus1="more"
 					}else{
 						this.loadStatus1="noMore"
 					}

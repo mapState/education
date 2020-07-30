@@ -36,20 +36,37 @@
 				<image src="../../static/icon/filter2.png" mode="aspectFit"></image>
 			</view>
 		</view>
-		<view class="list">
-			<view class="teamItem" v-for="item in 4" :key="item">
-				<image src="/static/1.jpg" mode="aspectFill" class="avatar"></image>
+		<view class="list" v-if="tabIndex==0">
+			<view class="teamItem" v-for="item in list1" :key="item.id">
+				<image :src="imgUrl+item.avatar" mode="aspectFill" class="avatar"></image>
 				<view class="info">
-					<text class="name">小丸子</text>
-					<text class="vip">会员</text>
+					<text class="name">{{item.name}}</text>
+					<text class="vip">{{item.level}}</text>
 				</view>
 				<view class="num num1">
-					￥<text>600</text>
+					￥<text>{{item.shareCount}}</text>
 				</view>
 				<view class="num">
-					￥<text>600</text>
+					￥<text>{{item.getCount}}</text>
 				</view>
 			</view>
+			<uni-load-more :status="loadStatus1"></uni-load-more>
+		</view>
+		<view class="list" v-if="tabIndex==1">
+			<view class="teamItem" v-for="item in list2" :key="item.id">
+				<image :src="imgUrl+item.avatar" mode="aspectFill" class="avatar"></image>
+				<view class="info">
+					<text class="name">{{item.name}}</text>
+					<text class="vip">{{item.level}}</text>
+				</view>
+				<view class="num num1">
+					￥<text>{{item.shareCount}}</text>
+				</view>
+				<view class="num">
+					￥<text>{{item.getCount}}</text>
+				</view>
+			</view>
+			<uni-load-more :status="loadStatus2"></uni-load-more>
 		</view>
 	</view>
 </template>
@@ -59,10 +76,16 @@
 		data() {
 			return {
 				top:24,
-				tabIndex:0
+				tabIndex:0,
+				imgUrl:'',
+				list1:[],
+				list2:[],
+				loadStatus1:'noMore',
+				loadStatus2:'noMore'
 			};
 		},
 		onLoad() {
+			this.imgUrl=this.$baseUrl
 			this.top=uni.getMenuButtonBoundingClientRect().top
 			this.getList1()
 		},
@@ -79,13 +102,21 @@
 			//我的团队1
 			getList1(){
 				this.$api.get('/api/view/firstTeam').then((res) => {
-					console.log(res.data)
+					if(res.data.length){
+						this.list1=res.data
+					}else{
+						this.loadStatus1="noMore"
+					}
 				})
 			},
 			//我的二级团队
 			getList2(){
 				this.$api.get('/api/view/secondTeam').then((res) => {
-					console.log(res.data)
+					if(res.data.length){
+						this.list2=res.data
+					}else{
+						this.loadStatus1="noMore"
+					}
 				})
 			}
 		}

@@ -217,6 +217,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 {
   components: {
     TabBar: TabBar },
@@ -243,10 +244,27 @@ __webpack_require__.r(__webpack_exports__);
       success: function success(res) {
         _this.userInfo = res.data;
         _this.isLogin = true;
+        _this.getMyInfo();
+      },
+      fail: function fail(err) {
+        _this.isLogin = false;
       } });
 
   },
   methods: {
+    getMyInfo: function getMyInfo() {
+      this.$api.get('/api/user/getUserInfo').then(function (res) {
+
+      });
+    },
+    goUp: function goUp() {
+
+    },
+    goTest: function goTest() {
+      uni.navigateTo({
+        url: "/pagesA/test/test" });
+
+    },
     getPhoneNumber: function getPhoneNumber(e) {
       var that = this;
       console.log(e);
@@ -346,6 +364,13 @@ __webpack_require__.r(__webpack_exports__);
 
     },
     goPage: function goPage(index) {
+      if (!this.isLogin) {
+        uni.showToast({
+          title: "请先登录",
+          icon: 'none' });
+
+        return;
+      }
       switch (index) {
         case 0:
           uni.navigateTo({

@@ -21,7 +21,7 @@
 		</view>
 		<view class="result">
 			<block v-for="item in list" :key="item.id">
-				<Activity :detail="item"></Activity>
+				<Activity :detail="item" @click.native="goDetail(item)"></Activity>
 			</block>
 			<uni-load-more :status="loadStatus"></uni-load-more>
 		</view>
@@ -55,6 +55,13 @@
 			this.getList()
 		},
 		methods: {
+			goDetail(data) {
+				getApp().globalData.activeData=data
+				console.log(getApp().globalData.activeData)
+				uni.navigateTo({
+					url: "/pages/activityDetails/activityDetails"
+				})
+			},
 			search(e){
 				let key=e.detail.value
 				console.log(key)

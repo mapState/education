@@ -175,7 +175,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 {
   components: {
     TabBar: TabBar,
@@ -193,12 +192,16 @@ __webpack_require__.r(__webpack_exports__);
       classList: [],
       classIndex: 0,
       list: [],
-      loadStatus: 'noMore' };
+      loadStatus: 'noMore',
+      swiperList: [],
+      imgUrl: '' };
 
   },
   onLoad: function onLoad() {
+    this.imgUrl = this.$baseUrl;
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.getCates();
+    this.getAdvertList();
   },
   onShow: function onShow() {
     this.pageNo = 1;
@@ -209,6 +212,23 @@ __webpack_require__.r(__webpack_exports__);
     this.getCircleList();
   },
   methods: {
+    //点击轮播跳转
+    linkPage: function linkPage(e) {
+      if (e.linkType == 1) {//1活动 2课程 3链接
+        console.log(e.linkUrl);
+      }
+    },
+    //轮播
+    getAdvertList: function getAdvertList() {var _this = this;
+      this.$api.get('/api/static/advertList', {
+        params: {
+          type: 2 //	类型 1首页 2圈子 3课程
+        } }).
+      then(function (res) {
+        _this.swiperList = res.data;
+        //console.log(res.data)
+      });
+    },
     goCourseList: function goCourseList(index) {
       // if(index==this.classIndex){
       // 	return
@@ -223,7 +243,7 @@ __webpack_require__.r(__webpack_exports__);
       this.list = [];
       this.getCircleList();
     },
-    getCircleList: function getCircleList() {var _this = this;
+    getCircleList: function getCircleList() {var _this2 = this;
       this.loadStatus = "loading";
       this.$api.get('/api/club/getMomentList', {
         params: {
@@ -234,27 +254,27 @@ __webpack_require__.r(__webpack_exports__);
 
       then(function (res) {
         if (res.data.length > 0) {
-          _this.list = _this.list.concat(res.data);
-          _this.pageNo++;
-          if (res.data.length == _this.pageSize) {
-            _this.loadStatus = 'more';
+          _this2.list = _this2.list.concat(res.data);
+          _this2.pageNo++;
+          if (res.data.length == _this2.pageSize) {
+            _this2.loadStatus = 'more';
           } else {
-            _this.loadStatus = 'noMore';
+            _this2.loadStatus = 'noMore';
           }
         } else {
-          _this.loadStatus = 'noMore';
+          _this2.loadStatus = 'noMore';
         }
       });
     },
     //获取分类列表
-    getCates: function getCates() {var _this2 = this;
+    getCates: function getCates() {var _this3 = this;
       this.$api.get('/api/static/dictList', {
         params: {
           type: 4 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
         } }).
       then(function (res) {
         console.log(res.data);
-        _this2.classList = res.data;
+        _this3.classList = res.data;
       });
     },
     swiperChange: function swiperChange(e) {

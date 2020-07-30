@@ -5,6 +5,7 @@
 	export default {
 		globalData:{
 			activeData:{},
+			oldActiveData:{},//往期活动
 			addressData:{
 				lat:'',
 				lng:'',

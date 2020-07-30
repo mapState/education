@@ -33,7 +33,7 @@
 				</view>
 				<view class="tab">
 					<image src="../../static/icon/integral2.png" mode="aspectFit" class="icon2"></image>
-					<text class="">积分明细</text>
+					<text class="">积分兑换</text>
 				</view>
 			</view>
 		</view>
@@ -42,13 +42,14 @@
 			<text>消费1元获得1积分，消费越多积分越多</text>
 		</view>
 		<view class="list">
-			<view class="item" v-for="item in 10" :key="item">
+			<view class="item" v-for="item in list" :key="item">
 				<view class="detail">
 					<text class="t1">参加活动</text>
 					<text class="t2">2020-03-12 13:13</text>
 				</view>
 				<text class="num">+200</text>
 			</view>
+			<uni-load-more :status="loadStatus"></uni-load-more>
 		</view>
 	</view>
 </template>
@@ -57,16 +58,44 @@
 	export default {
 		data() {
 			return {
-				top: 24
+				top: 24,
+				pageSize:10,
+				pageNo:1,
+				loadStatus:'noMore',
+				list:[]
 			};
 		},
 		onLoad() {
 			this.top = uni.getMenuButtonBoundingClientRect().top
+			this.getList()
+		},
+		onReachBottom() {
+			this.getList()
 		},
 		methods: {
 			goBack() {
 				uni.navigateBack({
 					delta: 1
+				})
+			},
+			getList(){
+				this.$api.get('/api/bill/getPoints',{
+					params:{
+						pageNo:this.pageNo,
+						pageSize:this.pageSize
+					}
+				}).then((res)=>{
+					if(res.data.length>0){
+						ths.list=this.list.concat(res.data)
+						this.pageNo++
+						if(res.data.length==this.pageSize){
+							this.loadStatus="more"
+						}else{
+							this.loadStatus="noMore"
+						}
+					}else{
+						this.loadStatus="noMore"
+					}
 				})
 			}
 		}

@@ -534,7 +534,7 @@ __webpack_require__.r(__webpack_exports__);
       tagList: [],
       giveList: [], //赠送福利
       oldEve: [],
-      buyStatus: false };
+      buyStatus: 0 };
 
   },
   filters: {
@@ -549,10 +549,10 @@ __webpack_require__.r(__webpack_exports__);
     this.imgUrl = this.$baseUrl;
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.detailData = getApp().globalData.activeData;
-    this.buyStatus = params.buyStatus ? true : false;
+    this.buyStatus = params.buyStatus ? 1 : 0;
     this.getLaveTime();
     this.getCates();
-    //this.getGiveCourse()//赠送的课程
+    this.getGiveCourse(); //赠送的课程
     this.getOldEve(); //往期评价
   },
   onShareAppMessage: function onShareAppMessage(res) {
@@ -565,6 +565,20 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
+    //1开团 2单独购买 3参团
+    //单独购买
+    aloneBuy: function aloneBuy() {
+      uni.navigateTo({
+        url: "/pages/joinDetail/joinDetail?type=2" });
+
+    },
+    getPhone: function getPhone() {
+      if (this.detailData.organizerPhone) {
+        uni.makePhoneCall({
+          phoneNumber: this.detailData.organizerPhone });
+
+      }
+    },
     downFile: function downFile() {
       uni.downloadFile({
         url: this.imgUrl + this.detailData.filepath,
@@ -601,17 +615,19 @@ __webpack_require__.r(__webpack_exports__);
         _this2.oldEve = res.data;
       });
     },
-    // getGiveCourse(){
-    // 	this.$api.get('/api/act/getLessonByActivityId',{
-    // 		params:{
-    // 			activityId:this.detailData.id
-    // 		}
-    // 	}).then((res)=>{
-    // 		this.giveList=res.data
-    // 	})
-    // },
+    getGiveCourse: function getGiveCourse() {var _this3 = this;
+      this.$api.get('/api/act/getLessonByActivityId', {
+        params: {
+          activityId: this.detailData.id } }).
+
+      then(function (res) {
+        if (res.data.length > 0) {
+          _this3.giveList = res.data;
+        }
+      });
+    },
     //获取分类列表
-    getCates: function getCates() {var _this3 = this;
+    getCates: function getCates() {var _this4 = this;
       this.$api.get('/api/static/dictList', {
         params: {
           type: 1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
@@ -623,7 +639,7 @@ __webpack_require__.r(__webpack_exports__);
         var pid = '';
         var tagList = [];
         res.data.forEach(function (item) {
-          if (item.id == _this3.detailData.typeId) {
+          if (item.id == _this4.detailData.typeId) {
             tagList.push(item.name);
             pid = item.pid;
           }
@@ -632,7 +648,7 @@ __webpack_require__.r(__webpack_exports__);
         res.data.forEach(function (item) {
           if (item.id == pid) {
             tagList.push(item.name);
-            _this3.tagList = tagList;
+            _this4.tagList = tagList;
           }
         });
       });
@@ -669,7 +685,7 @@ __webpack_require__.r(__webpack_exports__);
       this.toIndex = val;
       this.currentLetter = val;
     },
-    scrollHandle: function scrollHandle(e) {var _this4 = this;
+    scrollHandle: function scrollHandle(e) {var _this5 = this;
       var scrollTop = e.detail.scrollTop;
       this.scrollTop = scrollTop;
       //console.log(scrollTop)
@@ -679,15 +695,15 @@ __webpack_require__.r(__webpack_exports__);
         d.forEach(function (item) {
           item.top = item.top - top;
           item.bottom = item.bottom - top;
-          _this4.letterDetails.push({
+          _this5.letterDetails.push({
             id: item.id,
             top: item.top,
             bottom: item.bottom });
 
         });
-        _this4.letterDetails.some(function (item) {
+        _this5.letterDetails.some(function (item) {
           if (scrollTop - 180 >= item.top && scrollTop - 180 <= item.bottom - 20) {
-            _this4.currentLetter = item.id;
+            _this5.currentLetter = item.id;
             //console.log(this.currentLetter)
             //当前固定用的是粘性定位，如果不用粘性定位，在这里设置
             return true;
@@ -704,10 +720,10 @@ __webpack_require__.r(__webpack_exports__);
     showGroupPop: function showGroupPop() {
       this.$refs.popup.open();
     },
-    OpenGroup: function OpenGroup() {var _this5 = this;
+    OpenGroup: function OpenGroup() {var _this6 = this;
       //this.kTeam()
       this.$api.get('/api/user/getUserInfo').then(function (res) {
-        _this5.$refs.popup.close();
+        _this6.$refs.popup.close();
         if (true) {
           //开团 填写信息 type 1开团 2单独购买 3参团
           uni.navigateTo({
@@ -716,7 +732,8 @@ __webpack_require__.r(__webpack_exports__);
         } else {}
       });
     },
-    viewAll: function viewAll() {
+    viewAll: function viewAll(data) {
+      getApp().globalData.oldActiveData = data;
       uni.navigateTo({
         url: "/pages/comment/comment" });
 
@@ -725,7 +742,7 @@ __webpack_require__.r(__webpack_exports__);
     closePoser: function closePoser() {
       this.$refs.poster.close();
     },
-    getPoster: function getPoster() {var _this6 = this;
+    getPoster: function getPoster() {var _this7 = this;
       this.$refs.sharePop.close();
       uni.showLoading({
         title: '海报生成中...',
@@ -740,9 +757,9 @@ __webpack_require__.r(__webpack_exports__);
         src: this.poserImg,
         success: function success(res) {
           context.fillStyle = "#FFFFFF";
-          context.fillRect(0, 0, _this6.width, _this6.height);
+          context.fillRect(0, 0, _this7.width, _this7.height);
           // context.drawImage(this.bgPath, 0, 0, this.width, this.height);
-          context.drawImage(res.path, 0, 0, _this6.width, 530);
+          context.drawImage(res.path, 0, 0, _this7.width, 530);
           context.setFontSize(28);
           context.setFillStyle('#000000');
           context.setTextAlign('center');
@@ -750,7 +767,7 @@ __webpack_require__.r(__webpack_exports__);
           if (text.length > 20) {
             text = text.substr(0, 20) + '...';
           }
-          context.fillText(text, _this6.width / 2, 600);
+          context.fillText(text, _this7.width / 2, 600);
           var tip = '长按识别，立即参加';
           context.setFontSize(28);
           context.fillText(tip, 320, 760);
@@ -773,7 +790,7 @@ __webpack_require__.r(__webpack_exports__);
             success: function success(res1) {
               context.drawImage(that.codePath, 33, 650, 132, 132);
               wx.getImageInfo({
-                src: _this6.poserImg,
+                src: _this7.poserImg,
                 success: function success(avatar) {
                   console.log(avatar);
                   var avatarurl_width = 62; //绘制的头像宽度
@@ -791,16 +808,16 @@ __webpack_require__.r(__webpack_exports__);
                       canvasId: 'myCanvas',
                       x: 0, //指定的画布区域的左上角横坐标	
                       y: 0, //指定的画布区域的左上角纵坐标	
-                      width: _this6.width, //指定的画布区域的宽度
-                      height: _this6.height, //指定的画布区域的高度
-                      destWidth: _this6.width, //输出的图片的宽度 
-                      destHeight: _this6.height, //输出的图片的高度
+                      width: _this7.width, //指定的画布区域的宽度
+                      height: _this7.height, //指定的画布区域的高度
+                      destWidth: _this7.width, //输出的图片的宽度 
+                      destHeight: _this7.height, //输出的图片的高度
                       success: function success(res) {
                         var tempFilePath = res.tempFilePath;
-                        _this6.tmpImg = tempFilePath;
+                        _this7.tmpImg = tempFilePath;
                         console.log(tempFilePath);
                         uni.hideLoading();
-                        _this6.$refs.poster.open();
+                        _this7.$refs.poster.open();
                       },
                       fail: function fail(res) {
                         console.log(res);

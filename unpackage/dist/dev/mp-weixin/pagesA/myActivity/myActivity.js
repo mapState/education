@@ -187,6 +187,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 var _default =
 {
   data: function data() {
@@ -205,6 +206,9 @@ var _default =
     this.userId = uni.getStorageSync("userInfo").id;
     this.getCates();
   },
+  onShow: function onShow() {
+
+  },
   onReachBottom: function onReachBottom() {
     this.getList();
   },
@@ -221,18 +225,34 @@ var _default =
     } },
 
   methods: {
+    clickLike: function clickLike(index, item) {var _this = this;
+      this.$api.post('/api/user/like', {
+        tableId: item.id,
+        type: 1,
+        userId: uni.getStorageSync('userInfo').id }).
+      then(function (res) {
+        if (res.data.state == 1) {
+          item.isLike = 1;
+          item.likeCount++;
+        } else {
+          item.isLike = 0;
+          item.likeCount--;
+        }
+        _this.$set(_this.list, index, item);
+      });
+    },
     //获取分类列表
-    getCates: function getCates() {var _this = this;
+    getCates: function getCates() {var _this2 = this;
       this.$api.get('/api/static/dictList', {
         params: {
           type: 4 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
         } }).
       then(function (res) {
-        _this.classList = res.data;
-        _this.getList();
+        _this2.classList = res.data;
+        _this2.getList();
       });
     },
-    getList: function getList() {var _this2 = this;
+    getList: function getList() {var _this3 = this;
       this.loadStatus = "loading";
       this.$api.get('/api/club/getMomentByMyself', {
         params: {
@@ -250,21 +270,21 @@ var _default =
             } else {
               item.imgList = [];
             }
-            _this2.classList.forEach(function (cls) {
+            _this3.classList.forEach(function (cls) {
               if (item.dictId == cls.id) {
                 item.tag = cls.name;
               }
             });
           });
-          _this2.list = _this2.list.concat(res.data);
-          _this2.pageNo++;
-          if (res.data.length == _this2.pageSize) {
-            _this2.loadStatus = "more";
+          _this3.list = _this3.list.concat(res.data);
+          _this3.pageNo++;
+          if (res.data.length == _this3.pageSize) {
+            _this3.loadStatus = "more";
           } else {
-            tihs.loadStatus = "noMore";
+            _this3.loadStatus = "noMore";
           }
         } else {
-          tihs.loadStatus = "noMore";
+          _this3.loadStatus = "noMore";
         }
       }).catch(function (err) {
         if (err.code == 10903) {
@@ -275,9 +295,16 @@ var _default =
         }
       });
     },
-    previewImage: function previewImage() {
+    previewImage: function previewImage(data) {var _this4 = this;
+      var arry = [];
+      if (data.length > 0) {
+        data.forEach(function (d) {
+          var t = _this4.imgUrl + d;
+          arry.push(t);
+        });
+      }
       uni.previewImage({
-        urls: this.imgList });
+        urls: arry });
 
     },
     goDetail: function goDetail() {

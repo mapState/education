@@ -21,7 +21,7 @@
 			{{detail.content}}
 		</view>
 		<view class="imgs" @click.stop="previewImage">
-			<image src="https://hbimg.huabanimg.com/08e3ee716b1c1335c8bbf6940074384d59f354fd72516-yrddEo_fw658/format/webp" mode="aspectFill" v-for="item in imgList" :key="item"></image>
+			<image :src="imgUrl+item" mode="aspectFill" v-for="(item,index) in imgList" :key="index"></image>
 		</view>
 		<view class="operating">
 			<view class="left">
@@ -69,9 +69,6 @@
 				let arry=[]
 				if(this.detail.resUrl){
 					arry=this.detail.resUrl.split(',')
-					arry.forEach((item)=>{
-						item=this.imgUrl+item
-					})
 				}
 				return arry
 			}
@@ -111,8 +108,13 @@
 				})
 			},
 			previewImage() {
+				let arry=[]
+				this.imgList.forEach((item)=>{
+					let s =this.imgUrl+item
+					arry.push(s)
+				})
 				uni.previewImage({
-					urls: this.imgList
+					urls: arry
 				});
 			},
 			goDetail(){

@@ -9,7 +9,7 @@
 				</view>
 			</view>
 			<view class="price">
-				￥<text class="num">{{detail.price}}</text> <text class="t1">已购{{detail.buyCount}}</text>
+				￥<text class="num">{{detail.price/100}}</text> <text class="t1">已购{{detail.buyCount}}</text>
 				<view class="btn">
 					去订购
 				</view>
@@ -55,7 +55,7 @@
 					}
 				}).then((res) => {
 					//this.swiperList=res.data
-					console.log(111111)
+					//console.log(111111)
 					console.log(res.data)
 					//this.classList=res.data
 					let pid=''
@@ -66,7 +66,7 @@
 							pid=item.pid
 						}
 					})
-					console.log(tagList)
+					//console.log(tagList)
 					res.data.forEach((item)=>{
 						if(item.id==pid){
 							tagList.push(item.name)

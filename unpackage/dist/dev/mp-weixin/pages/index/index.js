@@ -235,7 +235,7 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
       pageSize: 5,
       loadStatus1: 'noMore',
       loadStatus2: 'noMore',
-      loginStatus: false,
+      loginStatus: 1,
       addressData: {},
       top: 30,
       height: 32,
@@ -243,10 +243,7 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
       currentIndex: 0,
       titleIndex: 0,
       showAddTip: false,
-      swiperList: ['https://hbimg.huabanimg.com/fafd309bf78db3cc72d851453501cfc74eb45ef150c23-xr5gos_fw658/format/webp',
-      'https://hbimg.huabanimg.com/5532df46d645484f3009553eef71931fbfb056d86bc71-qB3y3k_fw658/format/webp',
-      'https://hbimg.huabanimg.com/3a3b1760646c6ef34213e43874422267d7bd86102cbf6-nKqPxr_fw658/format/webp'],
-
+      swiperList: [],
       jw: {} //经纬度
     };
   },
@@ -259,6 +256,8 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
     this.getAdvertList();
   },
   onShow: function onShow() {var _this = this;
+    var token = uni.getStorageSync('token');
+    this.loginStatus = token ? 1 : 0;
     this.titleIndex = 0;
     this.newActiveList = [];
     this.loadStatus1 = 'noMore';
@@ -289,6 +288,11 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
     }
   },
   methods: {
+    goMine: function goMine() {
+      uni.reLaunch({
+        url: '/pages/mine/mine' });
+
+    },
     //点击轮播跳转
     linkPage: function linkPage(e) {
       if (e.linkType == 1) {//1活动 2课程 3链接
@@ -315,7 +319,13 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
       then(function (res) {
         //this.swiperList=res.data
         console.log(res.data);
-        _this3.classList = res.data;
+        var classList = [];
+        res.data.forEach(function (item) {
+          if (item.pid == 0) {
+            classList.push(item);
+          }
+        });
+        _this3.classList = classList;
         _this3.getActivityList1(); //热门
       });
     },
@@ -401,7 +411,7 @@ var qqmapsdk;var Activity = function Activity() {__webpack_require__.e(/*! requi
     },
     goEventsList: function goEventsList(index) {
       uni.navigateTo({
-        url: "/pages/eventsList/eventsList?fIndex=" + index });
+        url: "/pages/eventsList/eventsList?oneIndex=" + index });
 
     },
     goDetail: function goDetail(data) {

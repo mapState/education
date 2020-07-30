@@ -237,6 +237,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.tabIndex == index) {
         return;
       }
+      this.tabIndex = index;
       this.levelId = index + 3;
       this.courseList = [];
       this.pageNo = 1;
@@ -276,9 +277,9 @@ __webpack_require__.r(__webpack_exports__);
     cancal: function cancal() {
       this.$refs.tipPop.close();
     },
-    goTest: function goTest() {
+    goTest: function goTest(levelId) {
       uni.navigateTo({
-        url: "/pagesA/test/test" });
+        url: "/pagesA/test/test?levelId=" + levelId });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

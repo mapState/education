@@ -126,4 +126,150 @@
   font-weight: 400;
   color: black;
 }
+.detailBox image {
+  width: 750rpx;
+  height: 378rpx;
+}
+.grouplist {
+  width: 100%;
+  height: 397rpx;
+  background-color: #fff;
+}
+.grouplist .title {
+  width: 100%;
+  height: 104rpx;
+  line-height: 104rpx;
+  padding-left: 30rpx;
+  font-size: 34rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: black;
+  border-bottom: 1px solid #ddd;
+}
+.grouplist .list {
+  position: relative;
+  width: 100%;
+  height: 178rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ddd;
+}
+.grouplist .list .btn {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  right: 30rpx;
+  width: 110rpx;
+  height: 46rpx;
+  background: #fdd30f;
+  border-radius: 23rpx;
+  text-align: center;
+  line-height: 46rpx;
+  font-size: 26rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: black;
+}
+.grouplist .list .item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-right: 30rpx;
+}
+.grouplist .list .item image {
+  width: 60rpx;
+  height: 60rpx;
+  margin-bottom: 12rpx;
+  border-radius: 50%;
+}
+.grouplist .list .item text {
+  font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: black;
+}
+.grouplist .list .wz {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.grouplist .list .wz image {
+  width: 60rpx;
+  height: 60rpx;
+  margin-bottom: 12rpx;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+}
+.grouplist .list .wz text {
+  font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #666666;
+}
+.posterBox {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 570rpx;
+}
+.posterBox::after {
+  content: '';
+  position: absolute;
+  width: 2rpx;
+  height: 28rpx;
+  background: white;
+  right: 50rpx;
+  top: -28rpx;
+}
+.posterBox .posterImg {
+  width: 570rpx;
+  height: 820rpx;
+}
+.posterBox .posterTip {
+  display: block;
+  width: 570rpx;
+  height: 96rpx;
+  background: #fdd30f;
+  text-align: center;
+  line-height: 96rpx;
+  font-size: 32rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+}
+.posterBox .closeIcon {
+  position: absolute;
+  top: -75rpx;
+  right: 29rpx;
+  width: 47rpx;
+  height: 47rpx;
+}
 

@@ -37,7 +37,7 @@
 							￥<text class="t1">{{detail.price}}</text>
 						</view>
 						<view class="buy">
-							已购102458
+							已购{{detail.buyCount}}
 						</view>
 					</view>
 				</view>
@@ -218,7 +218,7 @@
 			this.detail = getApp().globalData.courseData
 			this.getCates()
 			this.getCommentList()
-			this.getStudyContent()
+			this.getStudyContent()//课程包含
 			if (params.type) {
 				this.type = params.type
 			}

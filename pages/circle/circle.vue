@@ -11,13 +11,12 @@
 		<view class="swiper-box">
 			<view class="swiperBox">
 				<swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" @change="swiperChange">
-					<swiper-item v-for="item in 3" :key="item">
-						<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593333346662&di=d4cceef20cedcd44a9c1105a107a1803&imgtype=0&src=http%3A%2F%2Ft8.baidu.com%2Fit%2Fu%3D1484500186%2C1503043093%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D853"
-						 mode="aspectFill" class="itemImg"></image>
+					<swiper-item v-for="(item,index) in swiperList" :key="index" @click="linkPage(item)">
+						<image :src="imgUrl+item.imageUrl" mode="aspectFill" class="itemImg"></image>
 					</swiper-item>
 				</swiper>
-				<view class="dots">
-					<view class="dot" v-for="item in 3" :key="item" :class="{'dotActive':item==currentIndex}">
+				<view class="dots" v-if="swiperList.length>0">
+					<view class="dot" v-for="item in swiperList.length" :key="item" :class="{'dotActive':item==currentIndex}">
 
 					</view>
 				</view>
@@ -31,7 +30,7 @@
 				</view>
 			</scroll-view>
 		</view>
-		<circle-item v-for="item in list" :key="item.id" :detail="item"></circle-item>
+		<circle-item v-for="(item,index) in list" :key="index" :detail="item"></circle-item>
 		<uni-load-more :status="loadStatus"></uni-load-more>
 		<TabBar :tabIndex="3"></TabBar>
 	</view>
@@ -57,12 +56,16 @@
 				classList:[],
 				classIndex:0,
 				list:[],
-				loadStatus:'noMore'
+				loadStatus:'noMore',
+				swiperList:[],
+				imgUrl:''
 			};
 		},
 		onLoad() {
+			this.imgUrl=this.$baseUrl
 			this.top = uni.getMenuButtonBoundingClientRect().top
 			this.getCates()
+			this.getAdvertList()
 		},
 		onShow() {
 			this.pageNo=1
@@ -73,6 +76,23 @@
 			this.getCircleList()
 		},
 		methods: {
+			//点击轮播跳转
+			linkPage(e){
+				if(e.linkType==1){//1活动 2课程 3链接
+					console.log(e.linkUrl)
+				}
+			},
+			//轮播
+			getAdvertList() {
+				this.$api.get('/api/static/advertList', {
+					params: {
+						type: 2  //	类型 1首页 2圈子 3课程
+					}
+				}).then((res) => {
+					this.swiperList=res.data
+					//console.log(res.data)
+				})
+			},
 			goCourseList(index){
 				// if(index==this.classIndex){
 				// 	return

@@ -188,14 +188,85 @@ __webpack_require__.r(__webpack_exports__);
     CourseItem: CourseItem },
 
   data: function data() {
-    return {};
-
+    return {
+      imgUrl: '',
+      detail: {},
+      recomedList: [] };
 
   },
+  onLoad: function onLoad() {
+    this.imgUrl = this.$baseUrl;
+    this.detail = getApp().globalData.courseData;
+    this.getStudyContent();
+  },
   methods: {
+    getStudyContent: function getStudyContent() {var _this = this;
+      this.$api.get('/api/lesson/getBookListByLessonId', {
+        params: {
+          lessonId: this.detail.id,
+          type: 1 } }).
+
+      then(function (res) {
+        _this.recomedList = res.data;
+      });
+    },
     goSuccess: function goSuccess() {
-      uni.navigateTo({
-        url: "/pages/courseBuySuccess/courseBuySuccess" });
+      this.wxPay();
+    },
+    wxPay: function wxPay() {var _this2 = this;
+      uni.showLoading({
+        title: '加载中',
+        mask: true });
+
+      wx.login({
+        success: function success(res) {
+          if (res.code) {
+            _this2.$api.post('/api/order/wxPay', {
+              tableId: _this2.detail.id,
+              userId: uni.getStorageSync('userInfo').id,
+              payType: 1,
+              prayer_id: uni.getStorageSync('paryData').id,
+              orderType: 4 //类型 1单独购买活动 2活动开团 3活动参团 4课程 5经验
+            }).then(function (s) {
+              var info = s.data;
+              wx.requestPayment({
+                'appId': info.appid,
+                'timeStamp': info.timestamp,
+                'nonceStr': info.noncestr,
+                'package': info.package,
+                'signType': 'MD5',
+                'paySign': info.sign,
+                success: function success(res2) {
+                  getApp().globalData.courseData.buyCount++;
+                  uni.showToast({
+                    title: "支付成功",
+                    duration: 900 });
+
+                  setTimeout(function () {
+                    uni.redirectTo({
+                      url: "/pages/courseBuySuccess/courseBuySuccess" });
+
+                  }, 1500);
+                },
+                fail: function fail(err1) {
+                  console.log(err1);
+                  console.log("支付失败");
+                  uni.showToast({
+                    title: '支付失败',
+                    icon: 'none',
+                    duration: 1200 });
+
+                },
+                complete: function complete(err2) {
+                  uni.hideLoading();
+                } });
+
+            });
+
+          } else {
+            console.log('登录失败！' + res.errMsg);
+          }
+        } });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

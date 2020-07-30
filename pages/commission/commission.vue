@@ -6,7 +6,7 @@
 		</view>
 		<view class="header">
 			<view class="t1">当前佣金
-				<text class="team">我的团队></text>
+				<text class="team" @click="goMyTeam">我的团队></text>
 			</view>
 			<text class="t2">￥50.00</text>
 			<text class="line"></text>
@@ -91,6 +91,11 @@
 			goIntroduction(){
 				uni.navigateTo({
 					url:"/pages/withdraw/Introduction/Introduction"
+				})
+			},
+			goMyTeam(){
+				uni.navigateTo({
+					url:"/pagesA/mytTeam/mytTeam"
 				})
 			}
 		}

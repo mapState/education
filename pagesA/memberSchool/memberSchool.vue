@@ -1,16 +1,16 @@
 <template>
 	<view class="main">
-		<view class="scroll-header" @click="goTest">
+		<view class="scroll-header">
 			<scroll-view class="scroll-view_H" scroll-x="true">
-				<view class="item">
+				<view class="item" @click="goTest(3)">
 						<image src="../static/img/test1.png" mode="aspectFill"></image>
 						<text>阅读推广师考试</text>
 				</view>
-				<view class="item">
+				<view class="item" @click="goTest(4)">
 						<image src="../static/img/test2.png" mode="aspectFill"></image>
 						<text>营长考试</text>
 				</view>
-				<view class="item">
+				<view class="item" @click="goTest(5)">
 						<image src="../static/img/test3.png" mode="aspectFill"></image>
 						<text>总营长考试</text>
 				</view>
@@ -98,6 +98,7 @@
 				if(this.tabIndex==index){
 					return
 				}
+				this.tabIndex=index
 				this.levelId=index+3
 				this.courseList=[]
 				this.pageNo=1
@@ -137,9 +138,9 @@
 			cancal(){
 				this.$refs.tipPop.close()
 			},
-			goTest(){
+			goTest(levelId){
 				uni.navigateTo({
-					url:"/pagesA/test/test"
+					url:"/pagesA/test/test?levelId="+levelId
 				})
 			}
 		}

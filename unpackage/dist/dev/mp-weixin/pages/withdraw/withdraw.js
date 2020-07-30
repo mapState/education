@@ -97,6 +97,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  if (!_vm._isMounted) {
+    _vm.e0 = function($event) {
+      _vm.money = _vm.useMoney
+    }
+  }
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -130,7 +135,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
 //
 //
 //
@@ -157,11 +162,23 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var _default =
 {
   data: function data() {
-    return {};
-
+    return {
+      money: '',
+      useMoney: 222 };
 
   },
-  methods: {} };exports.default = _default;
+  methods: {
+    tx: function tx() {
+      this.$api.post('/api/user/cashOut', {
+        money: this.money,
+        state: 0, //0发起 1通过 2拒绝
+        status: 1,
+        userId: uni.getStorageSync('userInfo').id }).
+      then(function (res) {
+
+      });
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

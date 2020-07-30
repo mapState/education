@@ -20,7 +20,7 @@
 			</view>
 			<view class="row btnBox">
 				<view class="price">
-					￥<text class="t">{{detail.groupPrice}}</text><text class="tt">￥{{detail.personalPrice}}</text>
+					￥<text class="t">{{detail.groupPrice/100}}</text><text class="tt">￥{{detail.personalPrice/100}}</text>
 				</view>
 				<view class="btn2" v-if="detail.state==1">
 					未开始
@@ -82,7 +82,7 @@
 					}
 				}).then((res) => {
 					//this.swiperList=res.data
-					console.log(res.data)
+					//console.log(res.data)
 					//this.classList=res.data
 					let pid=''
 					let tagList=[]
@@ -92,12 +92,12 @@
 							pid=item.pid
 						}
 					})
-					console.log(tagList)
-					res.data.forEach((item)=>{
-						if(item.id==pid){
-							tagList.push(item.name)
-						}
-					})
+					//console.log(tagList)
+					// res.data.forEach((item)=>{
+					// 	if(item.id==pid){
+					// 		tagList.push(item.name)
+					// 	}
+					// })
 					this.tagList=tagList
 				})
 			},

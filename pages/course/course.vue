@@ -9,13 +9,12 @@
 		<view class="swiper-box">
 			<view class="swiperBox">
 				<swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" @change="swiperChange">
-					<swiper-item v-for="item in 3" :key="item">
-						<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593333346662&di=d4cceef20cedcd44a9c1105a107a1803&imgtype=0&src=http%3A%2F%2Ft8.baidu.com%2Fit%2Fu%3D1484500186%2C1503043093%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D853"
-						 mode="aspectFill" class="itemImg"></image>
+					<swiper-item v-for="(item,index) in swiperList" :key="index" @click="linkPage(item)">
+						<image :src="imgUrl+item.imageUrl" mode="aspectFill" class="itemImg"></image>
 					</swiper-item>
 				</swiper>
-				<view class="dots">
-					<view class="dot" v-for="item in 3" :key="item" :class="{'dotActive':item==currentIndex}">
+				<view class="dots" v-if="swiperList.length>0">
+					<view class="dot" v-for="item in swiperList.length" :key="item" :class="{'dotActive':item==currentIndex}">
 					</view>
 				</view>
 			</view>
@@ -46,7 +45,7 @@
 					{{cates.name}}
 				</view>
 			</view>
-			<view class="more">
+			<view class="more" @click="goMore">
 				<text>更多</text>
 				<image src="../../static/icon/right2.png" mode="aspectFit"></image>
 			</view>
@@ -81,14 +80,14 @@
 				classList:[],
 				courseList:[],
 				cates:{},
-				imgUrl:''
+				imgUrl:'',
+				swiperList:[]
 			};
 		},
 		onLoad() {
 			this.top = uni.getMenuButtonBoundingClientRect().top
 			this.height=uni.getMenuButtonBoundingClientRect().height
 			this.imgUrl=this.$baseUrl
-			console.log(this.height)
 			this.getAdvertList()
 			
 		},
@@ -101,6 +100,28 @@
 			this.getCourseList()
 		},
 		methods: {
+			//点击轮播跳转
+			linkPage(e){
+				if(e.linkType==1){//1活动 2课程 3链接
+					console.log(e.linkUrl)
+				}
+			},
+			//轮播
+			getAdvertList() {
+				this.$api.get('/api/static/advertList', {
+					params: {
+						type:3  //	类型 1首页 2圈子 3课程
+					}
+				}).then((res) => {
+					this.swiperList=res.data
+					//console.log(res.data)
+				})
+			},
+			goMore(){
+				uni.navigateTo({
+					url:"/pages/courseList/courseList"
+				})
+			},
 			changeCates(data){
 				this.cates=data
 				this.pageNo=1
@@ -117,9 +138,15 @@
 						type:2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
 					}
 				}).then((res) => {
-					console.log(res.data)
-					this.classList=res.data
-					if(this.classList.length>0){
+					//console.log(res.data)
+					let classList=[]
+					if(res.data.length>0){
+						res.data.forEach((item)=>{
+							if(item.pid==0){
+								classList.push(item)
+							}
+						})
+						this.classList=classList //一级分类
 						if(this.classList[0].dictVoList.length>0){
 							this.cates=this.classList[0].dictVoList[0]
 						}else{
@@ -160,17 +187,6 @@
 							 }
 				    }
 				});
-			},
-			//轮播
-			getAdvertList() {
-				this.$api.get('/api/static/advertList', {
-					params: {
-						type: 3
-					}
-				}).then((res) => {
-					//this.swiperList=res.data
-					console.log(res.data)
-				})
 			},
 			swiperChange(e) {
 				this.currentIndex = e.detail.current

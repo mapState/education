@@ -582,12 +582,13 @@ page{
 				display: inline-block;
 				flex-direction: column;
 				margin-right:42rpx ;
-				padding-top: 40rpx;
+				//padding-top: 40rpx;
 				image{
 					width:134rpx;
 					height:162rpx;
 					border-radius:2rpx;
 					margin-bottom: 20rpx;
+					box-shadow: 0 0 4rpx;
 				}
 				text{
 					display: block;
@@ -599,6 +600,7 @@ page{
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
+					padding-bottom: 10rpx;
 				}
 			}
 		}

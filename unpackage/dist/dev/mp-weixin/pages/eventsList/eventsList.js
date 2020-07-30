@@ -299,6 +299,13 @@ __webpack_require__.r(__webpack_exports__);
     this.getActivityList();
   },
   methods: {
+    goDetail: function goDetail(data) {
+      getApp().globalData.activeData = data;
+      console.log(getApp().globalData.activeData);
+      uni.navigateTo({
+        url: "/pages/activityDetails/activityDetails" });
+
+    },
     selTime: function selTime() {
       this.closeMask();
       this.sortByTime();
@@ -345,11 +352,15 @@ __webpack_require__.r(__webpack_exports__);
           type: 1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
         } }).
       then(function (res) {
-        console.log(res.data);
-        _this2.classList = res.data;
-        _this2.fClass = res.data.map(function (item) {
-          return item.name;
+        _this2.getActivityList();
+        var classList = [];
+        res.data.forEach(function (item) {
+          if (item.pid == 0) {
+            classList.push(item.name);
+            _this2.classList.push(item);
+          }
         });
+        _this2.fClass = classList;
       });
     },
     bindPickerChange: function bindPickerChange(e) {
@@ -526,9 +537,6 @@ __webpack_require__.r(__webpack_exports__);
       then(function (res) {
         //this.swiperList=res.data
         console.log(res.data);
-        res.data.forEach(function (item) {
-          item.poster = _this8.$baseUrl + item.poster;
-        });
         if (res.data.length > 0) {
           _this8.hotActiveList = _this8.hotActiveList.concat(res.data);
           _this8.pageNo++;
@@ -544,6 +552,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     changeType: function changeType(index) {
       if (index !== 1) {
+        if (this.filterType == index) {
+          this.showMask = false;
+          this.filterType = -1;
+          return;
+        }
         if (index == 3) {
           this.showDate1 = false;
           this.showDate2 = false;

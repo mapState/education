@@ -4,8 +4,8 @@
 			<view class="left">
 				<picker @change="bindPickerChange" :value="index" :range="fClass">
 					<text class="">{{fClass[fIndex]}}</text>
+					<image src="../../static/icon/down.png" mode="aspectFill"></image>
 				</picker>
-				<image src="../../static/icon/down.png" mode="aspectFill"></image>
 			</view>
 			<view class="inputBox" @click="goSearch">
 				<view class="plClass input">
@@ -30,7 +30,7 @@
 				<view class="tag" @click="changeTagIndex(0)" :class="{'tagActive':tagIndex==0}">
 					全部
 				</view>
-				<view class="tag" v-for="(item,i) in classList" :key="i" :class="{'tagActive':item.id==tagIndex}" @click="changeTagIndex(item.id)">
+				<view class="tag" v-for="(item,i) in classList[fIndex].dictVoList" :key="i" :class="{'tagActive':item.id==tagIndex}" @click="changeTagIndex(item.id)">
 					{{item.name}}
 				</view>
 			</view>
@@ -84,7 +84,7 @@
 		</view>
 		<view class="list">
 			<block v-for="item in hotActiveList" :key="item.id">
-				<Activity :type="item.id" :detail="item"></Activity>
+				<Activity :type="item.id" :detail="item" @click.native="goDetail(item)"></Activity>
 			</block>
 		</view>
 		<uni-load-more :status="loadStatus"></uni-load-more>
@@ -133,7 +133,7 @@
 				showMask: false,
 				pageNo: 1,
 				pageSize: 5,
-				hotActiveList: []
+				hotActiveList: [],
 			}
 		},
 		computed: {
@@ -163,6 +163,13 @@
 			this.getActivityList()
 		},
 		methods: {
+			goDetail(data) {
+				getApp().globalData.activeData=data
+				console.log(getApp().globalData.activeData)
+				uni.navigateTo({
+					url: "/pages/activityDetails/activityDetails"
+				})
+			},
 			selTime(){
 				this.closeMask()
 				this.sortByTime()
@@ -209,11 +216,15 @@
 						type:1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
 					}
 				}).then((res) => {
-					console.log(res.data)
-					this.classList=res.data
-					this.fClass=res.data.map((item)=>{
-						return item.name
+					this.getActivityList()
+					let classList=[]
+					res.data.forEach((item)=>{
+						if(item.pid==0){
+							classList.push(item.name)
+							this.classList.push(item)
+						}
 					})
+					this.fClass=classList
 				})
 			},
 			bindPickerChange(e) {
@@ -390,9 +401,6 @@
 				}).then((res) => {
 					//this.swiperList=res.data
 					console.log(res.data)
-					res.data.forEach((item) => {
-						item.poster = this.$baseUrl + item.poster
-					})
 					if (res.data.length > 0) {
 						this.hotActiveList = this.hotActiveList.concat(res.data)
 						this.pageNo++
@@ -408,6 +416,11 @@
 			},
 			changeType(index) {
 				if (index !== 1) {
+					if(this.filterType==index){
+						this.showMask = false
+						this.filterType=-1
+						return
+					}
 					if(index==3){
 						this.showDate1=false
 						this.showDate2=false

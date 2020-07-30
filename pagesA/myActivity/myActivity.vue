@@ -1,6 +1,6 @@
 <template>
 	<view class="main">
-		<view class="plItem" v-for="item in list" :key="item.id">
+		<view class="plItem" v-for="(item,index) in list" :key="item.id">
 			<view class="info">
 				<view class="left">
 					<image src="/static/1.jpg" mode="aspectFit" class="avatar"></image>
@@ -22,7 +22,7 @@
 				{{item.content}}
 			</view>
 			<view class="imgs" @click.stop="previewImage(item.imgList)">
-				<image :src="img" v-for="img in item.imgList" :key="item"></image>
+				<image :src="imgUrl+img" v-for="img in item.imgList" :key="item"></image>
 			</view>
 			<view class="operating">
 				<view class="left">
@@ -31,9 +31,10 @@
 					</view>
 				</view>
 				<view class="right">
-					<view class="item likeBox">
-						<image src="/static/icon/heart.png" mode="aspectFill" class="like"></image>
-						<text>{{item.likeCount}}</text>
+					<view class="item likeBox" @click="clickLike(index,item)">
+						<image src="/static/icon/liked.png" mode="aspectFit" class="like" v-if="item.isLike==1"></image>
+						<image src="/static/icon/heart.png" mode="aspectFit" class="like" v-else></image>
+						<text>{{item.likeCount||0}}</text>
 					</view>
 					<view class="item">
 						<image src="/static/icon/c-msg.png" mode="aspectFill" class="like"></image>
@@ -69,6 +70,9 @@
 			this.userId=uni.getStorageSync("userInfo").id
 			this.getCates()
 		},
+		onShow() {
+			
+		},
 		onReachBottom() {
 			this.getList()
 		},
@@ -85,6 +89,22 @@
 			}
 		},
 		methods: {
+			clickLike(index,item){
+				this.$api.post('/api/user/like',{
+					tableId:item.id,
+					type:1,
+					userId:uni.getStorageSync('userInfo').id
+				}).then((res)=>{
+					if(res.data.state==1){
+						item.isLike=1
+						item.likeCount++
+					}else{
+						item.isLike=0
+						item.likeCount--
+					}
+					this.$set(this.list,index,item)
+				})
+			},
 			//获取分类列表
 			getCates() {
 				this.$api.get('/api/static/dictList',{
@@ -125,10 +145,10 @@
 						if(res.data.length==this.pageSize){
 							this.loadStatus="more"
 						}else{
-							tihs.loadStatus="noMore"
+							this.loadStatus="noMore"
 						}
 					}else{
-						tihs.loadStatus="noMore"
+						this.loadStatus="noMore"
 					}
 				}).catch((err)=>{
 					if(err.code==10903){
@@ -139,9 +159,16 @@
 					}
 				})
 			},
-			previewImage() {
+			previewImage(data) {
+				let arry=[]
+				if(data.length>0){
+					data.forEach((d)=>{
+						let t=this.imgUrl+d
+						arry.push(t)
+					})
+				}
 				uni.previewImage({
-					urls: this.imgList
+					urls: arry
 				});
 			},
 			goDetail() {

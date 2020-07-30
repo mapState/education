@@ -362,7 +362,7 @@ __webpack_require__.r(__webpack_exports__);
     this.detail = getApp().globalData.courseData;
     this.getCates();
     this.getCommentList();
-    this.getStudyContent();
+    this.getStudyContent(); //课程包含
     if (params.type) {
       this.type = params.type;
     }
