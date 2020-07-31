@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _activityDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./activityDetails.vue?vue&type=script&lang=js& */ 56);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _activityDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _activityDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _activityDetails_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./activityDetails.vue?vue&type=style&index=0&lang=scss& */ 58);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
 
 var renderjs
 
@@ -117,10 +117,14 @@ var render = function() {
     }
 
     _vm.e2 = function($event) {
+      return _vm.$refs.showMyGroup.open()
+    }
+
+    _vm.e3 = function($event) {
       _vm.showAd = false
     }
 
-    _vm.e3 = _vm.$refs.popup1.close
+    _vm.e4 = _vm.$refs.popup1.close
   }
 
   _vm.$mp.data = Object.assign(
@@ -504,6 +508,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
 {
   components: {
     uniPopup: uniPopup,
@@ -549,11 +560,13 @@ __webpack_require__.r(__webpack_exports__);
     this.imgUrl = this.$baseUrl;
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.detailData = getApp().globalData.activeData;
-    this.buyStatus = params.buyStatus ? 1 : 0;
+    this.buyStatus = this.detailData.isBuy;
+    //this.buyStatus=params.buyStatus?1:0
     this.getLaveTime();
     this.getCates();
     this.getGiveCourse(); //赠送的课程
     this.getOldEve(); //往期评价
+    this.getTeamList();
   },
   onShareAppMessage: function onShareAppMessage(res) {
     if (res.from === 'button') {// 来自页面内分享按钮
@@ -565,6 +578,34 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
+    getTeamList: function getTeamList() {var _this = this;
+      this.$api.get('/api/team/myTeam', {
+        params: {
+          actId: this.detailData.id } }).
+
+      then(function (res) {
+        _this.teamData = res.data;
+      });
+    },
+    //退款
+    tk: function tk() {var _this2 = this;
+      if (this.buyStatus == 2) {
+        uni.showToast({
+          title: "退款中",
+          icon: 'none' });
+
+        return;
+      }
+      this.$api.post('/api/order/refund', {
+        id: this.detailData.orderId }).
+      then(function (res) {
+        _this2.detailData.buyStatus = 2;
+        uni.showToast({
+          title: res.message,
+          icon: 'none' });
+
+      });
+    },
     //1开团 2单独购买 3参团
     //单独购买
     aloneBuy: function aloneBuy() {
@@ -580,54 +621,62 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     downFile: function downFile() {
-      uni.downloadFile({
-        url: this.imgUrl + this.detailData.filepath,
-        success: function success(res) {
-          if (res.statusCode === 200) {
-            uni.showToast({
-              title: "下载成功" });
+      if (this.detailData.filepath) {
+        uni.downloadFile({
+          url: this.imgUrl + this.detailData.filepath,
+          success: function success(res) {
+            if (res.statusCode === 200) {
+              uni.showToast({
+                title: "下载成功" });
 
-          }
-        } });
+            }
+          } });
 
+      } else {
+        uni.showToast({
+          title: "附件地址不存在",
+          icon: 'none' });
+
+        return;
+      }
     },
     doCollect: function doCollect() {
       var status = this.detailData.isStore == 1 ? 0 : 1;
       this.collected(status);
     },
     //收藏
-    collected: function collected(status) {var _this = this;
+    collected: function collected(status) {var _this3 = this;
       this.$api.post('/api/user/store', {
         type: 1, //1活动 2课程
         status: status,
         tableId: this.detailData.id,
         userId: uni.getStorageSync('userInfo').id }).
       then(function (res) {
-        _this.detailData.isStore = status;
+        _this3.detailData.isStore = status;
       });
     },
-    getOldEve: function getOldEve() {var _this2 = this;
+    getOldEve: function getOldEve() {var _this4 = this;
       this.$api.get('/api/act/getCommentActivityId', {
         params: {
           activityId: this.detailData.id } }).
 
       then(function (res) {
-        _this2.oldEve = res.data;
+        _this4.oldEve = res.data;
       });
     },
-    getGiveCourse: function getGiveCourse() {var _this3 = this;
+    getGiveCourse: function getGiveCourse() {var _this5 = this;
       this.$api.get('/api/act/getLessonByActivityId', {
         params: {
           activityId: this.detailData.id } }).
 
       then(function (res) {
         if (res.data.length > 0) {
-          _this3.giveList = res.data;
+          _this5.giveList = res.data;
         }
       });
     },
     //获取分类列表
-    getCates: function getCates() {var _this4 = this;
+    getCates: function getCates() {var _this6 = this;
       this.$api.get('/api/static/dictList', {
         params: {
           type: 1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
@@ -639,7 +688,7 @@ __webpack_require__.r(__webpack_exports__);
         var pid = '';
         var tagList = [];
         res.data.forEach(function (item) {
-          if (item.id == _this4.detailData.typeId) {
+          if (item.id == _this6.detailData.typeId) {
             tagList.push(item.name);
             pid = item.pid;
           }
@@ -648,7 +697,7 @@ __webpack_require__.r(__webpack_exports__);
         res.data.forEach(function (item) {
           if (item.id == pid) {
             tagList.push(item.name);
-            _this4.tagList = tagList;
+            _this6.tagList = tagList;
           }
         });
       });
@@ -678,14 +727,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     goCommet: function goCommet() {
       uni.navigateTo({
-        url: "/pagesA/courseEvaluation/courseEvaluation" });
+        url: "/pagesA/courseEvaluation/courseEvaluation?type=1" });
 
     },
     toView: function toView(val) {
       this.toIndex = val;
       this.currentLetter = val;
     },
-    scrollHandle: function scrollHandle(e) {var _this5 = this;
+    scrollHandle: function scrollHandle(e) {var _this7 = this;
       var scrollTop = e.detail.scrollTop;
       this.scrollTop = scrollTop;
       //console.log(scrollTop)
@@ -695,15 +744,15 @@ __webpack_require__.r(__webpack_exports__);
         d.forEach(function (item) {
           item.top = item.top - top;
           item.bottom = item.bottom - top;
-          _this5.letterDetails.push({
+          _this7.letterDetails.push({
             id: item.id,
             top: item.top,
             bottom: item.bottom });
 
         });
-        _this5.letterDetails.some(function (item) {
+        _this7.letterDetails.some(function (item) {
           if (scrollTop - 180 >= item.top && scrollTop - 180 <= item.bottom - 20) {
-            _this5.currentLetter = item.id;
+            _this7.currentLetter = item.id;
             //console.log(this.currentLetter)
             //当前固定用的是粘性定位，如果不用粘性定位，在这里设置
             return true;
@@ -720,16 +769,18 @@ __webpack_require__.r(__webpack_exports__);
     showGroupPop: function showGroupPop() {
       this.$refs.popup.open();
     },
-    OpenGroup: function OpenGroup() {var _this6 = this;
+    OpenGroup: function OpenGroup() {var _this8 = this;
       //this.kTeam()
       this.$api.get('/api/user/getUserInfo').then(function (res) {
-        _this6.$refs.popup.close();
-        if (true) {
+        _this8.$refs.popup.close();
+        if (res.data.level >= 3) {
           //开团 填写信息 type 1开团 2单独购买 3参团
           uni.navigateTo({
             url: "/pages/joinDetail/joinDetail?type=1" });
 
-        } else {}
+        } else {
+          _this8.$refs.popup1.open();
+        }
       });
     },
     viewAll: function viewAll(data) {
@@ -742,7 +793,7 @@ __webpack_require__.r(__webpack_exports__);
     closePoser: function closePoser() {
       this.$refs.poster.close();
     },
-    getPoster: function getPoster() {var _this7 = this;
+    getPoster: function getPoster() {var _this9 = this;
       this.$refs.sharePop.close();
       uni.showLoading({
         title: '海报生成中...',
@@ -757,9 +808,9 @@ __webpack_require__.r(__webpack_exports__);
         src: this.poserImg,
         success: function success(res) {
           context.fillStyle = "#FFFFFF";
-          context.fillRect(0, 0, _this7.width, _this7.height);
+          context.fillRect(0, 0, _this9.width, _this9.height);
           // context.drawImage(this.bgPath, 0, 0, this.width, this.height);
-          context.drawImage(res.path, 0, 0, _this7.width, 530);
+          context.drawImage(res.path, 0, 0, _this9.width, 530);
           context.setFontSize(28);
           context.setFillStyle('#000000');
           context.setTextAlign('center');
@@ -767,7 +818,7 @@ __webpack_require__.r(__webpack_exports__);
           if (text.length > 20) {
             text = text.substr(0, 20) + '...';
           }
-          context.fillText(text, _this7.width / 2, 600);
+          context.fillText(text, _this9.width / 2, 600);
           var tip = '长按识别，立即参加';
           context.setFontSize(28);
           context.fillText(tip, 320, 760);
@@ -790,7 +841,7 @@ __webpack_require__.r(__webpack_exports__);
             success: function success(res1) {
               context.drawImage(that.codePath, 33, 650, 132, 132);
               wx.getImageInfo({
-                src: _this7.poserImg,
+                src: _this9.poserImg,
                 success: function success(avatar) {
                   console.log(avatar);
                   var avatarurl_width = 62; //绘制的头像宽度
@@ -798,7 +849,8 @@ __webpack_require__.r(__webpack_exports__);
                   var avatarurl_x = 200; //绘制的头像在画布上的位置
                   var avatarurl_y = 660; //绘制的头像在画布上的位置
                   context.beginPath(); //开始绘制
-                  context.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_heigth / 2 + avatarurl_y, avatarurl_width / 2, 0, Math.PI * 2, false);
+                  context.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_heigth / 2 + avatarurl_y, avatarurl_width /
+                  2, 0, Math.PI * 2, false);
                   context.clip();
                   context.drawImage(avatar.path, 200, 660, 62, 62);
                   context.save();
@@ -808,16 +860,16 @@ __webpack_require__.r(__webpack_exports__);
                       canvasId: 'myCanvas',
                       x: 0, //指定的画布区域的左上角横坐标	
                       y: 0, //指定的画布区域的左上角纵坐标	
-                      width: _this7.width, //指定的画布区域的宽度
-                      height: _this7.height, //指定的画布区域的高度
-                      destWidth: _this7.width, //输出的图片的宽度 
-                      destHeight: _this7.height, //输出的图片的高度
+                      width: _this9.width, //指定的画布区域的宽度
+                      height: _this9.height, //指定的画布区域的高度
+                      destWidth: _this9.width, //输出的图片的宽度 
+                      destHeight: _this9.height, //输出的图片的高度
                       success: function success(res) {
                         var tempFilePath = res.tempFilePath;
-                        _this7.tmpImg = tempFilePath;
+                        _this9.tmpImg = tempFilePath;
                         console.log(tempFilePath);
                         uni.hideLoading();
-                        _this7.$refs.poster.open();
+                        _this9.$refs.poster.open();
                       },
                       fail: function fail(res) {
                         console.log(res);

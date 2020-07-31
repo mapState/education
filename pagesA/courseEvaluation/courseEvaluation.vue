@@ -1,7 +1,8 @@
 <template>
 	<view class="main">
 		<view class="list">
-			<course-item :detail="detail"></course-item>
+			<Activity  :detail="detail" v-if="type==1"></Activity>
+			<course-item :detail="detail" v-else></course-item>
 		</view>
 		<view class="block">
 			
@@ -31,9 +32,11 @@
 
 <script>
 	import CourseItem from '@/components/CourseItem.vue';
+	import Activity from '@/components/Activity.vue';
 	export default {
 		components:{
-			CourseItem
+			CourseItem,
+			Activity
 		},
 		data() {
 			return {
@@ -41,11 +44,17 @@
 				detail:{},
 				content:'',
 				imgList:[],
-				tmpImgList:[]
+				tmpImgList:[],
+				type:2,//1活动评价 2课程评价
 			};
 		},
-		onLoad() {
-			this.detail=getApp().globalData.learnDetail
+		onLoad(params) {
+			if(params.type==1){//活动
+				this.type=1
+				this.detail=getApp().globalData.learnDetail
+			}else{
+				this.detail = getApp().globalData.activeData
+			}
 			this.imgUrl=this.$baseUrl
 		},
 		methods:{
@@ -78,8 +87,8 @@
 				let imgUrl=this.imgList.join()
 				this.$api.get('/api/comment/save',{
 					params:{
-						tableId:1,
-						type:2,
+						tableId:this.detail.id,
+						type:this.type,
 						content:this.content,
 						userId:uni.getStorageSync('userInfo').id,
 						imgUrl

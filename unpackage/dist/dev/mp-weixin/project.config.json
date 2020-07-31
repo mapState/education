@@ -34,6 +34,8 @@
 	"libVersion": "",
 	"appid": "wxf7720026d44ede6c",
 	"projectname": "testwx",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -43,15 +45,7 @@
 			"current": -1,
 			"list": []
 		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
 		"game": {
-			"current": -1,
-			"list": []
-		},
-		"gamePlugin": {
 			"current": -1,
 			"list": []
 		},
@@ -59,41 +53,24 @@
 			"current": 1,
 			"list": [
 				{
-					"id": 0,
 					"name": "position",
-					"pathName": "pages/position/position",
-					"query": ""
+					"id": 0,
+					"pathName": "pages/position/position"
 				},
 				{
-					"id": 1,
 					"name": "course",
-					"pathName": "pages/course/course",
-					"query": ""
+					"id": 1,
+					"pathName": "pages/course/course"
 				},
 				{
-					"id": 2,
 					"name": "courseDetails",
-					"pathName": "pages/courseDetails/courseDetails",
-					"query": ""
+					"id": 2,
+					"pathName": "pages/courseDetails/courseDetails"
 				},
 				{
-					"id": 3,
 					"name": "circleDetail",
-					"pathName": "pages/circleDetail/circleDetail",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "pages/commission/commission",
-					"pathName": "pages/commission/commission",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/courseList/courseList",
-					"pathName": "pages/courseList/courseList",
-					"scene": null
+					"id": 3,
+					"pathName": "pages/circleDetail/circleDetail"
 				}
 			]
 		}

@@ -6,7 +6,7 @@
 			</view>
 		</view>
 		<view class="list">
-			<block v-for="item in list" :key="item.id">
+			<block v-for="(item,index) in list" :key="index">
 				<Activity  @click.native="goPage(item)" :detail="item"></Activity>
 			</block>
 			<uni-load-more :status="loadStatus"></uni-load-more>
@@ -33,6 +33,9 @@
 		onLoad() {
 			this.getList()
 		},
+		onReachBottom() {
+			this.getList()
+		},
 		methods:{
 			getList(){
 				let state=''
@@ -50,7 +53,7 @@
 					params:{
 						pageNo:this.pageNo,
 						pageSize:this.pageSize,
-						state
+						status:state
 					}
 				}).then((res)=>{
 					if(res.data.length>0){
@@ -73,6 +76,7 @@
 				this.getList()
 			},
 			goPage(data){
+				data.isBuy=1
 				getApp().globalData.activeData=data
 				uni.navigateTo({
 					url:"/pages/activityDetails/activityDetails?buyStatus=1"

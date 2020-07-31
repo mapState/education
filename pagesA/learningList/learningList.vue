@@ -33,8 +33,8 @@
 		<view class="bookListTitle">
 			学习内容
 		</view>
-		<view class="bookList" @click="lookView">
-			<view class="item" v-for="(item,index) in books" :key="item.id">
+		<view class="bookList">
+			<view class="item" v-for="(item,index) in books" :key="item.id" @click="lookView(index)">
 				<image :src="imgUrl+item.poster" mode="aspectFill"></image>
 				<text>{{item.name}}</text>
 				<view class="firstClick" v-if="showMask&&index==0" @click="closeMask">
@@ -63,7 +63,7 @@
 				我要评价
 			</view>
 			<view class="buyBtn" @click="goStudy">
-				学习详情
+				课程详情
 			</view>
 		</view>
 		<view class="mask" v-if="showMask" @click="closeMask">
@@ -133,7 +133,7 @@
 			this.detail=getApp().globalData.learnDetail
 			this.bookList()
 			if(params.tagList){
-				this.tagList=params.tagList
+				this.tagList=JSON.parse(params.tagList)
 			}
 			uni.getStorage({
 			    key: 'notfirstStudy',
@@ -176,8 +176,10 @@
 					delta:1
 				})
 			},
-			lookView(){
-				
+			lookView(index){
+				uni.navigateTo({
+					url:"/pagesA/studyDetails/studyDetails?index="+index
+				})
 			},
 			goStudy(){
 				uni.navigateTo({

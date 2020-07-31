@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _studyDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./studyDetails.vue?vue&type=script&lang=js& */ 296);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _studyDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _studyDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _studyDetails_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./studyDetails.vue?vue&type=style&index=0&lang=scss& */ 298);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
 
 var renderjs
 
@@ -220,6 +220,62 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 440));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
@@ -229,26 +285,21 @@ var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_requi
 
   data: function data() {var _ref;
     return _ref = {
+      spUrl: 'https://smallwx.pkbkok.com/lesson/file/media/',
       showRecommend: false,
       tabIndex: 0,
       tabList: ['绘本图', '听音频', '阅读指导', '游戏介绍'],
-      currentIndex: 0,
-      imgList: ['https://hbimg.huabanimg.com/56f72932c7d3ad052b3de13a6bf9630207873c73bf8e3-8VztuL_fw658/format/webp',
-      'https://hbimg.huabanimg.com/34e18c2c70065b9cde1f5f031610bf1652a37c88b47a2-qP9HpD_fw658/format/webp',
-      'https://hbimg.huabanimg.com/f36b1e4adcf4a7ef21570aba62fbb887e737d8b4bcee7-v4LYHM_fw658/format/webp'] }, _defineProperty(_ref, "currentIndex",
+      currentIndex: 0 }, _defineProperty(_ref, "currentIndex",
 
-    0), _defineProperty(_ref, "songList",
-    [{
-      "name": "走歌人",
-      "author": "暗杠",
-      "src": "http://music.163.com/song/media/outer/url?id=418990139.mp3",
-      "img": "http://p2.music.126.net/_UOTSqLC8qHRivyuUBC9OQ==/18200215974944920.jpg" },
 
-    {
-      "name": "走歌人原版无损伴奏",
-      "author": "暗杠",
-      "src": "http://music.163.com/song/media/outer/url?id=430685718.mp3",
-      "img": "http://p2.music.126.net/_UOTSqLC8qHRivyuUBC9OQ==/18200215974944920.jpg" }]), _defineProperty(_ref, "duration",
+
+
+    0), _defineProperty(_ref, "duration",
+
+
+
+
+
 
 
     0), _defineProperty(_ref, "currentTime",
@@ -256,10 +307,23 @@ var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_requi
     1), _defineProperty(_ref, "playState",
     1), _defineProperty(_ref, "nowIndex",
     0), _defineProperty(_ref, "courseList",
-    []), _ref;
+    []), _defineProperty(_ref, "detail",
+    {}), _defineProperty(_ref, "imgUrl",
+    ''), _defineProperty(_ref, "books",
+    []), _defineProperty(_ref, "bIndex",
+    0), _ref;
 
   },
   computed: {
+    imgList: function imgList() {
+      var arry = [];
+      if (this.books.length > 0) {
+        if (this.books[this.bIndex].image) {
+          arry = this.books[this.bIndex].image.split(',');
+        }
+      }
+      return arry;
+    },
     'nowtime': function nowtime() {
       var that = this;
       var s = that.currentTime;
@@ -297,22 +361,36 @@ var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_requi
       return h + ':' + s;
     } },
 
-  onLoad: function onLoad() {
+  onLoad: function onLoad(params) {
+    this.bIndex = params.index ? params.index : 0;
+    this.imgUrl = this.$baseUrl;
+    this.detail = getApp().globalData.learnDetail;
+    this.bookList();
     bgAudioMannager = uni.getBackgroundAudioManager();
     this.getRecomed();
     //如果要默认播放的话，把以下注释取消
     //this.bgAudioInnit();
   },
   methods: {
+    bookList: function bookList() {var _this = this;
+      this.$api.get('/api/lesson/getBookListByLessonId', {
+        params: {
+          lessonId: this.detail.id,
+          type: 1 } }).
+
+      then(function (res) {
+        _this.books = res.data;
+      });
+    },
     //推荐课程
-    getRecomed: function getRecomed() {var _this = this;
+    getRecomed: function getRecomed() {var _this2 = this;
       this.$api.get('/api/lesson/getBookListByLessonId', {
         params: {
           lessonId: this.detail.id,
           type: 2 } }).
 
       then(function (res) {
-        _this.courseList = res.data;
+        _this2.courseList = res.data;
       });
     },
     goDetail: function goDetail() {
@@ -341,13 +419,18 @@ var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_requi
       this.currentTime = e.detail.value;
       bgAudioMannager.seek(this.currentTime);
     },
-    bgAudioInnit: function bgAudioInnit() {var _this2 = this;
+    bgAudioInnit: function bgAudioInnit() {var _this3 = this;
       var that = this;
-      bgAudioMannager.title = that.songList[that.nowIndex].name;
-      bgAudioMannager.singer = that.songList[that.nowIndex].author;
-      bgAudioMannager.coverImgUrl = that.songList[that.nowIndex].img;
-      bgAudioMannager.src = that.songList[that.nowIndex].src;
-
+      // bgAudioMannager.title = that.songList[that.nowIndex].name;
+      // bgAudioMannager.singer = that.songList[that.nowIndex].author;
+      // bgAudioMannager.coverImgUrl = that.songList[that.nowIndex].img;
+      //bgAudioMannager.src = that.songList[that.nowIndex].src;
+      if (this.books[this.bIndex] && this.books[this.bIndex].audio) {
+        bgAudioMannager.title = this.books[this.bIndex].title;
+        bgAudioMannager.src = this.spUrl + this.books[this.bIndex].audio;
+      } else {
+        return;
+      }
       bgAudioMannager.onPlay(function () {
         that.playFunc();
       });
@@ -358,7 +441,7 @@ var bgAudioMannager = '';var CourseItem = function CourseItem() {__webpack_requi
         that.next();
       });
       bgAudioMannager.onTimeUpdate(function () {
-        _this2.currentTime = Math.floor(bgAudioMannager.currentTime);
+        _this3.currentTime = Math.floor(bgAudioMannager.currentTime);
       });
       bgAudioMannager.onPrev(function () {
         that.last();

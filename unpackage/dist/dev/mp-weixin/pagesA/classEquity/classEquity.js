@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _classEquity_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./classEquity.vue?vue&type=script&lang=js& */ 352);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _classEquity_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _classEquity_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _classEquity_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./classEquity.vue?vue&type=style&index=0&lang=scss& */ 354);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
 
 var renderjs
 
@@ -328,7 +328,8 @@ __webpack_require__.r(__webpack_exports__);
 
       selIndex: 0,
       money: '',
-      menuList: [] };
+      menuList: [],
+      userInfo: {} };
 
   },
   onLoad: function onLoad() {
@@ -336,19 +337,25 @@ __webpack_require__.r(__webpack_exports__);
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.getUserLevel();
     this.getMenuList();
+    this.getMyInfo();
   },
   methods: {
+    getMyInfo: function getMyInfo() {var _this = this;
+      this.$api.get('/api/user/getUserInfo').then(function (res) {
+        _this.userInfo = res.data;
+      });
+    },
     goTest: function goTest() {
       this.$refs.popup.close();
       uni.navigateTo({
-        url: "/pagesA/test/test" });
+        url: "/pagesA/test/test?levelId=" + this.userInfo.userLevel.id });
 
     },
     //获取经验套餐列表
-    getMenuList: function getMenuList() {var _this = this;
+    getMenuList: function getMenuList() {var _this2 = this;
       this.$api.get('/api/static/getMenuList').then(function (res) {
         console.log(res.data);
-        _this.menuList = res.data;
+        _this2.menuList = res.data;
       });
     },
     //获取用户等级
@@ -375,8 +382,7 @@ __webpack_require__.r(__webpack_exports__);
         this.money = money;
       }
     },
-    wxPay: function wxPay(pray_id) {var _this2 = this;
-      return;
+    wxPay: function wxPay() {var _this3 = this;
       uni.showLoading({
         title: '加载中',
         mask: true });
@@ -384,30 +390,31 @@ __webpack_require__.r(__webpack_exports__);
       wx.login({
         success: function success(res) {
           if (res.code) {
-            _this2.$api.post('/api/wechat/pay', {
-              dojo_id: _this2.detail.id,
-              pray_id: pray_id,
-              prayer_id: uni.getStorageSync('paryData').id }).
-            then(function (info) {
-              console.log(info);
+            _this3.$api.post('/api/order/wxPay', {
+              tableId: _this3.selIndex,
+              userId: uni.getStorageSync('userInfo').id,
+              payType: 1,
+              prayer_id: uni.getStorageSync('paryData').id,
+              orderType: 5 //类型 1单独购买活动 2活动开团 3活动参团 4课程 5经验
+            }).then(function (s) {
+              var info = s.data;
               wx.requestPayment({
-                'appId': info.appId,
-                'timeStamp': info.timeStamp,
-                'nonceStr': info.nonceStr,
+                'appId': info.appid,
+                'timeStamp': info.timestamp,
+                'nonceStr': info.noncestr,
                 'package': info.package,
-                'signType': info.signType,
-                'paySign': info.paySign,
-                'success': function success(res2) {
-                  console.log(res2);
-                  console.log("支付成功");
+                'signType': 'MD5',
+                'paySign': info.sign,
+                success: function success(res2) {
+                  getApp().globalData.courseData.buyCount++;
                   uni.showToast({
                     title: "支付成功",
-                    duration: 1200 });
+                    duration: 900 });
 
-                  _this2.status = 1;
-                  _this2.imgUrl = _this2.detail.pray_image;
+                  _this3.$refs.popup.open();
                 },
-                'fail': function fail(err1) {
+                fail: function fail(err1) {
+                  console.log(err1);
                   console.log("支付失败");
                   uni.showToast({
                     title: '支付失败',
@@ -415,7 +422,7 @@ __webpack_require__.r(__webpack_exports__);
                     duration: 1200 });
 
                 },
-                'complete': function complete(err2) {
+                complete: function complete(err2) {
                   uni.hideLoading();
                 } });
 

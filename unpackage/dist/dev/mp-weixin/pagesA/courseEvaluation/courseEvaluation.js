@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _courseEvaluation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./courseEvaluation.vue?vue&type=script&lang=js& */ 304);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _courseEvaluation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _courseEvaluation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _courseEvaluation_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./courseEvaluation.vue?vue&type=style&index=0&lang=scss& */ 306);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
 
 var renderjs
 
@@ -130,7 +130,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 440));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var CourseItem = function CourseItem() {__webpack_require__.e(/*! require.ensure | components/CourseItem */ "components/CourseItem").then((function () {return resolve(__webpack_require__(/*! @/components/CourseItem.vue */ 440));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Activity = function Activity() {__webpack_require__.e(/*! require.ensure | components/Activity */ "components/Activity").then((function () {return resolve(__webpack_require__(/*! @/components/Activity.vue */ 417));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
 
 
 
@@ -165,7 +167,8 @@ __webpack_require__.r(__webpack_exports__);
 
 {
   components: {
-    CourseItem: CourseItem },
+    CourseItem: CourseItem,
+    Activity: Activity },
 
   data: function data() {
     return {
@@ -173,11 +176,17 @@ __webpack_require__.r(__webpack_exports__);
       detail: {},
       content: '',
       imgList: [],
-      tmpImgList: [] };
-
+      tmpImgList: [],
+      type: 2 //1活动评价 2课程评价
+    };
   },
-  onLoad: function onLoad() {
-    this.detail = getApp().globalData.learnDetail;
+  onLoad: function onLoad(params) {
+    if (params.type == 1) {//活动
+      this.type = 1;
+      this.detail = getApp().globalData.learnDetail;
+    } else {
+      this.detail = getApp().globalData.activeData;
+    }
     this.imgUrl = this.$baseUrl;
   },
   methods: {
@@ -210,8 +219,8 @@ __webpack_require__.r(__webpack_exports__);
       var imgUrl = this.imgList.join();
       this.$api.get('/api/comment/save', {
         params: {
-          tableId: 1,
-          type: 2,
+          tableId: this.detail.id,
+          type: this.type,
           content: this.content,
           userId: uni.getStorageSync('userInfo').id,
           imgUrl: imgUrl } }).

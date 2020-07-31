@@ -13,31 +13,14 @@
 				</view>
 			</view>
 			<view class="joinPeople">
-				<view class="item">
+				<view class="item" v-for="(item,index) in activityTeamList.memberList" :key="index">
 					<view class="avatarBox">
-						<image src="../../static/1.jpg" mode="aspectFill" class="avatar"></image>
-						<image src="../../static/img/Identity.png" mode="aspectFit" class="idenImg"></image>
-						<image src="../../static/icon/jia.png" mode="aspectFit" class="addIcon"></image>
-						<text>团长</text>
+						<image :src="item.avatar" mode="aspectFill" class="avatar"></image>
+						<image src="../../static/img/Identity.png" mode="aspectFit" class="idenImg" v-if="index==0"></image>
+						<text v-if="index==0">团长</text>
+						<image src="../../static/icon/jia.png" mode="aspectFit" class="addIcon" v-if="(index+1)!=activityTeamList.memberList.length"></image>
 					</view>
-					<text class="name">欧文</text>
-				</view>
-				<view class="item">
-					<view class="avatarBox">
-						<image src="../../static/1.jpg" mode="aspectFill" class="avatar"></image>
-						<image src="../../static/img/Identity.png" mode="aspectFit" class="idenImg" v-if="false"></image>
-						<text v-if="false">团长</text>
-						<image src="../../static/icon/jia.png" mode="aspectFit" class="addIcon"></image>
-					</view>
-					<text class="name">欧文2</text>
-				</view>
-				<view class="item">
-					<view class="avatarBox">
-						<image src="../../static/1.jpg" mode="aspectFill" class="avatar"></image>
-						<image src="../../static/img/Identity.png" mode="aspectFit" class="idenImg" v-if="false"></image>
-						<text v-if="false">团长</text>
-					</view>
-					<text class="name">欧文3</text>
+					<text class="name">{{item.name}}</text>
 				</view>
 			</view>
 		</template>
@@ -73,7 +56,7 @@
 			<view class="row br">
 				<text class="title">所在地：</text>
 				<input class="input" focus placeholder="请填写报名人所在地" placeholder-class="plClass" v-model="address" />
-				<image src="../../static/icon/pdw.png" mode="aspectFit" class="icon"></image>
+				<image src="../../static/icon/pdw.png" mode="aspectFit" class="icon" @click="gotomapLocation"></image>
 			</view>
 		</view>
 		<view class="block2">
@@ -103,14 +86,24 @@
 				age: '',
 				name: '',
 				phone: '',
-				sex:0
+				sex:0,
+				activityTeamList:{}
 			};
 		},
 		onLoad(params) {
+			this.activityTeamList=getApp().globalData.activityTeamList
 			this.activeData = getApp().globalData.activeData
 			this.buyType = params.type ? params.type : 2
 		},
 		methods: {
+			gotomapLocation(){//选取位置
+				wx.chooseLocation({
+					success: (res)=>{
+						this.address=res.address
+						console.log(res)
+					}
+				})
+			},
 			bindPickerChange: function(e) {
 				this.sex = e.target.value
 			},
@@ -133,7 +126,8 @@
 					buyType = 3
 				}
 				if(this.buyType==3){//组队购买
-					//this.joinGroup(1)  //activityTeamId
+					console.log('组队拼团')
+					this.joinGroup(this.activityTeamList.id)  //activityTeamId
 				}else{
 					if(this.buyType==1){
 						this.sendInfo1(buyType, 1)

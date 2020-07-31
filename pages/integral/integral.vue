@@ -10,17 +10,17 @@
 			<text class="line"></text>
 			<view class="category">
 				<view class="item">
-					<text class="num">1345</text>
+					<text class="num">{{add}}</text>
 					<text class="text">累计积分</text>
 				</view>
 				<text class="hr"></text>
 				<view class="item">
-					<text class="num">1345</text>
+					<text class="num">{{sub}}</text>
 					<text class="text">累计消费</text>
 				</view>
 				<text class="hr"></text>
 				<view class="item">
-					<text class="num">1345</text>
+					<text class="num">{{today}}</text>
 					<text class="text">今日获得</text>
 				</view>
 			</view>
@@ -42,12 +42,12 @@
 			<text>消费1元获得1积分，消费越多积分越多</text>
 		</view>
 		<view class="list">
-			<view class="item" v-for="item in list" :key="item">
+			<view class="item" v-for="item in list" :key="item.id">
 				<view class="detail">
-					<text class="t1">参加活动</text>
-					<text class="t2">2020-03-12 13:13</text>
+					<text class="t1">{{typeText[item.orderType]}}</text>
+					<text class="t2">{{item.createDate}}</text>
 				</view>
-				<text class="num">+200</text>
+				<text class="num">+{{item.pointCount}}</text>
 			</view>
 			<uni-load-more :status="loadStatus"></uni-load-more>
 		</view>
@@ -62,7 +62,11 @@
 				pageSize:10,
 				pageNo:1,
 				loadStatus:'noMore',
-				list:[]
+				list:[],
+				add:0,
+				sub:0,
+				today:0,
+				typeText:['单独购买活动','活动开团','活动参团','课程','经验']
 			};
 		},
 		onLoad() {
@@ -85,8 +89,14 @@
 						pageSize:this.pageSize
 					}
 				}).then((res)=>{
-					if(res.data.length>0){
-						ths.list=this.list.concat(res.data)
+					console.log(res)
+					if(this.pageNo==1){
+						this.add=res.data.add
+						this.sub=res.data.sub
+						this.today=res.data.today
+					}
+					if(res.data.list.length>0){
+						this.list=this.list.concat(res.data.list)
 						this.pageNo++
 						if(res.data.length==this.pageSize){
 							this.loadStatus="more"

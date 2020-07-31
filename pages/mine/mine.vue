@@ -18,7 +18,7 @@
 					<view class="right">
 						<view class="row">
 							<text class="name">{{userInfo.name}}</text>
-							<text class="up" @click="goTest" v-if="true">去考试？</text>
+							<text class="up" @click="goTest" v-if="userInfo.exp==userInfo.userLevel.exp">去考试？</text>
 							<text class="up" @click="goUp" v-else >去升级？</text>
 						</view>
 						<view class="line">
@@ -30,28 +30,28 @@
 								<text class="text">游客</text>
 							</view>
 							<view class="item">
-								<image src="../../static/icon/vip.png" mode="aspectFit" class="vipIcon"></image>
-								<text class="text">成为会员</text>
+								<image :src="imgUrl+userInfo.userLevel.icon" mode="aspectFit" class="vipIcon"></image>
+								<text class="text">成为{{userInfo.userLevel.name}}</text>
 							</view>
 							<view class="item">
 								<text class="">经验值</text>
-								<text class="jyNum">1245</text>
-								<text>/6000</text>
+								<text class="jyNum">{{userInfo.exp||0}}</text>
+								<text>/{{userInfo.userLevel.exp}}</text>
 							</view>
 						</view>
 					</view>
 				</view>
 				<view class="bottom">
 					<view class="item" @click="goCommission">
-						<text class="count">1653</text>
+						<text class="count">{{userInfo.money||0}}</text>
 						<text class="desc">我的佣金</text>
 					</view>
 					<view class="item" @click="goIntegral">
-						<text class="count">124</text>
+						<text class="count">{{userInfo.point||0}}</text>
 						<text class="desc">会员积分</text>
 					</view>
 					<view class="item" @click="goCollect">
-						<text class="count">1653</text>
+						<text class="count">{{userInfo.storeCount}}</text>
 						<text class="desc">我的收藏</text>
 					</view>
 				</view>
@@ -73,7 +73,7 @@
 		<view class="moduleList">
 			<view class="item" v-for="(item,index) in iconText" :key="index" @click="goPage(index)">
 				<view class="iconbox">
-					<text class="msgNum" v-if="index==0">3</text>
+					<text class="msgNum" v-if="index==0&&userInfo.messageCount>0">{{userInfo.messageCount}}</text>
 					<text class="hb" v-if="index==8">火爆</text>
 					<image :src="'../../static/icon/mine/icon'+(index+1)+'.png'" mode="aspectFit"></image>
 				</view>
@@ -92,26 +92,23 @@
 		},
 		data() {
 			return {
-				userInfo: {
-					avatar: '',
-					name: ''
-				},
+				userInfo: {},
 				isLogin: false,
 				top: 24,
 				iconText: ['我的消息', '我的课程', '我的报名', '我的成长', '我的发布', '我的动态', '我的团队',
 					'等级权益', '推广赚钱', '联系客服', '常见问题', '其他'
-				]
+				],
+				imgUrl:''
 			};
 		},
 		onLoad() {
+			this.imgUrl=this.$baseUrl
 			this.top = uni.getMenuButtonBoundingClientRect().top
 		},
 		onShow() {
 			uni.getStorage({
-				key: 'userInfo',
+				key: 'token',
 				success: (res) => {
-					this.userInfo = res.data
-					this.isLogin = true
 					this.getMyInfo()
 				},
 				fail:(err)=>{
@@ -122,15 +119,20 @@
 		methods: {
 			getMyInfo(){
 				this.$api.get('/api/user/getUserInfo').then((res)=>{
-					
+					this.userInfo=res.data
+					this.isLogin = true
+				}).catch((err)=>{
+					this.isLogin = false
 				})
 			},
 			goUp(){
-				
+				uni.navigateTo({
+					url:"/pagesA/classEquity/classEquity"
+				})
 			},
 			goTest(){
 				uni.navigateTo({
-					url:"/pagesA/test/test"
+					url:"/pagesA/test/test?levelId="+this.userInfo.userLevel.id
 				})
 			},
 			getPhoneNumber(e) {
@@ -166,11 +168,9 @@
 									encryptedData: info.detail.encryptedData,
 									iv: info.detail.iv
 								}).then((result) => {
-									console.log(result.data)
-									that.userInfo.avatar = result.data.avatar
-									that.userInfo.name = result.data.name
-									that.userInfo.id = result.data.id
-									that.isLogin = true
+									//console.log(result.data)
+									that.getMyInfo()
+									//that.isLogin = true
 									uni.setStorage({
 										key: 'token',
 										data: result.data.token,
@@ -180,29 +180,9 @@
 									});
 									uni.setStorage({
 										key: 'userInfo',
-										data: that.userInfo,
+										data: result.data,
 										success: function() {
 
-										}
-									});
-								}).catch((result)=>{
-									console.log(result)
-									that.userInfo.avatar = result.data.avatar
-									that.userInfo.name = result.data.name
-									that.userInfo.id = result.data.id
-									that.isLogin = true
-									uni.setStorage({
-										key: 'token',
-										data: result.data.token,
-										success: function() {
-									
-										}
-									});
-									uni.setStorage({
-										key: 'userInfo',
-										data: that.userInfo,
-										success: function() {
-									
 										}
 									});
 								})

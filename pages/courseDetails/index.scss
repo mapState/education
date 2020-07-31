@@ -64,7 +64,7 @@ page{
 .ss{
 	.ssImge{
 		width:750rpx;
-		height: 520rpx;
+		//height: 520rpx;
 	}
 }
 .titleBox{
@@ -579,6 +579,7 @@ page{
 			white-space:nowrap;
 			display:flex;
 			.item{
+				position: relative;
 				display: inline-block;
 				flex-direction: column;
 				margin-right:42rpx ;
@@ -602,9 +603,38 @@ page{
 					white-space: nowrap;
 					padding-bottom: 10rpx;
 				}
+				.firstClick{
+					position:absolute;
+					left:0;
+					top:0;
+					width:160rpx;
+					z-index: 9;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					image{
+						width:41rpx;
+						height: 81rpx;
+					}
+					view{
+						font-size:24rpx;
+						font-family:PingFang SC;
+						font-weight:500;
+						color:rgba(255,255,255,1);
+					}
+				}
 			}
 		}
 	}
+}
+.mask{
+	position: fixed;
+	left:0;
+	top:0;
+	background-color: rgba(0,0,0,.4);
+	width:100%;
+	height: 100%;
+	z-index: 3;
 }
 .flCaption{
 	width:100%;

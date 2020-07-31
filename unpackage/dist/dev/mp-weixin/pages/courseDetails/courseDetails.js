@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _courseDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./courseDetails.vue?vue&type=script&lang=js& */ 128);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _courseDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _courseDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _courseDetails_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./courseDetails.vue?vue&type=style&index=0&lang=scss& */ 130);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
 
 var renderjs
 
@@ -327,6 +327,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
 {
   components: {
     uniPopup: uniPopup,
@@ -353,10 +360,11 @@ __webpack_require__.r(__webpack_exports__);
       recomedList: [],
       imgUrl: '',
       commentList: [],
-      pageNo: 1 };
+      pageNo: 1,
+      showMask: false };
 
   },
-  onLoad: function onLoad(params) {
+  onLoad: function onLoad(params) {var _this = this;
     this.imgUrl = this.$baseUrl;
     this.top = uni.getMenuButtonBoundingClientRect().top;
     this.detail = getApp().globalData.courseData;
@@ -366,6 +374,15 @@ __webpack_require__.r(__webpack_exports__);
     if (params.type) {
       this.type = params.type;
     }
+    uni.getStorage({
+      key: 'notfirstStudy',
+      success: function success(res) {
+        _this.showMask = false;
+      },
+      fail: function fail(err) {
+        _this.showMask = true;
+      } });
+
   },
   onShareAppMessage: function onShareAppMessage(res) {
     if (res.from === 'button') {// 来自页面内分享按钮
@@ -377,7 +394,17 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
-    doCollected: function doCollected() {var _this = this;
+    closeMask: function closeMask() {
+      this.showMask = false;
+      uni.setStorage({
+        key: 'notfirstStudy',
+        data: '1',
+        success: function success() {
+          console.log('success');
+        } });
+
+    },
+    doCollected: function doCollected() {var _this2 = this;
       var status = this.detail.isStore == 0 ? 1 : 0;
       this.$api.post('/api/user/store', {
         type: 2, //1活动 2课程
@@ -385,10 +412,10 @@ __webpack_require__.r(__webpack_exports__);
         tableId: this.detail.id,
         userId: uni.getStorageSync('userInfo').id }).
       then(function (res) {
-        _this.detail.isStore = status;
+        _this2.detail.isStore = status;
       });
     },
-    getCates: function getCates() {var _this2 = this;
+    getCates: function getCates() {var _this3 = this;
       this.$api.get('/api/static/dictList', {
         params: {
           type: 2 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
@@ -397,7 +424,7 @@ __webpack_require__.r(__webpack_exports__);
         var pid = '';
         var tagList = [];
         res.data.forEach(function (item) {
-          if (item.id == _this2.detail.typeId) {
+          if (item.id == _this3.detail.typeId) {
             tagList.push(item.name);
             pid = item.pid;
           }
@@ -408,10 +435,10 @@ __webpack_require__.r(__webpack_exports__);
             tagList.push(item.name);
           }
         });
-        _this2.tagList = tagList;
+        _this3.tagList = tagList;
       });
     },
-    getCommentList: function getCommentList() {var _this3 = this;
+    getCommentList: function getCommentList() {var _this4 = this;
       this.$api.get('/api/comment/getList', {
         params: {
           pageNo: this.pageNo,
@@ -421,19 +448,19 @@ __webpack_require__.r(__webpack_exports__);
 
       then(function (res) {
         if (res.data.length > 0) {
-          _this3.commentList = _this3.commentList.concat(res.data);
-          _this3.pageNo++;
+          _this4.commentList = _this4.commentList.concat(res.data);
+          _this4.pageNo++;
         }
       });
     },
-    getStudyContent: function getStudyContent() {var _this4 = this;
+    getStudyContent: function getStudyContent() {var _this5 = this;
       this.$api.get('/api/lesson/getBookListByLessonId', {
         params: {
           lessonId: this.detail.id,
           type: 1 } }).
 
       then(function (res) {
-        _this4.recomedList = res.data;
+        _this5.recomedList = res.data;
       });
     },
     goEval: function goEval() {
@@ -449,7 +476,7 @@ __webpack_require__.r(__webpack_exports__);
     toView: function toView(val) {
       this.toIndex = val;
     },
-    scrollHandle: function scrollHandle(e) {var _this5 = this;
+    scrollHandle: function scrollHandle(e) {var _this6 = this;
       var scrollTop = e.detail.scrollTop;
       this.scrollTop = scrollTop;
       console.log(scrollTop);
@@ -460,20 +487,20 @@ __webpack_require__.r(__webpack_exports__);
         d.forEach(function (item) {
           item.top = item.top - top;
           item.bottom = item.bottom - top;
-          _this5.letterDetails.push({
+          _this6.letterDetails.push({
             id: item.id,
             top: item.top,
             bottom: item.bottom });
 
         });
-        _this5.letterDetails.some(function (item) {
+        _this6.letterDetails.some(function (item) {
           if (scrollTop - 180 >= item.top && scrollTop - 180 <= item.bottom - 20) {
-            _this5.currentLetter = item.id;
+            _this6.currentLetter = item.id;
             //当前固定用的是粘性定位，如果不用粘性定位，在这里设置
             return true;
           }
         });
-        console.log(_this5.currentLetter);
+        console.log(_this6.currentLetter);
       }).exec();
     },
     goBack: function goBack() {
@@ -497,7 +524,7 @@ __webpack_require__.r(__webpack_exports__);
     closePoser: function closePoser() {
       this.$refs.poster.close();
     },
-    getPoster: function getPoster() {var _this6 = this;
+    getPoster: function getPoster() {var _this7 = this;
       this.$refs.sharePop.close();
       uni.showLoading({
         title: '海报生成中...',
@@ -512,9 +539,9 @@ __webpack_require__.r(__webpack_exports__);
         src: this.poserImg,
         success: function success(res) {
           context.fillStyle = "#FFFFFF";
-          context.fillRect(0, 0, _this6.width, _this6.height);
+          context.fillRect(0, 0, _this7.width, _this7.height);
           // context.drawImage(this.bgPath, 0, 0, this.width, this.height);
-          context.drawImage(res.path, 0, 0, _this6.width, 530);
+          context.drawImage(res.path, 0, 0, _this7.width, 530);
           context.setFontSize(28);
           context.setFillStyle('#000000');
           context.setTextAlign('center');
@@ -522,7 +549,7 @@ __webpack_require__.r(__webpack_exports__);
           if (text.length > 20) {
             text = text.substr(0, 20) + '...';
           }
-          context.fillText(text, _this6.width / 2, 600);
+          context.fillText(text, _this7.width / 2, 600);
           var tip = '长按识别，立即参加';
           context.setFontSize(28);
           context.fillText(tip, 320, 760);
@@ -545,7 +572,7 @@ __webpack_require__.r(__webpack_exports__);
             success: function success(res1) {
               context.drawImage(that.codePath, 33, 650, 132, 132);
               wx.getImageInfo({
-                src: _this6.poserImg,
+                src: _this7.poserImg,
                 success: function success(avatar) {
                   console.log(avatar);
                   var avatarurl_width = 62; //绘制的头像宽度
@@ -563,16 +590,16 @@ __webpack_require__.r(__webpack_exports__);
                       canvasId: 'myCanvas',
                       x: 0, //指定的画布区域的左上角横坐标	
                       y: 0, //指定的画布区域的左上角纵坐标	
-                      width: _this6.width, //指定的画布区域的宽度
-                      height: _this6.height, //指定的画布区域的高度
-                      destWidth: _this6.width, //输出的图片的宽度 
-                      destHeight: _this6.height, //输出的图片的高度
+                      width: _this7.width, //指定的画布区域的宽度
+                      height: _this7.height, //指定的画布区域的高度
+                      destWidth: _this7.width, //输出的图片的宽度 
+                      destHeight: _this7.height, //输出的图片的高度
                       success: function success(res) {
                         var tempFilePath = res.tempFilePath;
-                        _this6.tmpImg = tempFilePath;
+                        _this7.tmpImg = tempFilePath;
                         console.log(tempFilePath);
                         uni.hideLoading();
-                        _this6.$refs.poster.open();
+                        _this7.$refs.poster.open();
                       },
                       fail: function fail(res) {
                         console.log(res);

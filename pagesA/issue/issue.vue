@@ -76,7 +76,7 @@
 	}
 	.detail{
 		width:630rpx;
-		height:200rpx;
+		min-height:200rpx;
 		background:rgba(242,242,242,1);
 		border-radius:6rpx;
 		padding:22rpx 30rpx;

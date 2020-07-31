@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "我要评价",
   "usingComponents": {
-    "course-item": "/components/CourseItem"
+    "course-item": "/components/CourseItem",
+    "activity": "/components/Activity"
   }
 }

@@ -10,7 +10,7 @@
 		<scroll-view class="scroll-view" scroll-y scroll-with-animation="true" :scroll-into-view="toIndex" @scroll="scrollHandle">
 			<view class="main">
 				<view class="ss">
-					<image :src="imgUrl+detail.poster" mode="aspectFill" class="ssImge"></image>
+					<image :src="imgUrl+detail.poster" mode="widthFix" class="ssImge"></image>
 				</view>
 				<!-- <swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" :indicator-dots="true"
 				 indicator-color="#fff" indicator-active-color="#FDD30F">
@@ -34,7 +34,7 @@
 					</view>
 					<view class="price">
 						<view class="col">
-							￥<text class="t1">{{detail.price}}</text>
+							￥<text class="t1">{{detail.price/100}}</text>
 						</view>
 						<view class="buy">
 							已购{{detail.buyCount}}
@@ -58,6 +58,10 @@
 								<view class="item" v-for="item in recomedList" :key="item.id">
 									<image :src="imgUrl+item.poster" mode="aspectFill"></image>
 									<text>{{item.title}}</text>
+									<view class="firstClick" v-if="showMask&&index==0" @click="closeMask">
+										<image src="../static/img/dj.png" mode="aspectFill"></image>
+										<view>点击进入详情</view>
+									</view>
 								</view>
 							</scroll-view>
 						</view>
@@ -99,7 +103,7 @@
 					</view>
 					<view class="item" @click="doCollected">
 						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc" v-if="detail.isStore"></image>
-						<image src="../../static/icon/heart.png" mode="aspectFit" class="sc" v-else></image>
+						<image src="../../static/icon/hx-sc.png" mode="aspectFit" class="sc" v-else></image>
 						<text>收藏</text>
 					</view>
 					<view class="pjBtn" @click="goEval" v-if="type==1">
@@ -176,6 +180,9 @@
 				<image src="../../static/icon/closeIcon.png" mode="aspectFill" class="closeIcon" @click="closePoser"></image>
 			</view>
 		</uni-popup>
+		<view class="mask" v-if="showMask" @click="closeMask">
+			
+		</view>
 	</view>
 </template>
 
@@ -210,6 +217,7 @@
 				imgUrl: '',
 				commentList: [],
 				pageNo: 1,
+				showMask:false
 			};
 		},
 		onLoad(params) {
@@ -222,6 +230,15 @@
 			if (params.type) {
 				this.type = params.type
 			}
+			uni.getStorage({
+			    key: 'notfirstStudy',
+			    success:(res)=>{
+			      this.showMask=false
+			    },
+					fail:(err)=>{
+						this.showMask=true
+					}
+			});
 		},
 		onShareAppMessage(res) {
 			if (res.from === 'button') { // 来自页面内分享按钮
@@ -233,6 +250,16 @@
 			}
 		},
 		methods: {
+			closeMask(){
+				this.showMask=false
+				uni.setStorage({
+				    key: 'notfirstStudy',
+				    data: '1',
+				    success: function () {
+				        console.log('success');
+				    }
+				});
+			},
 			doCollected(){
 				let status=this.detail.isStore==0?1:0
 				this.$api.post('/api/user/store',{

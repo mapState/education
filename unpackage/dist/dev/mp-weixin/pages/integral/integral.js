@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _integral_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./integral.vue?vue&type=script&lang=js& */ 200);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _integral_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _integral_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _integral_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./integral.vue?vue&type=style&index=0&lang=scss& */ 202);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
 
 var renderjs
 
@@ -198,7 +198,11 @@ var _default =
       pageSize: 10,
       pageNo: 1,
       loadStatus: 'noMore',
-      list: [] };
+      list: [],
+      add: 0,
+      sub: 0,
+      today: 0,
+      typeText: ['单独购买活动', '活动开团', '活动参团', '课程', '经验'] };
 
   },
   onLoad: function onLoad() {
@@ -221,8 +225,14 @@ var _default =
           pageSize: this.pageSize } }).
 
       then(function (res) {
-        if (res.data.length > 0) {
-          ths.list = _this.list.concat(res.data);
+        console.log(res);
+        if (_this.pageNo == 1) {
+          _this.add = res.data.add;
+          _this.sub = res.data.sub;
+          _this.today = res.data.today;
+        }
+        if (res.data.list.length > 0) {
+          _this.list = _this.list.concat(res.data.list);
           _this.pageNo++;
           if (res.data.length == _this.pageSize) {
             _this.loadStatus = "more";

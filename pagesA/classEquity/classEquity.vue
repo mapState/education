@@ -79,7 +79,7 @@
 
 				</view>
 				<view class="price">
-					￥{{item.money}}
+					￥{{item.money/100}}
 				</view>
 			</view>
 		</view>
@@ -112,7 +112,7 @@
 		<view class="payBox" v-if="money!=''">
 			<view class="payText">
 				<text class="t1">支付：</text>
-				<text class="t2">{{money}}元</text>
+				<text class="t2">{{money/100}}元</text>
 			</view>
 			<view class="btn" @click="wxPay">
 				经验支付
@@ -123,7 +123,7 @@
 				<image src="../../static/img/notEnough.png" mode="aspectFill" class="tipImg"></image>
 				<text class="upTip">升级成功</text>
 				<view class="desc">
-					<text>当前已升级成功“阅读推广师”，通过对应考试才能享受等级权益。</text>
+					<text>当前已升级成功“{{userInfo.userLevel.name}}”，通过对应考试才能享受等级权益。</text>
 				</view>
 				<view class="operating">
 					<view class="item" @click="$refs.popup.close()">
@@ -183,7 +183,8 @@
 				}],
 				selIndex: 0,
 				money: '',
-				menuList: []
+				menuList: [],
+				userInfo:{}
 			};
 		},
 		onLoad() {
@@ -191,12 +192,18 @@
 			this.top = uni.getMenuButtonBoundingClientRect().top
 			this.getUserLevel()
 			this.getMenuList()
+			this.getMyInfo()
 		},
 		methods: {
+			getMyInfo(){
+				this.$api.get('/api/user/getUserInfo').then((res)=>{
+					this.userInfo=res.data
+				})
+			},
 			goTest(){
 				this.$refs.popup.close()
 				uni.navigateTo({
-					url:"/pagesA/test/test"
+					url:"/pagesA/test/test?levelId="+this.userInfo.userLevel.id
 				})
 			},
 			//获取经验套餐列表
@@ -230,8 +237,7 @@
 					this.money = money
 				}
 			},
-			wxPay(pray_id) {
-				return
+			wxPay() {
 				uni.showLoading({
 					title: '加载中',
 					mask: true
@@ -239,30 +245,31 @@
 				wx.login({
 					success: (res) => {
 						if (res.code) {
-							this.$api.post('/api/wechat/pay', {
-								dojo_id: this.detail.id,
-								pray_id,
-								prayer_id: uni.getStorageSync('paryData').id
-							}).then((info) => {
-								console.log(info)
+							this.$api.post('/api/order/wxPay', {
+								tableId:this.selIndex,
+								userId:uni.getStorageSync('userInfo').id,
+								payType:1,
+								prayer_id: uni.getStorageSync('paryData').id,
+								orderType:5 //类型 1单独购买活动 2活动开团 3活动参团 4课程 5经验
+							}).then((s) => {
+								let info=s.data
 								wx.requestPayment({
-									'appId': info.appId,
-									'timeStamp': info.timeStamp,
-									'nonceStr': info.nonceStr,
+									'appId': info.appid,
+									'timeStamp': info.timestamp,
+									'nonceStr': info.noncestr,
 									'package': info.package,
-									'signType': info.signType,
-									'paySign': info.paySign,
-									'success': (res2) => {
-										console.log(res2)
-										console.log("支付成功")
+									'signType':'MD5',
+									'paySign': info.sign,
+									success: (res2) => {
+										getApp().globalData.courseData.buyCount++
 										uni.showToast({
-											title: "支付成功",
-											duration: 1200
+											title:"支付成功",
+											duration:900
 										})
-										this.status = 1
-										this.imgUrl = this.detail.pray_image
+										this.$refs.popup.open()
 									},
-									'fail': function(err1) {
+									fail:(err1)=>{
+										console.log(err1)
 										console.log("支付失败")
 										uni.showToast({
 											title: '支付失败',
@@ -270,12 +277,12 @@
 											duration: 1200
 										})
 									},
-									'complete': function(err2) {
+									complete: (err2)=>{
 										uni.hideLoading();
 									}
 								})
 							})
-
+			
 						} else {
 							console.log('登录失败！' + res.errMsg)
 						}

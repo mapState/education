@@ -6,13 +6,15 @@
 			<view class="row">
 				<text class="t1">{{detail.title}}</text>
 			</view>
-			<view class="row">
-				<view class="tag" v-for="(item,index) in tagList" :key="index">{{item}}</view>
-				<image src="/static/icon/eye.png" mode="aspectFill" class="eyeIcon"></image>
-				<text class="gray">{{detail.fake}}</text>
-				<image src="/static/icon/peo.png" mode="aspectFill" class="peoIcon"></image>
-				<text class="gray userNum">{{detail.groupNumber}}</text>
-				<text class="gray">{{detail.distance||0}}km</text>
+			<view class="row jlRow">
+				<view class="row">
+					<view class="tag" v-for="(item,index) in tagList" :key="index">{{item}}</view>
+					<image src="/static/icon/eye.png" mode="aspectFill" class="eyeIcon"></image>
+					<text class="gray">{{detail.fake}}</text>
+					<image src="/static/icon/peo.png" mode="aspectFill" class="peoIcon"></image>
+					<text class="gray userNum">{{detail.groupNumber}}</text>
+				</view>
+				<text class="gray ju">{{detail.distance||0}}km</text>
 			</view>
 			<view class="row">
 				<view class="time" v-if="detail.state==1">报名时间 : {{detail.signStartDate | changeTime}} - {{detail.signEndDate |changeTime}}</view>
@@ -111,7 +113,7 @@
 		display: flex;
 		align-items: center;
 		padding: 40rpx 0;
-		border-bottom: 1px solid #ddd;
+		border-bottom: 1rpx solid #eee;
 		.leftImg {
 			width: 230rpx;
 			height: 230rpx;
@@ -126,6 +128,9 @@
 			flex-direction: column;
 			justify-content: space-around;
 			.btnBox {
+				justify-content: space-between;
+			}
+			.jlRow{
 				justify-content: space-between;
 			}
 			.row {
@@ -161,7 +166,7 @@
 					color: rgba(102, 102, 102, 1);
 					vertical-align: middle;
 				}
-
+				
 				.eyeIcon {
 					width: 27rpx;
 					height: 19rpx;

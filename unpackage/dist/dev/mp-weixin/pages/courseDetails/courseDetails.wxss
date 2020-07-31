@@ -96,7 +96,6 @@ page {
 }
 .ss .ssImge {
   width: 750rpx;
-  height: 520rpx;
 }
 .titleBox {
   width: 690rpx;
@@ -713,6 +712,7 @@ page {
   display: flex;
 }
 .giftList .list .scroll-view_H .item {
+  position: relative;
   display: inline-block;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -738,6 +738,42 @@ page {
   text-overflow: ellipsis;
   white-space: nowrap;
   padding-bottom: 10rpx;
+}
+.giftList .list .scroll-view_H .item .firstClick {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 160rpx;
+  z-index: 9;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.giftList .list .scroll-view_H .item .firstClick image {
+  width: 41rpx;
+  height: 81rpx;
+}
+.giftList .list .scroll-view_H .item .firstClick view {
+  font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: white;
+}
+.mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 100%;
+  z-index: 3;
 }
 .flCaption {
   width: 100%;

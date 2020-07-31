@@ -32,7 +32,7 @@
 				学习有效期
 			</view>
 			<view class="other">
-				{{detail.studyDay/100}}天
+				{{detail.studyDay}}天
 			</view>
 		</view>
 		<view class="tip">
@@ -40,7 +40,7 @@
 		</view>
 		<view class="fixedBox">
 			<view class="left">
-				支付：<text>{{detail.price}}元</text>
+				支付：<text>{{detail.price/100}}元</text>
 			</view>
 			<view class="btn" @click="goSuccess">
 				订购支付
@@ -111,8 +111,11 @@
 											duration:900
 										})
 										setTimeout(()=>{
+											// uni.redirectTo({
+											// 	url:"/pages/courseBuySuccess/courseBuySuccess"
+											// })
 											uni.redirectTo({
-												url:"/pages/courseBuySuccess/courseBuySuccess"
+												url:"/pagesA/myCourse/myCourse"
 											})
 										},1500)
 									},

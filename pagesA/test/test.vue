@@ -9,26 +9,26 @@
 			</view>
 			<view class="contentTest">
 				<view class="type">
-					{{testList[index-1].isMc?'多选':'单选'}}
+					{{testList[index].isMc?'多选':'单选'}}
 				</view>
 				<view class="content">
-					<text class="count">{{index}}/{{testList.length}}</text>
+					<text class="count">{{index+1}}/{{testList.length}}</text>
 					<template v-if="isAnswer&&testList.length>0">
-						<view class="title">{{index}}、{{testList[index-1].name}}</view>
+						<view class="title">{{index+1}}、{{testList[index].name}}</view>
 						<scroll-view scroll-y="true" class="options">
-							<view class="item" v-for="(op,o) in testList[index-1].optionList" :key="o" :class="{'active':selOptionIds.includes(op.id)}"
-							 @click="selOption(testList[index-1].isMc,op.id)">
-								{{op.name}}
+							<view class="item" v-for="(op,o) in testList[index].optionList" :key="o" :class="{'active':selOptionIds.includes(op.id)}"
+							 @click="selOption(testList[index].isMc,op.id)">
+								{{op.orderNum}}、{{op.name}}
 							</view>
 						</scroll-view>
 						<view class="btns">
 							<view class="prev" @click="prev">
 								上一题
 							</view>
-							<view class="next" @click="next" v-if="index!==this.testList.length">
+							<view class="next" @click="next" v-if="(index+1) < testList.length">
 								下一题
 							</view>
-							<view class="next" @click="submitAnswer" v-if="index==this.testList.length">
+							<view class="next" @click="submitAnswer" v-if="(index+1)==testList.length">
 								提交
 							</view>
 						</view>
@@ -36,11 +36,11 @@
 					<template v-if="!isAnswer">
 						<image src="../static/img/cjd.png" mode="aspectFill" class="cjdImg"></image>
 						<view class="fraction">
-							<text>90</text>分
+							<text>{{result.score}}</text>分
 						</view>
-						<text class="correctNum">共答对9道</text>
-						<text class="correctNum time">共用时60秒</text>
-						<text class="testResult">考试通过</text>
+						<text class="correctNum">共答对{{result.count}}道</text>
+						<text class="correctNum time">共用时{{result.userTime}}秒</text>
+						<text class="testResult">{{result.isPass==1?'考试通过':'考试未通过'}}</text>
 						<view class="next" @click="showBook">
 							查看证书
 						</view>
@@ -88,12 +88,13 @@
 			return {
 				selOptionIds: [],
 				defineOption: [],
-				index: 1,
+				index:0,
 				isAnswer: true,
-				levelId: 1,
+				levelId: 2,
 				testList: [],
 				downTime:180,
-				timer:null
+				timer:null,
+				result:{}
 			};
 		},
 		onLoad(params) {
@@ -112,18 +113,31 @@
 				},1000)
 			},
 			submitAnswer() {
+				let obj = {}
+				let answer = this.selOptionIds.join(',')
+				obj.questionId = this.testList[this.index].id
+				obj.answer = answer
+				this.$set(this.defineOption,this.index,obj)
 				uni.request({
-					url: this.$uploadUrl + '/api/learn/answer',
+					url: this.$rqUrl + '/api/learn/answer',
 					method: "POST",
 					data: {
-						evelId: this.levelId,
+						levelId: this.levelId,
 						list: this.defineOption
 					},
 					header: {
 						'token':uni.getStorageSync('token')
 					},
 					success: (res) => {
-						this.isAnswer = false
+						if(res.data.code==10200){
+							this.result=res.data.data
+							this.isAnswer = false
+						}else{
+							uni.showToast({
+								title:res.data.message,
+								icon:'none'
+							})
+						}
 					}
 				});
 
@@ -136,13 +150,15 @@
 				}).then((res) => {
 					console.log(res)
 					if(res.data.length>0){
-						let count = 0
 						res.data.forEach((item) => {
+							this.defineOption.push({})
+							var count = 0
 							item.optionList.forEach((op) => {
 								if (op.isTrue == 1) {
 									count++
 								}
 							})
+							console.log(count)
 							if (count > 1) {
 								item.isMc = true
 							} else {
@@ -154,6 +170,7 @@
 				})
 			},
 			selOption(isMc, id) {
+				console.log(isMc,id)
 				let index = this.selOptionIds.indexOf(id)
 				if (isMc) { //多选
 					if (index == -1) {
@@ -162,26 +179,28 @@
 						this.selOptionIds.splice(index, 1)
 					}
 				} else {
-					this.selOptionIds = []
-					this.selOptionIds.push(id)
+					let a=[]
+					a.push(id)
+					this.selOptionIds = a
 				}
 			},
 			prev() {
-				if (this.index > 1) {
+				if (this.index > 0) {
 					this.selOptionIds = []
-					if (this.defineOption[index - 2].answer) {
-						this.selOptionIds = this.defineOption[index - 2].answer.split(',')
-					}
+					// if (this.defineOption[this.index-1].answer) {
+					// 	this.selOptionIds = this.defineOption[this.index-1].answer.split(',')
+					// }
+					this.$set(this.defineOption,this.index-1,{})
 					this.index--
 				}
 			},
 			next() {
-				if (this.index < this.testList.length) {
+				if (this.index < (this.testList.length-1)) {
 					let obj = {}
 					let answer = this.selOptionIds.join(',')
-					obj.questionId = this.testList[this.index - 1].id
+					obj.questionId = this.testList[this.index].id
 					obj.answer = answer
-					this.defineOption.push(obj)
+					this.$set(this.defineOption,this.index,obj)
 					this.selOptionIds = []
 					this.index++
 				}

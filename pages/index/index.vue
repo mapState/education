@@ -40,7 +40,7 @@
 		</view>
 		<view class="category">
 			<view class="cate" v-for="(item,index) in classList" :key="index" :index="index" @click="goEventsList(index)">
-				<image :src="imgUrl + item.iconUrl" mode="aspectFill" class="icon1"></image>
+				<image :src="imgUrl + item.iconUrl" mode="aspectFit" class="icon1"></image>
 				<text>{{item.name}}</text>
 			</view>
 		</view>
@@ -80,6 +80,7 @@
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
 	import QQMapWX from '../../common/qqmap-wx-jssdk.min.js';
 	var qqmapsdk;
+	let addressData={};
 	import Activity from '@/components/Activity.vue';
 	import TabBar from '@/components/TabBar.vue'
 	export default {
@@ -129,17 +130,18 @@
 			this.pageNo1=1
 			this.pageNo2=1
 			this.hotActiveList=[]
-			setTimeout(()=>{
-				uni.getStorage({
-				    key: 'address',
-				    success:(res)=>{
-				      this.addressData=res.data
-				    },
-						complete:()=>{
-							this.getCates()
-						}
-				})
-			},400)
+			this.getLocal()
+			// setTimeout(()=>{
+			// 	uni.getStorage({
+			// 	    key: 'address',
+			// 	    success:(res)=>{
+			// 	      this.addressData=res.data
+			// 	    },
+			// 			complete:()=>{
+			// 				this.getCates()
+			// 			}
+			// 	})
+			// },400)
 		},
 		onReachBottom(){
 			if(this.loadStatus=="noMore"){
@@ -152,6 +154,42 @@
 			}
 		},
 		methods: {
+			getLocal(){
+				qqmapsdk = new QQMapWX({
+					key: 'SSOBZ-TXSWP-XUKD5-LBVOW-DH74K-5MBQ6' // 必填
+				});
+				wx.getLocation({
+					type: 'wgs84',
+					success:(res)=>{
+						console.log(res);
+						addressData.lat = res.latitude
+						addressData.lng = res.longitude
+						//2、根据坐标获取当前位置名称，显示在顶部:腾讯地图逆地址解析
+						qqmapsdk.reverseGeocoder({
+							location: {
+								latitude: res.latitude,
+								longitude: res.longitude
+							},
+							success:(addressRes) =>{
+								//console.log(addressRes);
+								//var address = addressRes.result.formatted_addresses.recommend;
+								addressData.city = addressRes.result.address_component.city + addressRes.result.address_component.district
+								this.addressData=addressData
+								getApp().globalData.addressData=addressData
+								try {
+								    uni.setStorageSync('address', addressData);
+								} catch (e) {
+								    // error
+								}
+							},
+							
+						})
+					},
+					complete:()=>{
+						this.getCates()
+					}
+				})
+			},
 			goMine(){
 				uni.reLaunch({
 				    url: '/pages/mine/mine'
@@ -200,8 +238,8 @@
 					params:{
 						pageNo:this.pageNo1,
 						pageSize:this.pageSize,
-						lat:this.addressData.lat,
-						lng:this.addressData.lng
+						lat:this.addressData.lat||'',
+						lng:this.addressData.lng||''
 					}
 				}).then((res) => {
 					//this.swiperList=res.data

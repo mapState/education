@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mine_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mine.vue?vue&type=script&lang=js& */ 192);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _mine_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _mine_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _mine_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mine.vue?vue&type=style&index=0&lang=scss& */ 194);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
 
 var renderjs
 
@@ -224,26 +224,23 @@ __webpack_require__.r(__webpack_exports__);
 
   data: function data() {
     return {
-      userInfo: {
-        avatar: '',
-        name: '' },
-
+      userInfo: {},
       isLogin: false,
       top: 24,
       iconText: ['我的消息', '我的课程', '我的报名', '我的成长', '我的发布', '我的动态', '我的团队',
-      '等级权益', '推广赚钱', '联系客服', '常见问题', '其他'] };
+      '等级权益', '推广赚钱', '联系客服', '常见问题', '其他'],
 
+      imgUrl: '' };
 
   },
   onLoad: function onLoad() {
+    this.imgUrl = this.$baseUrl;
     this.top = uni.getMenuButtonBoundingClientRect().top;
   },
   onShow: function onShow() {var _this = this;
     uni.getStorage({
-      key: 'userInfo',
+      key: 'token',
       success: function success(res) {
-        _this.userInfo = res.data;
-        _this.isLogin = true;
         _this.getMyInfo();
       },
       fail: function fail(err) {
@@ -252,17 +249,22 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
-    getMyInfo: function getMyInfo() {
+    getMyInfo: function getMyInfo() {var _this2 = this;
       this.$api.get('/api/user/getUserInfo').then(function (res) {
-
+        _this2.userInfo = res.data;
+        _this2.isLogin = true;
+      }).catch(function (err) {
+        _this2.isLogin = false;
       });
     },
     goUp: function goUp() {
+      uni.navigateTo({
+        url: "/pagesA/classEquity/classEquity" });
 
     },
     goTest: function goTest() {
       uni.navigateTo({
-        url: "/pagesA/test/test" });
+        url: "/pagesA/test/test?levelId=" + this.userInfo.userLevel.id });
 
     },
     getPhoneNumber: function getPhoneNumber(e) {
@@ -298,11 +300,9 @@ __webpack_require__.r(__webpack_exports__);
                 encryptedData: info.detail.encryptedData,
                 iv: info.detail.iv }).
               then(function (result) {
-                console.log(result.data);
-                that.userInfo.avatar = result.data.avatar;
-                that.userInfo.name = result.data.name;
-                that.userInfo.id = result.data.id;
-                that.isLogin = true;
+                //console.log(result.data)
+                that.getMyInfo();
+                //that.isLogin = true
                 uni.setStorage({
                   key: 'token',
                   data: result.data.token,
@@ -312,27 +312,7 @@ __webpack_require__.r(__webpack_exports__);
 
                 uni.setStorage({
                   key: 'userInfo',
-                  data: that.userInfo,
-                  success: function success() {
-
-                  } });
-
-              }).catch(function (result) {
-                console.log(result);
-                that.userInfo.avatar = result.data.avatar;
-                that.userInfo.name = result.data.name;
-                that.userInfo.id = result.data.id;
-                that.isLogin = true;
-                uni.setStorage({
-                  key: 'token',
-                  data: result.data.token,
-                  success: function success() {
-
-                  } });
-
-                uni.setStorage({
-                  key: 'userInfo',
-                  data: that.userInfo,
+                  data: result.data,
                   success: function success() {
 
                   } });

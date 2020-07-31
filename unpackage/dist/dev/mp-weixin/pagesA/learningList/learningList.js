@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _learningList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./learningList.vue?vue&type=script&lang=js& */ 288);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _learningList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _learningList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _learningList_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./learningList.vue?vue&type=style&index=0&lang=scss& */ 290);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
 
 var renderjs
 
@@ -278,7 +278,7 @@ __webpack_require__.r(__webpack_exports__);
     this.detail = getApp().globalData.learnDetail;
     this.bookList();
     if (params.tagList) {
-      this.tagList = params.tagList;
+      this.tagList = JSON.parse(params.tagList);
     }
     uni.getStorage({
       key: 'notfirstStudy',
@@ -321,7 +321,9 @@ __webpack_require__.r(__webpack_exports__);
         delta: 1 });
 
     },
-    lookView: function lookView() {
+    lookView: function lookView(index) {
+      uni.navigateTo({
+        url: "/pagesA/studyDetails/studyDetails?index=" + index });
 
     },
     goStudy: function goStudy() {

@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _joinDetail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./joinDetail.vue?vue&type=script&lang=js& */ 88);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _joinDetail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _joinDetail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _joinDetail_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./joinDetail.vue?vue&type=style&index=0&lang=scss& */ 90);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
 
 var renderjs
 
@@ -205,23 +205,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {
   components: {
     Activity: Activity },
@@ -235,14 +218,24 @@ __webpack_require__.r(__webpack_exports__);
       age: '',
       name: '',
       phone: '',
-      sex: 0 };
+      sex: 0,
+      activityTeamList: {} };
 
   },
   onLoad: function onLoad(params) {
+    this.activityTeamList = getApp().globalData.activityTeamList;
     this.activeData = getApp().globalData.activeData;
     this.buyType = params.type ? params.type : 2;
   },
   methods: {
+    gotomapLocation: function gotomapLocation() {var _this = this; //选取位置
+      wx.chooseLocation({
+        success: function success(res) {
+          _this.address = res.address;
+          console.log(res);
+        } });
+
+    },
     bindPickerChange: function bindPickerChange(e) {
       this.sex = e.target.value;
     },
@@ -265,7 +258,8 @@ __webpack_require__.r(__webpack_exports__);
         buyType = 3;
       }
       if (this.buyType == 3) {//组队购买
-        //this.joinGroup(1)  //activityTeamId
+        console.log('组队拼团');
+        this.joinGroup(this.activityTeamList.id); //activityTeamId
       } else {
         if (this.buyType == 1) {
           this.sendInfo1(buyType, 1);
@@ -277,7 +271,7 @@ __webpack_require__.r(__webpack_exports__);
 
     },
     //组队开团
-    joinGroup: function joinGroup(activityTeamId) {var _this = this;
+    joinGroup: function joinGroup(activityTeamId) {var _this2 = this;
       this.$api.post('/api/team/join', {
         activityTeamId: activityTeamId,
         userId: uni.getStorageSync('userInfo').id,
@@ -288,11 +282,11 @@ __webpack_require__.r(__webpack_exports__);
         phone: this.phone,
         sex: this.sex }).
       then(function (kt) {
-        _this.wxPay(3, kt.data.id);
+        _this2.wxPay(3, kt.data.id);
       });
     },
     //开团 1拼团 2单独购买
-    sendInfo1: function sendInfo1(buyType, type) {var _this2 = this;
+    sendInfo1: function sendInfo1(buyType, type) {var _this3 = this;
       this.$api.post('/api/team/start', {
         userId: uni.getStorageSync('userInfo').id,
         type: type,
@@ -306,10 +300,10 @@ __webpack_require__.r(__webpack_exports__);
           sex: this.sex } }).
 
       then(function (kt) {
-        _this2.wxPay(buyType, kt.data.id);
+        _this3.wxPay(buyType, kt.data.id);
       });
     },
-    wxPay: function wxPay(orderType, tableId) {var _this3 = this;
+    wxPay: function wxPay(orderType, tableId) {var _this4 = this;
       uni.showLoading({
         title: '加载中',
         mask: true });
@@ -317,7 +311,7 @@ __webpack_require__.r(__webpack_exports__);
       wx.login({
         success: function success(res) {
           if (res.code) {
-            _this3.$api.post('/api/order/wxPay', {
+            _this4.$api.post('/api/order/wxPay', {
               tableId: tableId,
               userId: uni.getStorageSync('userInfo').id,
               payType: 1,

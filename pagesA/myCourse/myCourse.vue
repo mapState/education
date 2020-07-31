@@ -12,13 +12,13 @@
 			<uni-load-more :status="loadStatus1"></uni-load-more>
 		</view>
 		<view class="list" v-if="tabIndex==1">
-			<block v-for="item in allList" :key="item.id">
+			<block v-for="item in effList" :key="item.id">
 				<myCourse :detail="item"></myCourse>
 			</block>
 			<uni-load-more :status="loadStatus2"></uni-load-more>
 		</view>
 		<view class="list" v-if="tabIndex==2">
-			<block v-for="item in allList" :key="item.id">
+			<block v-for="item in lostList" :key="item.id">
 				<myCourse :detail="item"></myCourse>
 			</block>
 			<uni-load-more :status="loadStatus3"></uni-load-more>
@@ -102,7 +102,11 @@
 
 						this.allList=this.allList.concat(res.data)
 						this.pageNo1++
-						this.loadStatus1="more"
+						if(res.data==this.pageSize){
+							this.loadStatus1="more"
+						}else{
+							this.loadStatus1="noMore"
+						}
 					}else{
 						this.loadStatus1="noMore"
 					}
@@ -135,8 +139,12 @@
 							course.tagList=tagList
 						})
 						this.effList=this.effList.concat(res.data)
-						this.loadStatus2="more"
 						this.pageNo2++
+						if(res.data==this.pageSize){
+							this.loadStatus2="more"
+						}else{
+							this.loadStatus2="noMore"
+						}
 					}else{
 						this.loadStatus2="noMore"
 					}
@@ -169,8 +177,12 @@
 							course.tagList=tagList
 						})
 						this.lostList=this.lostList.concat(res.data)
-						this.loadStatus3="more"
 						this.pageNo3++
+						if(res.data==this.pageSize){
+							this.loadStatus3="more"
+						}else{
+							this.loadStatus3="noMore"
+						}
 					}else{
 						this.loadStatus3="noMore"
 					}

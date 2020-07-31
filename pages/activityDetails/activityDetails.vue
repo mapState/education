@@ -11,14 +11,13 @@
 		<scroll-view class="scroll-view" scroll-y scroll-with-animation="true" :scroll-into-view="toIndex" @scroll="scrollHandle">
 			<view class="main">
 				<view class="ss">
-					<image :src="imgUrl+detailData.poster"
-					 mode="aspectFill" class="ssImge"></image>
-					 <view class="income">
-					 	<text>累计佣金收益:￥1234</text>
+					<image :src="imgUrl+detailData.poster" mode="aspectFill" class="ssImge"></image>
+					<!-- <view class="income">
+						<text>累计佣金收益:￥1234</text>
 						<view class="down">
 							下载名单
 						</view>
-					 </view>
+					</view> -->
 				</view>
 				<!-- <swiper class="swiper" :autoplay="true" :interval="2000" :duration="500" :circular="true" :indicator-dots="true"
 				 indicator-color="#fff" indicator-active-color="#FDD30F">
@@ -58,7 +57,7 @@
 					</view>
 				</view>
 				<view class="block">
-
+					<text style="opacity: 0;">1</text>
 				</view>
 				<view class="section">
 					<view class="local">
@@ -96,7 +95,7 @@
 					</view>
 				</view>
 				<view class="block">
-
+					<text style="opacity: 0;">1</text>
 				</view>
 				<view class="tabs" :style="{top:top+'px'}">
 					<text :class="{'active':currentLetter=='Details'}" @click="toView('Details')">活动详情</text>
@@ -173,11 +172,11 @@
 					</view>
 					<view class="item" @click="doCollect">
 						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc" v-if="detailData.isStore"></image>
-						<image src="../../static/icon/heart.png" mode="aspectFit" class="sc" v-else></image>
+						<image src="../../static/icon/hx-sc.png" mode="aspectFit" class="sc" v-else></image>
 						<text>收藏</text>
 					</view>
 				</view>
-				
+
 				<view class="tabbar" v-if="detailData.state==2&&buyStatus==0">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
@@ -185,7 +184,7 @@
 					</view>
 					<view class="item" @click="doCollect">
 						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc" v-if="detailData.isStore"></image>
-						<image src="../../static/icon/heart.png" mode="aspectFit" class="sc" v-else></image>
+						<image src="../../static/icon/hx-sc.png" mode="aspectFit" class="sc" v-else></image>
 						<text>收藏</text>
 					</view>
 					<view class="btns">
@@ -198,15 +197,23 @@
 						</view>
 					</view>
 				</view>
-				<view class="tabbar" v-if="buyStatus==1">
+				<view class="tabbar" v-if="buyStatus!=0">
 					<view class="item kfa">
 						<image src="../../static/icon/kf.png" mode="aspectFit" class="kf"></image>
 						<text>客服</text>
 					</view>
 					<view class="item" @click="doCollect">
 						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc" v-if="detailData.isStore"></image>
-						<image src="../../static/icon/heart.png" mode="aspectFit" class="sc" v-else></image>
+						<image src="../../static/icon/hx-sc.png" mode="aspectFit" class="sc" v-else></image>
 						<text>收藏</text>
+					</view>
+					<view class="btns" v-if="detailData.state==3">
+						<view class="buy" @click="downFile">
+							下载附件
+						</view>
+						<view class="group" @click="$refs.showMyGroup.open()">
+							我的团
+						</view>
 					</view>
 					<view class="btns" v-if="detailData.state==4">
 						<view class="buy" @click="downFile">
@@ -217,14 +224,14 @@
 						</view>
 					</view>
 					<view class="bmBtn" v-if="detailData.state==2">
-						<view class="btn1">
-							申请退款
+						<view class="btn1" @click="tk">
+							{{detailData.buyStatus==1?'申请退款':'退款中'}}
 						</view>
 						<view class="btn2" @click="downFile">
 							下载附件
 						</view>
 						<view class="btn3" @click="$refs.showMyGroup.open()">
-							我的团(3/4)
+							我的团
 						</view>
 					</view>
 				</view>
@@ -235,7 +242,7 @@
 					</view>
 					<view class="item" @click="doCollect">
 						<image src="../../static/icon/Collected.png" mode="aspectFit" class="sc" v-if="detailData.isStore"></image>
-						<image src="../../static/icon/heart.png" mode="aspectFit" class="sc" v-else></image>
+						<image src="../../static/icon/hx-sc.png" mode="aspectFit" class="sc" v-else></image>
 						<text>收藏</text>
 					</view>
 					<view class="wksBtn">
@@ -305,9 +312,9 @@
 					拼团列表
 				</view>
 				<view class="list">
-					<view class="item" v-for="item in 3" :key="item">
-						<image src="../../static/1.jpg" mode="aspectFill"></image>
-						<text>仙女</text>
+					<view class="item" v-for="item in teamData.memberList" :key="item">
+						<image :src="item.avatar" mode="aspectFill"></image>
+						<text>{{item.name}}</text>
 					</view>
 					<view class="wz">
 						<image src="../../static/icon/wz.png" mode="aspectFill"></image>
@@ -342,16 +349,16 @@
 		},
 		data() {
 			return {
-				imgUrl:'',
+				imgUrl: '',
 				tmpImg: '',
 				width: 570,
 				height: 820,
 				pixelRatio: 2,
 				codePath: '/static/tmp/code.jpg', //小程序码
 				poserImg: 'https://t8.baidu.com/it/u=3887179165,3572970878&fm=79&app=86&size=h300&n=0&g=4n&f=jpeg?sec=1596352536&t=2736120db00abcf307212a6d5ddfce18',
-				totalDays:'',//总天数
-				laveDays:'',//剩余天数
-				detailData:{},
+				totalDays: '', //总天数
+				laveDays: '', //剩余天数
+				detailData: {},
 				top: 22,
 				scrollTop: 0,
 				showAd: true,
@@ -359,32 +366,34 @@
 				letterDetails: [],
 				currentLetter: "Details",
 				type: 0, //我的报名  (1未开始2报名中 3进行中 4已结束)
-				showFixed:true,
-				status:0,//1报名中 2未开始 3进行中 4已结束
+				showFixed: true,
+				status: 0, //1报名中 2未开始 3进行中 4已结束
 				//classList:[],
-				tagList:[],
-				giveList:[],//赠送福利
-				oldEve:[],
-				buyStatus:0,
+				tagList: [],
+				giveList: [], //赠送福利
+				oldEve: [],
+				buyStatus: 0,
 			};
 		},
-		filters:{
-			changeTime(val){
-				if(val){
-					return val.substr(0,10)
+		filters: {
+			changeTime(val) {
+				if (val) {
+					return val.substr(0, 10)
 				}
 				return ''
 			}
 		},
 		onLoad(params) {
-			this.imgUrl=this.$baseUrl
+			this.imgUrl = this.$baseUrl
 			this.top = uni.getMenuButtonBoundingClientRect().top
 			this.detailData = getApp().globalData.activeData
-			this.buyStatus=params.buyStatus?1:0
+			this.buyStatus=this.detailData.isBuy
+			//this.buyStatus=params.buyStatus?1:0
 			this.getLaveTime()
 			this.getCates()
-			this.getGiveCourse()//赠送的课程
-			this.getOldEve()//往期评价
+			this.getGiveCourse() //赠送的课程
+			this.getOldEve() //往期评价
+			this.getTeamList()
 		},
 		onShareAppMessage(res) {
 			if (res.from === 'button') { // 来自页面内分享按钮
@@ -396,120 +405,156 @@
 			}
 		},
 		methods: {
-			//1开团 2单独购买 3参团
-			//单独购买
-			aloneBuy(){
-				uni.navigateTo({
-					url:"/pages/joinDetail/joinDetail?type=2"
+			getTeamList(){
+				this.$api.get('/api/team/myTeam',{
+					params:{
+						actId:this.detailData.id
+					}
+				}).then((res)=>{
+					this.teamData=res.data
 				})
 			},
-			getPhone(){
-				if(this.detailData.organizerPhone){
+			//退款
+			tk(){
+				if(this.buyStatus==2){
+					uni.showToast({
+						title:"退款中",
+						icon:'none'
+					})
+					return
+				}
+				this.$api.post('/api/order/refund',{
+					id:this.detailData.orderId
+				}).then((res)=>{
+					this.detailData.buyStatus=2
+					uni.showToast({
+						title:res.message,
+						icon:'none'
+					})
+				})
+			},
+			//1开团 2单独购买 3参团
+			//单独购买
+			aloneBuy() {
+				uni.navigateTo({
+					url: "/pages/joinDetail/joinDetail?type=2"
+				})
+			},
+			getPhone() {
+				if (this.detailData.organizerPhone) {
 					uni.makePhoneCall({
-					    phoneNumber:this.detailData.organizerPhone
+						phoneNumber: this.detailData.organizerPhone
 					});
 				}
 			},
-			downFile(){
-				uni.downloadFile({
-				    url: this.imgUrl+this.detailData.filepath,
-				    success: (res) => {
-				        if (res.statusCode === 200) {
-				          uni.showToast({
-				          	title:"下载成功"
-				          })
-				        }
-				    }
-				});
+			downFile() {
+				if (this.detailData.filepath) {
+					uni.downloadFile({
+						url: this.imgUrl + this.detailData.filepath,
+						success: (res) => {
+							if (res.statusCode === 200) {
+								uni.showToast({
+									title: "下载成功"
+								})
+							}
+						}
+					});
+				} else {
+					uni.showToast({
+						title: "附件地址不存在",
+						icon: 'none'
+					})
+					return
+				}
 			},
-			doCollect(){
-				let status=this.detailData.isStore==1?0:1
+			doCollect() {
+				let status = this.detailData.isStore == 1 ? 0 : 1
 				this.collected(status)
 			},
 			//收藏
-			collected(status){
-				this.$api.post('/api/user/store',{
-					type:1,//1活动 2课程
+			collected(status) {
+				this.$api.post('/api/user/store', {
+					type: 1, //1活动 2课程
 					status,
-					tableId:this.detailData.id,
-					userId:uni.getStorageSync('userInfo').id
-				}).then((res)=>{
-					this.detailData.isStore=status
+					tableId: this.detailData.id,
+					userId: uni.getStorageSync('userInfo').id
+				}).then((res) => {
+					this.detailData.isStore = status
 				})
 			},
-			getOldEve(){
-				this.$api.get('/api/act/getCommentActivityId',{
-					params:{
-						activityId:this.detailData.id 
+			getOldEve() {
+				this.$api.get('/api/act/getCommentActivityId', {
+					params: {
+						activityId: this.detailData.id
 					}
-				}).then((res)=>{
-					this.oldEve=res.data
+				}).then((res) => {
+					this.oldEve = res.data
 				})
 			},
-			getGiveCourse(){
-				this.$api.get('/api/act/getLessonByActivityId',{
-					params:{
-						activityId:this.detailData.id
+			getGiveCourse() {
+				this.$api.get('/api/act/getLessonByActivityId', {
+					params: {
+						activityId: this.detailData.id
 					}
-				}).then((res)=>{
-					if(res.data.length>0){
-						this.giveList=res.data
+				}).then((res) => {
+					if (res.data.length > 0) {
+						this.giveList = res.data
 					}
 				})
 			},
 			//获取分类列表
 			getCates() {
-				this.$api.get('/api/static/dictList',{
-					params:{
-						type:1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
+				this.$api.get('/api/static/dictList', {
+					params: {
+						type: 1 //1.活动分类 2.课程分类 3.绘本分类 4 帖子分类 5消费得积分 6消费得经验
 					}
 				}).then((res) => {
 					//this.swiperList=res.data
 					console.log(res.data)
 					//this.classList=res.data
-					let pid=''
-					let tagList=[]
-					res.data.forEach((item)=>{
-						if(item.id==this.detailData.typeId){
+					let pid = ''
+					let tagList = []
+					res.data.forEach((item) => {
+						if (item.id == this.detailData.typeId) {
 							tagList.push(item.name)
-							pid=item.pid
+							pid = item.pid
 						}
 					})
 					console.log(tagList)
-					res.data.forEach((item)=>{
-						if(item.id==pid){
+					res.data.forEach((item) => {
+						if (item.id == pid) {
 							tagList.push(item.name)
-							this.tagList=tagList
+							this.tagList = tagList
 						}
 					})
 				})
 			},
-			getLaveTime(){
-				let t1 = this.detailData.startDate.replace(new RegExp("-","gm"),"/").substr(0,10);
-				let t2 = this.detailData.endDate.replace(new RegExp("-","gm"),"/").substr(0,10);
+			getLaveTime() {
+				let t1 = this.detailData.startDate.replace(new RegExp("-", "gm"), "/").substr(0, 10);
+				let t2 = this.detailData.endDate.replace(new RegExp("-", "gm"), "/").substr(0, 10);
 				t1 = new Date(t1).getTime()
 				t2 = new Date(t2).getTime()
-				this.totalDays=this.geta(t1,t2)
-				let nowData=new Date().getTime()
-				let endData=this.detailData.signEndDate.replace(new RegExp("-","gm"),"/").substr(0,10);
-				endData=new Date(endData).getTime()
-				this.laveDays=this.geta(nowData,endData)
+				this.totalDays = this.geta(t1, t2)
+				let nowData = new Date().getTime()
+				let endData = this.detailData.signEndDate.replace(new RegExp("-", "gm"), "/").substr(0, 10);
+				endData = new Date(endData).getTime()
+				this.laveDays = this.geta(nowData, endData)
 			},
 			//获取时间差
-			geta(date1,date2){ //date2结束时间
-				var date3=date2-date1  //时间差的毫秒数
+			geta(date1, date2) { //date2结束时间
+				var date3 = date2 - date1 //时间差的毫秒数
 				//计算出相差天数
-				var days=Math.floor(date3/(24*3600*1000))
-				return days+1
+				var days = Math.floor(date3 / (24 * 3600 * 1000))
+				return days + 1
 			},
-			goInfo(){
+			goInfo() {
 				uni.navigateTo({
-					url:"/pages/togetherInfo/togetherInfo?actId="+this.detailData.id
+					url: "/pages/togetherInfo/togetherInfo?actId=" + this.detailData.id
 				})
 			},
 			goCommet() {
 				uni.navigateTo({
-					url: "/pagesA/courseEvaluation/courseEvaluation"
+					url: "/pagesA/courseEvaluation/courseEvaluation?type=1"
 				})
 			},
 			toView(val) {
@@ -533,7 +578,7 @@
 						});
 					});
 					this.letterDetails.some(item => {
-						if ((scrollTop-180) >= item.top && (scrollTop-180) <= (item.bottom-20)) {
+						if ((scrollTop - 180) >= item.top && (scrollTop - 180) <= (item.bottom - 20)) {
 							this.currentLetter = item.id;
 							//console.log(this.currentLetter)
 							//当前固定用的是粘性定位，如果不用粘性定位，在这里设置
@@ -553,20 +598,20 @@
 			},
 			OpenGroup() {
 				//this.kTeam()
-				this.$api.get('/api/user/getUserInfo').then((res)=>{
+				this.$api.get('/api/user/getUserInfo').then((res) => {
 					this.$refs.popup.close()
-					if(true){
+					if (res.data.level >= 3) {
 						//开团 填写信息 type 1开团 2单独购买 3参团
 						uni.navigateTo({
-							url:"/pages/joinDetail/joinDetail?type=1"
+							url: "/pages/joinDetail/joinDetail?type=1"
 						})
-					}else{
+					} else {
 						this.$refs.popup1.open()
 					}
 				})
 			},
 			viewAll(data) {
-				getApp().globalData.oldActiveData=data
+				getApp().globalData.oldActiveData = data
 				uni.navigateTo({
 					url: "/pages/comment/comment"
 				})
@@ -631,7 +676,8 @@
 										var avatarurl_x = 200; //绘制的头像在画布上的位置
 										var avatarurl_y = 660; //绘制的头像在画布上的位置
 										context.beginPath(); //开始绘制
-										context.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_heigth / 2 + avatarurl_y, avatarurl_width / 2, 0, Math.PI * 2, false);
+										context.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_heigth / 2 + avatarurl_y, avatarurl_width /
+											2, 0, Math.PI * 2, false);
 										context.clip();
 										context.drawImage(avatar.path, 200, 660, 62, 62);
 										context.save();
@@ -660,7 +706,7 @@
 										}, 300);
 									}
 								})
-			
+
 							}
 						})
 					}

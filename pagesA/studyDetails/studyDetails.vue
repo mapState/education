@@ -8,15 +8,15 @@
 		</view>
 		<view class="section1" v-if="tabIndex==0&&showRecommend==false">
 			<view class="title">
-				当前：国际儿童读书日
+				当前：{{books[bIndex].title}}
 			</view>
 			<view class="nav">
-				<text>上一本：五只小猪</text>
-				<text>下一本：我不想吃饭</text>
+				<text v-if="bIndex!=0">上一本：{{books[bIndex-1].title}}</text>
+				<text v-if="(bIndex+1)!=books.length">下一本：{{books[bIndex+1].title}}</text>
 			</view>
 			<swiper class="swiper" :interval="2000" :duration="500" :circular="true" @change="swiperChange" indicator-color="#fff">
-				<swiper-item v-for="(item,index) in imgList" :key="index">
-					<image :src="item" mode="aspectFill" class="itemImg"></image>
+				<swiper-item v-for="(img,i) in imgList" :key="i">
+					<image :src="imgUrl+img" mode="aspectFill" class="itemImg"></image>
 				</swiper-item>
 			</swiper>
 			<view class="dots">
@@ -68,21 +68,77 @@
 				<slider class="audio-slider" :value="currentTime" min="0" :max="duration" @change="sliderChange" block-size="15" activeColor="#FDD30F" />
 				<view class="audio-number">{{alltime}}</view>
 			</view>
-			<text class="courseTitle">国际儿童读书日音频名称</text>
+			<text class="courseTitle">{{books[bIndex].title}}</text>
 		</view>
 		<view class="section3" v-if="tabIndex==2">
-			<view class="title">
-				一：图文解读
-			</view>
-			<view class="detail">
+			<!-- <view class="detail">
 				首先，心理压力比较具体和直接，它涉及的问题比较广泛如果你想在装修过程中省心一些，那就请你费一些银子吧。省心的办法不是没有，只是看你肯不肯选罢了。找一家声誉好的大型装修公司全包。一般来说全包的价格从每平米建筑面积500元至1000元，再贵的也有，这要看你怎么设计，怎么用料。大公司就这样好，他为了保证自己的信誉不受损害，一定会认真地对待每个客户。所以在用料和做工上你完全可以放心。你所做的就是准备好付银子和验收。
-			</view>
-			<video src="http://cdn.pike8.top/android_file_492_1587054614490_7717.mp4" class="video"></video>
+			</view> -->
+			<template v-if="books[bIndex].readType==1">
+				<view class="title">
+					一：图文解读
+				</view>
+				<rich-text :nodes="books[bIndex].contentRead"></rich-text>
+			</template>
+			<template v-if="books[bIndex].readType==2">
+				<view class="music-box">
+					<image src="../static/img/musicBg1.png" mode="aspectFill" class="circleImg"></image>
+					<image src="../static/img/musicbg-2.png" mode="aspectFill" class="roImg" :class="{'running':playState==0}"></image>
+					<view class="bfBox" @click="bf" v-if="playState==1">
+						<image src="../static/icon/bf.png" mode="aspectFit" class="bfIcon"></image>
+					</view>
+					<view class="ztIcon" @click="bf" v-else>
+						<view class="">
+						</view>
+						<view class="">
+						</view>
+					</view>
+				</view>
+				<view class="audio-wrapper">
+					<view class="audio-number">{{nowtime}}</view>
+					<slider class="audio-slider" :value="currentTime" min="0" :max="duration" @change="sliderChange" block-size="15" activeColor="#FDD30F" />
+					<view class="audio-number">{{alltime}}</view>
+				</view>
+				<text class="courseTitle">{{books[bIndex].title}}</text>
+			</template>
+			<template v-if="books[bIndex].readType==3">
+				<video :src="imgUrl+books[bIndex].contentRead" class="video"></video>
+			</template>
 		</view>
 		<view class="section3" v-if="tabIndex==3">
-			<view class="detail">
+			<!-- <view class="detail">
 				首先，心理压力比较具体和直接，它涉及的问题比较广泛如果你想在装修过程中省心一些，那就请你费一些银子吧。省心的办法不是没有，只是看你肯不肯选罢了。找一家声誉好的大型装修公司全包。一般来说全包的价格从每平米建筑面积500元至1000元，再贵的也有，这要看你怎么设计，怎么用料。大公司就这样好，他为了保证自己的信誉不受损害，一定会认真地对待每个客户。所以在用料和做工上你完全可以放心。你所做的就是准备好付银子和验收。
-			</view>
+			</view> -->
+			<template v-if="books[bIndex].gameType==1">
+				<view class="title">
+					一：图文解读
+				</view>
+				<rich-text :nodes="books[bIndex].contentGame"></rich-text>
+			</template>
+			<template v-if="books[bIndex].gameType==2">
+				<view class="music-box">
+					<image src="../static/img/musicBg1.png" mode="aspectFill" class="circleImg"></image>
+					<image src="../static/img/musicbg-2.png" mode="aspectFill" class="roImg" :class="{'running':playState==0}"></image>
+					<view class="bfBox" @click="bf" v-if="playState==1">
+						<image src="../static/icon/bf.png" mode="aspectFit" class="bfIcon"></image>
+					</view>
+					<view class="ztIcon" @click="bf" v-else>
+						<view class="">
+						</view>
+						<view class="">
+						</view>
+					</view>
+				</view>
+				<view class="audio-wrapper">
+					<view class="audio-number">{{nowtime}}</view>
+					<slider class="audio-slider" :value="currentTime" min="0" :max="duration" @change="sliderChange" block-size="15" activeColor="#FDD30F" />
+					<view class="audio-number">{{alltime}}</view>
+				</view>
+				<text class="courseTitle">{{books[bIndex].title}}</text>
+			</template>
+			<template v-if="books[bIndex].gameType==3">
+				<video :src="spUrl+books[bIndex].contentGame" class="video"></video>
+			</template>
 		</view>
 		<image src="../static/icon/download.png" mode="aspectFill" class="downIcon" v-if="tabIndex==3"></image>
 	</view>
@@ -97,37 +153,45 @@
 		},
 		data() {
 			return {
+				spUrl:'https://smallwx.pkbkok.com/lesson/file/media/',
 				showRecommend: false,
 				tabIndex: 0,
 				tabList: ['绘本图', '听音频', '阅读指导', '游戏介绍'],
 				currentIndex: 0,
-				imgList: ['https://hbimg.huabanimg.com/56f72932c7d3ad052b3de13a6bf9630207873c73bf8e3-8VztuL_fw658/format/webp',
-					'https://hbimg.huabanimg.com/34e18c2c70065b9cde1f5f031610bf1652a37c88b47a2-qP9HpD_fw658/format/webp',
-					'https://hbimg.huabanimg.com/f36b1e4adcf4a7ef21570aba62fbb887e737d8b4bcee7-v4LYHM_fw658/format/webp'
-				],
+				// imgList: ['https://hbimg.huabanimg.com/56f72932c7d3ad052b3de13a6bf9630207873c73bf8e3-8VztuL_fw658/format/webp',
+				// 	'https://hbimg.huabanimg.com/34e18c2c70065b9cde1f5f031610bf1652a37c88b47a2-qP9HpD_fw658/format/webp',
+				// 	'https://hbimg.huabanimg.com/f36b1e4adcf4a7ef21570aba62fbb887e737d8b4bcee7-v4LYHM_fw658/format/webp'
+				// ],
 				currentIndex: 0,
-				songList: [{
-						"name": "走歌人",
-						"author": "暗杠",
-						"src": "http://music.163.com/song/media/outer/url?id=418990139.mp3",
-						"img": "http://p2.music.126.net/_UOTSqLC8qHRivyuUBC9OQ==/18200215974944920.jpg"				
-					},
-					{
-						"name": "走歌人原版无损伴奏",
-						"author": "暗杠",
-						"src": "http://music.163.com/song/media/outer/url?id=430685718.mp3",
-						"img": "http://p2.music.126.net/_UOTSqLC8qHRivyuUBC9OQ==/18200215974944920.jpg"
-					}
-				],
+				// songList: [{
+				// 		"name": "走歌人",
+				// 		"author": "暗杠",
+				// 		"src": "http://music.163.com/song/media/outer/url?id=418990139.mp3",
+				// 		"img": "http://p2.music.126.net/_UOTSqLC8qHRivyuUBC9OQ==/18200215974944920.jpg"				
+				// 	}
+				// ],
 				duration: 0,
 				currentTime: 0,
 				playWay: 1,//循环or列表
 				playState: 1,//播放状态 0播放1暂停
 				nowIndex: 0,
-				courseList:[]
+				courseList:[],
+				detail:{},
+				imgUrl:'',
+				books:[],
+				bIndex:0
 			};
 		},
 		computed: {
+			imgList(){
+				let arry=[]
+				if(this.books.length>0){
+					if(this.books[this.bIndex].image){
+						arry=this.books[this.bIndex].image.split(',')
+					}
+				}
+				return arry
+			},
 			'nowtime': function() {
 				var that = this
 				var s = that.currentTime
@@ -165,13 +229,27 @@
 				return h + ':' + s;
 			}		
 		},
-		onLoad() {
+		onLoad(params) {
+			this.bIndex=params.index?params.index:0
+			this.imgUrl=this.$baseUrl
+			this.detail=getApp().globalData.learnDetail
+			this.bookList()
 			bgAudioMannager = uni.getBackgroundAudioManager();
 			this.getRecomed()
 			//如果要默认播放的话，把以下注释取消
 			//this.bgAudioInnit();
 		},
 		methods: {
+			bookList(){
+				this.$api.get('/api/lesson/getBookListByLessonId',{
+					params:{
+						lessonId:this.detail.id,
+						type:1
+					}
+				}).then((res)=>{
+					this.books=res.data
+				})
+			},
 			//推荐课程
 			getRecomed(){
 				this.$api.get('/api/lesson/getBookListByLessonId',{
@@ -211,11 +289,16 @@
 			},
 			bgAudioInnit() {
 				var that = this
-				bgAudioMannager.title = that.songList[that.nowIndex].name;
-				bgAudioMannager.singer = that.songList[that.nowIndex].author;
-				bgAudioMannager.coverImgUrl = that.songList[that.nowIndex].img;
-				bgAudioMannager.src = that.songList[that.nowIndex].src;
-			
+				// bgAudioMannager.title = that.songList[that.nowIndex].name;
+				// bgAudioMannager.singer = that.songList[that.nowIndex].author;
+				// bgAudioMannager.coverImgUrl = that.songList[that.nowIndex].img;
+				//bgAudioMannager.src = that.songList[that.nowIndex].src;
+				if(this.books[this.bIndex]&&this.books[this.bIndex].audio){
+					bgAudioMannager.title = this.books[this.bIndex].title
+					bgAudioMannager.src =this.spUrl+this.books[this.bIndex].audio
+				}else{
+					return
+				}
 				bgAudioMannager.onPlay(() => {
 					that.playFunc()
 				})

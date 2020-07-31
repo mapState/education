@@ -122,7 +122,7 @@
 	bottom:0;
 	z-index: 99;
 	background-color: #fff;
-	border-top: 1px solid #ddd;
+	border-top: 1rpx solid #eee;
 	.addBox{
 		top:-32rpx;
 		left:50%;

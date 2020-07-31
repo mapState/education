@@ -13,11 +13,11 @@
 			<view class="row">
 				<view class="col wz">
 					<image src="../../static/icon/dw2.png" mode="aspectFit" class="dwIcon"></image>
-					<text>杭州</text>
+					<text>{{detailData.address}}</text>
 				</view>
 				<view class="col">
 					<image src="../../static/icon/us2.png" mode="aspectFit" class="userIcon"></image>
-					<text>团剩余数</text>
+					<text>剩余{{detailData.groupNumber - detailData.joinCount}}</text>
 				</view>
 				<view class="col again" @click="viewMore">
 					<image src="../../static/icon/cil.png" mode="aspectFit" class="cilIcon"></image>
@@ -36,7 +36,7 @@
 						</view>
 					</view>
 					<view class="nameBox">
-						<text>{{item.avatar}}</text>
+						<text>{{item.name}}</text>
 						<view class="tag">
 							营长
 						</view>
@@ -47,30 +47,20 @@
 					<text class="wz">杭州市江干区九堡</text>
 				</view>
 			</view>
-			<view class="people" v-for="(other,index) in item.memberList" :key="index">
+			<view class="people">
 				<view class="left">
-					<view class="item">
-						<image src="../../static/1.jpg" mode="aspectFill" class="peoImg"></image>
-						<text class="name">酒酒</text>
+					<view class="item" v-for="(other,index) in item.memberList" :key="index" v-if="index!=0">
+						<image :src="other.avatar" mode="aspectFill" class="peoImg"></image>
+						<text class="name">{{other.name}}</text>
 					</view>
-					<view class="item">
-						<image src="../../static/1.jpg" mode="aspectFill" class="peoImg"></image>
-						<text class="name">酒酒</text>
-					</view>
-					<view class="item">
-						<view class="black">
-							?
-						</view>
-						<text class="name">空位</text>
-					</view>
-					<view class="item">
+					<view class="item" v-for="(bk,b) in (5-item.memberList.length)" :key="b">
 						<view class="black">
 							?
 						</view>
 						<text class="name">空位</text>
 					</view>
 				</view>
-				<view class="cy" v-if="item.memberList.length<5" @click="goJoinDetail">
+				<view class="cy" v-if="item.memberList.length<5" @click="goJoinDetail(item)">
 					参与
 				</view>
 				<view class="man" v-else>
@@ -124,7 +114,8 @@
 					url:"/pages/headInfo/headInfo"
 				})
 			},
-			goJoinDetail(){
+			goJoinDetail(data){
+				getApp().globalData.activityTeamList=data
 				uni.navigateTo({
 					url:"/pages/joinDetail/joinDetail?type=3"
 				})

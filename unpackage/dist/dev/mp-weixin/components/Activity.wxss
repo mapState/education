@@ -33,7 +33,7 @@
   -webkit-align-items: center;
           align-items: center;
   padding: 40rpx 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1rpx solid #eee;
 }
 .item .leftImg {
   width: 230rpx;
@@ -57,6 +57,11 @@
           justify-content: space-around;
 }
 .item .right .btnBox {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.item .right .jlRow {
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
           justify-content: space-between;

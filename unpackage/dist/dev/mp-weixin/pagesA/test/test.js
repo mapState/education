@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _test_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./test.vue?vue&type=script&lang=js& */ 264);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _test_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _test_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _test_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./test.vue?vue&type=style&index=0&lang=scss& */ 266);
-/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 11);
+/* harmony import */ var _D_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
 
 var renderjs
 
@@ -101,7 +101,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var l0 = _vm.__map(_vm.testList[_vm.index - 1].optionList, function(op, o) {
+  var l0 = _vm.__map(_vm.testList[_vm.index].optionList, function(op, o) {
     var g0 = _vm.selOptionIds.includes(op.id)
     return {
       $orig: _vm.__get_orig(op),
@@ -250,12 +250,13 @@ __webpack_require__.r(__webpack_exports__);
     return {
       selOptionIds: [],
       defineOption: [],
-      index: 1,
+      index: 0,
       isAnswer: true,
-      levelId: 1,
+      levelId: 2,
       testList: [],
       downTime: 180,
-      timer: null };
+      timer: null,
+      result: {} };
 
   },
   onLoad: function onLoad(params) {
@@ -274,18 +275,31 @@ __webpack_require__.r(__webpack_exports__);
       }, 1000);
     },
     submitAnswer: function submitAnswer() {var _this2 = this;
+      var obj = {};
+      var answer = this.selOptionIds.join(',');
+      obj.questionId = this.testList[this.index].id;
+      obj.answer = answer;
+      this.$set(this.defineOption, this.index, obj);
       uni.request({
-        url: this.$uploadUrl + '/api/learn/answer',
+        url: this.$rqUrl + '/api/learn/answer',
         method: "POST",
         data: {
-          evelId: this.levelId,
+          levelId: this.levelId,
           list: this.defineOption },
 
         header: {
           'token': uni.getStorageSync('token') },
 
         success: function success(res) {
-          _this2.isAnswer = false;
+          if (res.data.code == 10200) {
+            _this2.result = res.data.data;
+            _this2.isAnswer = false;
+          } else {
+            uni.showToast({
+              title: res.data.message,
+              icon: 'none' });
+
+          }
         } });
 
 
@@ -298,13 +312,15 @@ __webpack_require__.r(__webpack_exports__);
       then(function (res) {
         console.log(res);
         if (res.data.length > 0) {
-          var count = 0;
           res.data.forEach(function (item) {
+            _this3.defineOption.push({});
+            var count = 0;
             item.optionList.forEach(function (op) {
               if (op.isTrue == 1) {
                 count++;
               }
             });
+            console.log(count);
             if (count > 1) {
               item.isMc = true;
             } else {
@@ -316,6 +332,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     selOption: function selOption(isMc, id) {
+      console.log(isMc, id);
       var index = this.selOptionIds.indexOf(id);
       if (isMc) {//多选
         if (index == -1) {
@@ -324,26 +341,28 @@ __webpack_require__.r(__webpack_exports__);
           this.selOptionIds.splice(index, 1);
         }
       } else {
-        this.selOptionIds = [];
-        this.selOptionIds.push(id);
+        var a = [];
+        a.push(id);
+        this.selOptionIds = a;
       }
     },
     prev: function prev() {
-      if (this.index > 1) {
+      if (this.index > 0) {
         this.selOptionIds = [];
-        if (this.defineOption[index - 2].answer) {
-          this.selOptionIds = this.defineOption[index - 2].answer.split(',');
-        }
+        // if (this.defineOption[this.index-1].answer) {
+        // 	this.selOptionIds = this.defineOption[this.index-1].answer.split(',')
+        // }
+        this.$set(this.defineOption, this.index - 1, {});
         this.index--;
       }
     },
     next: function next() {
-      if (this.index < this.testList.length) {
+      if (this.index < this.testList.length - 1) {
         var obj = {};
         var answer = this.selOptionIds.join(',');
-        obj.questionId = this.testList[this.index - 1].id;
+        obj.questionId = this.testList[this.index].id;
         obj.answer = answer;
-        this.defineOption.push(obj);
+        this.$set(this.defineOption, this.index, obj);
         this.selOptionIds = [];
         this.index++;
       }
